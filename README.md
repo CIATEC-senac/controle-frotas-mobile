@@ -21,8 +21,8 @@ Certifique-se de que você possui o seguinte software instalado em sua máquina 
 Abra seu terminal e clone o repositório para sua máquina local:
 
 ```bash
-git clone https://github.com/seu-usuario/alfaid.git
-cd alfaid
+git clone https://github.com/seu-usuario/app-mobile
+cd app-mobile
 ```
 ### 2. Instalar Dependências
 
