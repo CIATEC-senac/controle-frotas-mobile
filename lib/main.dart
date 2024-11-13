@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'login_screen.dart'; // Importa a tela de login
+import 'pages/login_screen.dart'; // Importa a tela de login
 
 // Função principal que inicia o aplicativo
 void main() {
