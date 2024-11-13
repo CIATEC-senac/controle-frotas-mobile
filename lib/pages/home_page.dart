@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'rotas_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -8,7 +9,8 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.black87, // Cor de fundo da tela
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(100), // Altura personalizada para o AppBar
+        preferredSize:
+            const Size.fromHeight(100), // Altura personalizada para o AppBar
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Container(
@@ -16,13 +18,16 @@ class HomePage extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 16),
             decoration: BoxDecoration(
               color: Colors.grey[800], // Cor de fundo do cabeçalho
-              borderRadius: BorderRadius.circular(10), // Bordas arredondadas para o cabeçalho
+              borderRadius: BorderRadius.circular(
+                  10), // Bordas arredondadas para o cabeçalho
             ),
             child: Row(
               children: [
                 // Logo à esquerda
-                Image.asset('assets/images/logo.png', height: 50), // Insira o caminho da logo
-                const SizedBox(width: 10), // Espaçamento entre a logo e as informações
+                Image.asset('assets/images/logo.png',
+                    height: 50), // Insira o caminho da logo
+                const SizedBox(
+                    width: 10), // Espaçamento entre a logo e as informações
                 const Expanded(
                   // Informações do profissional (nome e cargo)
                   child: Column(
@@ -69,38 +74,50 @@ class HomePage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const SizedBox(height: 16), // Espaçamento entre o cabeçalho e o primeiro botão
+                const SizedBox(
+                    height:
+                        16), // Espaçamento entre o cabeçalho e o primeiro botão
 
                 // Botão "Rotas"
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.grey[800], // Cor de fundo do botão
-                    padding: const EdgeInsets.symmetric(vertical: 20), // Padding interno do botão
-                    fixedSize: const Size.fromHeight(80), // Altura fixa para manter a proporção
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 20), // Padding interno do botão
+                    fixedSize: const Size.fromHeight(
+                        80), // Altura fixa para manter a proporção
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10), // Bordas arredondadas
+                      borderRadius:
+                          BorderRadius.circular(10), // Bordas arredondadas
                     ),
                   ),
                   onPressed: () {
-                    // Ação para o botão "Rotas"
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const RotasPage()),
+                    );
                   },
                   child: const Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Padding(
-                        padding: EdgeInsets.only(left: 8.0), // Espaçamento à esquerda do texto
+                        padding: EdgeInsets.only(
+                            left: 8.0), // Espaçamento à esquerda do texto
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Text(
                               'Rotas',
-                              style: TextStyle(fontSize: 18, color: Colors.white),
+                              style:
+                                  TextStyle(fontSize: 18, color: Colors.white),
                             ),
                             SizedBox(height: 5),
                             Text(
                               'Ler QR Code',
-                              style: TextStyle(fontSize: 12, color: Colors.grey),
+                              style:
+                                  TextStyle(fontSize: 12, color: Colors.grey),
                             ),
                           ],
                         ),
@@ -119,10 +136,13 @@ class HomePage extends StatelessWidget {
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.grey[800], // Cor de fundo do botão
-                    padding: const EdgeInsets.symmetric(vertical: 20), // Padding interno do botão
-                    fixedSize: const Size.fromHeight(80), // Altura fixa para manter a proporção
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 20), // Padding interno do botão
+                    fixedSize: const Size.fromHeight(
+                        80), // Altura fixa para manter a proporção
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10), // Bordas arredondadas
+                      borderRadius:
+                          BorderRadius.circular(10), // Bordas arredondadas
                     ),
                   ),
                   onPressed: () {
@@ -132,7 +152,8 @@ class HomePage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Padding(
-                        padding: EdgeInsets.only(left: 8.0), // Espaçamento à esquerda do texto
+                        padding: EdgeInsets.only(
+                            left: 8.0), // Espaçamento à esquerda do texto
                         child: Text(
                           'Histórico de rotas',
                           style: TextStyle(fontSize: 18, color: Colors.white),
