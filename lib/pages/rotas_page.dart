@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'qr_code_scanner_page.dart';
+import 'result_page.dart'; // Importa a página de resultado
 
 class RotasPage extends StatelessWidget {
   const RotasPage({super.key});
@@ -15,27 +15,13 @@ class RotasPage extends StatelessWidget {
             color: Colors.white,
           ),
         ),
-        centerTitle: true, // Centraliza o título
+        centerTitle: true,
         leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back,
-            color: Colors.white,
-          ),
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
             Navigator.pop(context); // Volta para a página anterior
           },
         ),
-        actions: [
-          IconButton(
-            icon: const Icon(
-              Icons.refresh,
-              color: Colors.white,
-            ), // Ícone de recarregar
-            onPressed: () {
-              // Ação para recarregar a página ou funcionalidade futura
-            },
-          ),
-        ],
       ),
       backgroundColor: Colors.black87,
       body: const Center(
@@ -45,26 +31,25 @@ class RotasPage extends StatelessWidget {
             color: Colors.white,
             fontSize: 16,
           ),
-          textAlign: TextAlign.center, // Centraliza o texto
+          textAlign: TextAlign.center,
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.green, // Cor verde do botão
-        onPressed: () async {
-          final result = await Navigator.push(
+        backgroundColor: Colors.green,
+        onPressed: () {
+          // simulamdo o resultado de um QR Code
+          String simulatedQRCodeData =
+              '{"rota": "0060", "destino": "Alfa Engenharia", "paradas": 12}';
+          Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const QRCodeScannerPage()),
+            MaterialPageRoute(
+              builder: (context) => ResultPage(data: simulatedQRCodeData),
+            ),
           );
-
-          if (result != null) {
-            // Aqui você pode fazer algo com o resultado do QR Code escaneado
-            print('QR Code escaneado: $result');
-          }
         },
-        child: const Icon(Icons.camera_alt), // Ícone de câmera
+        child: const Icon(Icons.camera_alt),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation
-          .endFloat, // Posição no canto inferior direito
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 }
