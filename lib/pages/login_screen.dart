@@ -6,6 +6,7 @@ class LoginScreen extends StatefulWidget {
 
   @override
   // Cria o estado para o widget LoginScreen
+  // ignore: library_private_types_in_public_api
   _LoginScreenState createState() => _LoginScreenState();
 }
 
