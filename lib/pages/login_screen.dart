@@ -11,17 +11,25 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final TextEditingController _cpfController = TextEditingController(); // Controlador para o campo de CPF
-  final TextEditingController _passwordController = TextEditingController(); // Controlador para o campo de senha
-  bool _isPasswordVisible = false; // Estado para controlar a visibilidade da senha
-  String? _selectedCentroDeCusto; // Variável para armazenar o centro de custo selecionado
+  final TextEditingController _cpfController =
+      TextEditingController(); // Controlador para o campo de CPF
+  final TextEditingController _passwordController =
+      TextEditingController(); // Controlador para o campo de senha
+  bool _isPasswordVisible =
+      false; // Estado para controlar a visibilidade da senha
+  String?
+      _selectedCentroDeCusto; // Variável para armazenar o centro de custo selecionado
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        width: MediaQuery.of(context).size.width, // Define a largura do container para ocupar toda a tela
-        height: MediaQuery.of(context).size.height, // Define a altura do container para ocupar toda a tela
+        width: MediaQuery.of(context)
+            .size
+            .width, // Define a largura do container para ocupar toda a tela
+        height: MediaQuery.of(context)
+            .size
+            .height, // Define a altura do container para ocupar toda a tela
         decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage('assets/images/bgalfaid.png'), // Imagem de fundo
@@ -36,7 +44,8 @@ class _LoginScreenState extends State<LoginScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const SizedBox(height: 80), // Espaço para visualizar a logo "AlfaID"
+                const SizedBox(
+                    height: 80), // Espaço para visualizar a logo "AlfaID"
                 _buildCpfField(), // Campo de CPF
                 const SizedBox(height: 16),
                 _buildPasswordField(), // Campo de senha
@@ -82,7 +91,8 @@ class _LoginScreenState extends State<LoginScreen> {
       obscureText: !_isPasswordVisible, // Controla a visibilidade da senha
       style: const TextStyle(color: Colors.white),
       decoration: InputDecoration(
-        prefixIcon: const Icon(Icons.lock, color: Colors.white), // Ícone de cadeado
+        prefixIcon:
+            const Icon(Icons.lock, color: Colors.white), // Ícone de cadeado
         suffixIcon: IconButton(
           icon: Icon(
             _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
@@ -90,7 +100,8 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
           onPressed: () {
             setState(() {
-              _isPasswordVisible = !_isPasswordVisible; // Alterna a visibilidade da senha
+              _isPasswordVisible =
+                  !_isPasswordVisible; // Alterna a visibilidade da senha
             });
           },
         ),
@@ -146,9 +157,11 @@ class _LoginScreenState extends State<LoginScreen> {
           _selectedCentroDeCusto = value; // Atualiza o valor selecionado
         });
       },
-      dropdownColor: const Color.fromARGB(255, 44, 44, 44), // Cor de fundo do dropdown
+      dropdownColor:
+          const Color.fromARGB(255, 44, 44, 44), // Cor de fundo do dropdown
       decoration: const InputDecoration(
-        prefixIcon: Icon(Icons.settings, color: Colors.white), // Ícone de configurações
+        prefixIcon:
+            Icon(Icons.settings, color: Colors.white), // Ícone de configurações
         labelText: 'Selecione o Centro de Custo',
         labelStyle: TextStyle(color: Colors.white),
         border: OutlineInputBorder(),
@@ -182,8 +195,10 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget _buildLoginButton() {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        minimumSize: const Size(double.infinity, 50), // Largura completa e altura fixa
-        backgroundColor: const Color.fromARGB(255, 43, 42, 112), // Cor de fundo do botão
+        minimumSize:
+            const Size(double.infinity, 50), // Largura completa e altura fixa
+        backgroundColor:
+            const Color.fromARGB(255, 43, 42, 112), // Cor de fundo do botão
         foregroundColor: Colors.white, // Cor do texto
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8), // Bordas arredondadas
@@ -193,7 +208,7 @@ class _LoginScreenState extends State<LoginScreen> {
         // Ação para fazer login e redirecionar para a HomePage
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const HomePage()),
+          MaterialPageRoute(builder: (context) => HomePage()),
         );
       },
       child: const Text('Login'),
