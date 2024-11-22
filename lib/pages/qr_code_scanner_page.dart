@@ -31,6 +31,7 @@ class _QRCodeScannerPageState extends State<QRCodeScannerPage> {
         // Pausa a câmera para evitar leituras repetidas
         controller.pauseCamera();
         Navigator.push(
+          // ignore: use_build_context_synchronously
           context,
           MaterialPageRoute(
             builder: (context) => ResultPage(data: scanData.code!),

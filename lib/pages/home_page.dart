@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'rotas_page.dart';
+import 'historico_page.dart';
 
 class HomePage extends StatelessWidget {
   // Define uma chave global para gerenciar o Scaffold
@@ -127,7 +128,11 @@ class HomePage extends StatelessWidget {
                   title: 'Histórico de rotas',
                   subtitle: '',
                   onPressed: () {
-                    // Implementar ação para histórico de rotas
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => HistoricoRotasPage()),
+                    );
                   },
                 ),
               ],
