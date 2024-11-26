@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class HistoricoRotasPage extends StatefulWidget {
+  const HistoricoRotasPage({super.key});
+
   @override
   _HistoricoRotasPageState createState() => _HistoricoRotasPageState();
 }
@@ -23,17 +25,17 @@ class _HistoricoRotasPageState extends State<HistoricoRotasPage> {
         ),
         centerTitle: true,
         backgroundColor: Colors.black,
-        iconTheme: IconThemeData(color: Colors.white),
+        iconTheme: const IconThemeData(color: Colors.white),
         actions: [
           IconButton(
-            icon: Icon(Icons.refresh),
+            icon: const Icon(Icons.refresh),
             onPressed: () {
               // Função para atualizar os dados
             },
           ),
         ],
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -54,9 +56,9 @@ class _HistoricoRotasPageState extends State<HistoricoRotasPage> {
                 ),
                 DropdownButton<String>(
                   value: selectedMonth,
-                  icon: Icon(Icons.arrow_drop_down, color: Colors.white),
+                  icon: const Icon(Icons.arrow_drop_down, color: Colors.white),
                   dropdownColor: Colors.black87,
-                  style: TextStyle(color: Colors.white),
+                  style: const TextStyle(color: Colors.white),
                   items: <String>[
                     'Selecione o mês',
                     'Janeiro',
@@ -85,7 +87,7 @@ class _HistoricoRotasPageState extends State<HistoricoRotasPage> {
                 ),
               ],
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             // Títulos das colunas
             const Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -104,7 +106,7 @@ class _HistoricoRotasPageState extends State<HistoricoRotasPage> {
                 ),
               ],
             ),
-            Divider(color: Colors.white), // Linha para separação
+            const Divider(color: Colors.white), // Linha para separação
             Expanded(
               child: ListView.builder(
                 itemCount: historicoRotas.length,
@@ -112,7 +114,7 @@ class _HistoricoRotasPageState extends State<HistoricoRotasPage> {
                   final rota = historicoRotas[index];
                   return Card(
                     color: Colors.grey[800],
-                    margin: EdgeInsets.symmetric(vertical: 8),
+                    margin: const EdgeInsets.symmetric(vertical: 8),
                     child: Padding(
                       padding: const EdgeInsets.all(12.0),
                       child: Row(
@@ -120,15 +122,15 @@ class _HistoricoRotasPageState extends State<HistoricoRotasPage> {
                         children: [
                           Text(
                             rota['data']!,
-                            style: TextStyle(color: Colors.white),
+                            style: const TextStyle(color: Colors.white),
                           ),
                           Text(
                             rota['inicio']!,
-                            style: TextStyle(color: Colors.white),
+                            style: const TextStyle(color: Colors.white),
                           ),
                           Text(
                             rota['fim']!,
-                            style: TextStyle(color: Colors.white),
+                            style: const TextStyle(color: Colors.white),
                           ),
                         ],
                       ),

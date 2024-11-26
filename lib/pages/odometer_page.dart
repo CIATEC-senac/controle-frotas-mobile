@@ -1,13 +1,63 @@
-import 'package:flutter/material.dart';
+import 'dart:io';
+import 'package:alfaid/pages/map_parge.dart';
 
-class OdometerPage extends StatelessWidget {
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+
+class OdometerPage extends StatefulWidget {
   const OdometerPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final TextEditingController odometerController = TextEditingController();
-    final TextEditingController fuelController = TextEditingController();
+  State<OdometerPage> createState() => _OdometerPageState();
+}
 
+class _OdometerPageState extends State<OdometerPage> {
+  final TextEditingController odometerController = TextEditingController();
+  Uint8List? _imageBytes;
+  File? _selectedImage;
+  bool _isButtonEnabled = false;
+
+  void _pickImage() async {
+    try {
+      final pickedFile = await ImagePicker().pickImage(source: ImageSource.camera);
+      if (pickedFile != null) {
+        if (kIsWeb) {
+          final imageBytes = await pickedFile.readAsBytes();
+          setState(() {
+            _imageBytes = imageBytes;
+            _updateButtonState();
+          });
+        } else {
+          setState(() {
+            _selectedImage = File(pickedFile.path);
+            _updateButtonState();
+          });
+        }
+      }
+    } catch (e) {
+      debugPrint("Erro ao capturar imagem: $e");
+    }
+  }
+
+  void _updateButtonState() {
+    setState(() {
+      _isButtonEnabled = odometerController.text.isNotEmpty &&
+          (_selectedImage != null || _imageBytes != null);
+    });
+  }
+
+  void _navigateToMapPage() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const MapPage(), // Página do mapa
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
@@ -18,7 +68,7 @@ class OdometerPage extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
-            Navigator.pop(context); // Volta para a página anterior
+            Navigator.pop(context);
           },
         ),
       ),
@@ -39,15 +89,7 @@ class OdometerPage extends StatelessWidget {
                 labelText: 'Odômetro (km)',
                 border: OutlineInputBorder(),
               ),
-            ),
-            const SizedBox(height: 10),
-            TextField(
-              controller: fuelController,
-              keyboardType: TextInputType.number,
-              decoration: const InputDecoration(
-                labelText: 'Inserir combustível inicial',
-                border: OutlineInputBorder(),
-              ),
+              onChanged: (value) => _updateButtonState(),
             ),
             const SizedBox(height: 20),
             const Center(
@@ -64,39 +106,40 @@ class OdometerPage extends StatelessWidget {
                   size: 50,
                   color: Colors.green,
                 ),
-                onPressed: () {
-                  // Ação ao clicar no botão da câmera para capturar a foto do odômetro
-                  // Aqui você pode adicionar a lógica para abrir a câmera
-                },
+                onPressed: _pickImage,
+              ),
+            ),
+            if (_imageBytes != null)
+              Center(
+                child: Image.memory(
+                  _imageBytes!,
+                  width: 150,
+                  height: 150,
+                  fit: BoxFit.cover,
+                ),
+              )
+            else if (_selectedImage != null)
+              Center(
+                child: Image.file(
+                  _selectedImage!,
+                  width: 150,
+                  height: 150,
+                  fit: BoxFit.cover,
+                ),
+              ),
+            const SizedBox(height: 20),
+            Center(
+              child: ElevatedButton(
+                onPressed: _isButtonEnabled ? _navigateToMapPage : null,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.green,
+                ),
+                child: const Text('Ver Mapa do Trajeto'),
               ),
             ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          // Ação ao clicar em "Enviar", como salvar o valor ou navegar
-          Navigator.pop(
-              context,
-              odometerController
-                  .text); // Retorna o valor para a página anterior
-        },
-        icon: const Icon(
-          Icons.arrow_forward,
-          color: Colors.white,
-        ),
-        label: const Text(
-          'Enviar',
-          style: TextStyle(color: Colors.white),
-        ),
-        backgroundColor: Colors.green,
-        shape: RoundedRectangleBorder(
-          borderRadius:
-              BorderRadius.circular(8), // Reduz as bordas arredondadas
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation
-          .endFloat, // Posiciona no canto inferior direito
     );
   }
 }
