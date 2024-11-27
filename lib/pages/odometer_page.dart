@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:alfaid/pages/map_parge.dart';
+import 'package:alfaid/pages/map_page.dart';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
