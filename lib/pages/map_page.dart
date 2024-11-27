@@ -1,4 +1,6 @@
+import 'dart:convert'; // Para converter o JSON
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart'; // Para carregar o JSON dos assets
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 
@@ -17,13 +19,6 @@ class _MapPageState extends State<MapPage> {
   Set<Marker> _markers = {}; // Marcadores no mapa
   LatLng? _currentPosition; // Posição atual do motorista
 
-  // Lista de passageiros com suas coordenadas
-  final List<Map<String, dynamic>> passageiros = [
-    {"nome": "João", "latitude": -23.550520, "longitude": -46.633308},
-    {"nome": "Maria", "latitude": -23.561680, "longitude": -46.625320},
-    {"nome": "Carlos", "latitude": -23.547700, "longitude": -46.636390},
-  ];
-
   @override
   void initState() {
     super.initState();
@@ -33,28 +28,31 @@ class _MapPageState extends State<MapPage> {
   // Função para inicializar os ícones e carregar marcadores/localização
   Future<void> _initializeIconsAndData() async {
     await _loadCustomIcons(); // Aguarda a inicialização dos ícones
-    _carregarMarcadores(); // Carrega os marcadores com ícones
+    await _carregarMarcadores(); // Carrega os marcadores com ícones a partir do JSON
     _setCurrentLocation(); // Configura a localização atual
   }
 
   // Função para carregar os ícones personalizados
   Future<void> _loadCustomIcons() async {
     motoristaIcon = await BitmapDescriptor.fromAssetImage(
-      const ImageConfiguration(size: Size(48, 48)),
+      const ImageConfiguration(size: Size(32, 32)),
       'assets/icons/onibus_icon.png', // Caminho do ícone do motorista
     );
 
     passageiroIcon = await BitmapDescriptor.fromAssetImage(
-      const ImageConfiguration(size: Size(48, 48)),
+      const ImageConfiguration(size: Size(32, 32)),
       'assets/icons/trabalhador_icon.png', // Caminho do ícone do passageiro
     );
   }
 
-  // Função para carregar marcadores com base na lista de passageiros
-  void _carregarMarcadores() {
+  // Função para carregar marcadores com base nos dados do arquivo JSON
+  Future<void> _carregarMarcadores() async {
+    final String response = await rootBundle.loadString('assets/json/passageiros.json'); // Carrega o JSON
+    final List<dynamic> data = jsonDecode(response); // Decodifica o JSON
+
     Set<Marker> marcadores = {};
 
-    for (var passageiro in passageiros) {
+    for (var passageiro in data) {
       Marker marcador = Marker(
         markerId: MarkerId(passageiro["nome"]),
         position: LatLng(passageiro["latitude"], passageiro["longitude"]),
@@ -70,6 +68,13 @@ class _MapPageState extends State<MapPage> {
     setState(() {
       _markers = marcadores;
     });
+  }
+
+  // Função para aplicar o tema escuro ao mapa
+  void _setMapStyle() async {
+    final String style = await DefaultAssetBundle.of(context).loadString(
+        'assets/json/map_style.json'); // Caminho do JSON com o estilo
+    _mapController?.setMapStyle(style);
   }
 
   // Função para obter a posição atual do motorista
@@ -142,12 +147,14 @@ class _MapPageState extends State<MapPage> {
       ),
       body: GoogleMap(
         initialCameraPosition: const CameraPosition(
-          target: LatLng(-23.550520, -46.633308), // Coordenadas iniciais (São Paulo)
+          target: LatLng(
+              -20.151510159413444, -44.87900580854352),// Coordenadas iniciais (Divinópolis-MG)
           zoom: 14.0,
         ),
         markers: _markers, // Marcadores exibidos no mapa
         onMapCreated: (GoogleMapController controller) {
           _mapController = controller;
+          _setMapStyle(); // Aplica o tema escuro após o mapa ser criado
         },
       ),
     );

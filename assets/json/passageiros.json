@@ -1,5 +1,7 @@
 [
-    {"nome": "João", "latitude": -23.550520, "longitude": -46.633308},
-    {"nome": "Maria", "latitude": -23.561680, "longitude": -46.625320},
-    {"nome": "Carlos", "latitude": -23.547700, "longitude": -46.636390}
-  ]
+  {"nome": "João", "latitude": -20.145868270655487, "longitude": -44.89793080698455},
+  {"nome": "Maria", "latitude": -20.147626190402196, "longitude": -44.888256347466424},
+  {"nome": "Carlos", "latitude": -20.14592483975283, "longitude": -44.88743057630188},
+  {"nome": "Ana", "latitude": -20.145246087026948, "longitude": -44.890897633972514},
+  {"nome": "Lucas", "latitude": -20.145946236310778, "longitude": -44.89551498686768}
+]
