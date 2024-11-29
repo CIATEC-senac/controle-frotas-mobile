@@ -55,6 +55,7 @@ class ResultPage extends StatelessWidget {
 
           if (odometerReading != null) {
             // Exibe o valor do odômetro ou realiza outra ação
+            // ignore: avoid_print
             print('Leitura do odômetro: $odometerReading');
           }
         },
