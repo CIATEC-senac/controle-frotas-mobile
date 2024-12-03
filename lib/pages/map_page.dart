@@ -3,13 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart'; // Para carregar o JSON dos assets
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
-// ignore: unused_import
-import 'package:http/http.dart' as http; // Para fazer requisições HTTP
-// ignore: unused_import
-import 'package:flutter_polyline_points/flutter_polyline_points.dart'; // Para traçar linhas no mapa
+import 'package:alfaid/pages/hodometro_final_page.dart'; // Atualize o nome do projeto aqui
 
-late BitmapDescriptor motoristaIcon; // Ícone do ônibus
-late BitmapDescriptor passageiroIcon; // Ícone do trabalhador
+late BitmapDescriptor motoristaIcon;
+late BitmapDescriptor passageiroIcon;
 
 class MapPage extends StatefulWidget {
   const MapPage({super.key});
@@ -19,15 +16,13 @@ class MapPage extends StatefulWidget {
 }
 
 class _MapPageState extends State<MapPage> {
-  GoogleMapController? _mapController; // Controlador do mapa
-  Set<Marker> _markers = {}; // Marcadores no mapa
-  final Set<Polyline> _polylines = {}; // Linhas que formam a rota
+  GoogleMapController? _mapController;
+  Set<Marker> _markers = {};
+  final Set<Polyline> _polylines = {};
   // ignore: unused_field
-  LatLng? _currentPosition; // Posição atual do motorista
+  LatLng? _currentPosition;
   // ignore: unused_field, prefer_final_fields
-  List<LatLng> _routePoints = []; // Pontos da rota (coordenadas)
-
-  final String apiKey = "AIzaSyDFieq3fbOX00euhBUc8co-WEudMUf44Xs";
+  List<LatLng> _routePoints = [];
 
   @override
   void initState() {
@@ -100,7 +95,6 @@ class _MapPageState extends State<MapPage> {
         CameraUpdate.newLatLngZoom(currentLatLng, 14),
       );
     } catch (e) {
-      // ignore: avoid_print
       print("Erro ao obter localização: $e");
     }
   }
@@ -108,7 +102,7 @@ class _MapPageState extends State<MapPage> {
   Future<void> _setMapStyle() async {
     final String style = await DefaultAssetBundle.of(context).loadString('assets/json/map_style.json');
     // ignore: deprecated_member_use
-    _mapController?.setMapStyle(style);
+    _mapController?.setMapStyle(style); // Aplica o estilo escuro
   }
 
   void _showUnscheduledStopModal() {
@@ -117,8 +111,14 @@ class _MapPageState extends State<MapPage> {
       builder: (context) => AlertDialog(
         title: const Text("Parada não programada?"),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text("NÃO")),
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text("SIM")),
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text("NÃO"),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text("SIM"),
+          ),
         ],
       ),
     );
@@ -130,8 +130,22 @@ class _MapPageState extends State<MapPage> {
       builder: (context) => AlertDialog(
         title: const Text("Finalizar rota?"),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text("NÃO")),
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text("SIM")),
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text("NÃO"),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const HodometroFinalPage(),
+                ),
+              );
+            },
+            child: const Text("SIM"),
+          ),
         ],
       ),
     );

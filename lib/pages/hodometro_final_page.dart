@@ -1,38 +1,29 @@
-import 'dart:io';
-import 'package:alfaid/pages/map_page.dart';
-import 'package:flutter/foundation.dart';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:alfaid/pages/success_page.dart'; // Atualize o caminho conforme o seu projeto
 
-class OdometerPage extends StatefulWidget {
-  const OdometerPage({super.key});
+class HodometroFinalPage extends StatefulWidget {
+  const HodometroFinalPage({super.key});
 
   @override
-  State<OdometerPage> createState() => _OdometerPageState();
+  _HodometroFinalPageState createState() => _HodometroFinalPageState();
 }
 
-class _OdometerPageState extends State<OdometerPage> {
+class _HodometroFinalPageState extends State<HodometroFinalPage> {
+  Uint8List? _selectedImageBytes;
   final TextEditingController odometerController = TextEditingController();
-  Uint8List? _imageBytes;
-  File? _selectedImage;
   bool _isButtonEnabled = false;
 
-  void _pickImage() async {
+  Future<void> _pickImage() async {
     try {
-      final pickedFile = await ImagePicker().pickImage(source: ImageSource.camera);
+      final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
       if (pickedFile != null) {
-        if (kIsWeb) {
-          final imageBytes = await pickedFile.readAsBytes();
-          setState(() {
-            _imageBytes = imageBytes;
-            _updateButtonState();
-          });
-        } else {
-          setState(() {
-            _selectedImage = File(pickedFile.path);
-            _updateButtonState();
-          });
-        }
+        final imageBytes = await pickedFile.readAsBytes();
+        setState(() {
+          _selectedImageBytes = imageBytes;
+          _updateButtonState();
+        });
       }
     } catch (e) {
       debugPrint("Erro ao capturar imagem: $e");
@@ -41,16 +32,16 @@ class _OdometerPageState extends State<OdometerPage> {
 
   void _updateButtonState() {
     setState(() {
-      _isButtonEnabled = odometerController.text.isNotEmpty &&
-          (_selectedImage != null || _imageBytes != null);
+      _isButtonEnabled = odometerController.text.isNotEmpty && _selectedImageBytes != null;
     });
   }
 
-  void _navigateToMapPage() {
+  void _submitData() {
+    debugPrint("Dados enviados: Odômetro - ${odometerController.text}");
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => const MapPage(),
+        builder: (context) => const SuccessPage(),
       ),
     );
   }
@@ -60,15 +51,13 @@ class _OdometerPageState extends State<OdometerPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () => Navigator.pop(context),
+        ),
         title: const Text(
           'Informar Odômetro',
           style: TextStyle(color: Colors.white),
-        ),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () {
-            Navigator.pop(context);
-          },
         ),
         centerTitle: true,
       ),
@@ -78,20 +67,23 @@ class _OdometerPageState extends State<OdometerPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              'Informe a leitura atual do odômetro:',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              "Informe a leitura atual do hodômetro após finalizar a rota:",
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 8),
             TextField(
               controller: odometerController,
               keyboardType: TextInputType.number,
               decoration: const InputDecoration(
-                labelText: 'Odômetro (km)',
                 border: OutlineInputBorder(),
+                labelText: "Odômetro (km)",
               ),
               onChanged: (value) => _updateButtonState(),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 16),
             const Center(
               child: Text(
                 'Inserir fotos do odômetro',
@@ -109,39 +101,30 @@ class _OdometerPageState extends State<OdometerPage> {
                 onPressed: _pickImage,
               ),
             ),
-            if (_imageBytes != null)
+            if (_selectedImageBytes != null)
               Center(
                 child: Image.memory(
-                  _imageBytes!,
-                  width: 200,
-                  height: 200,
-                  fit: BoxFit.cover,
-                ),
-              )
-            else if (_selectedImage != null)
-              Center(
-                child: Image.file(
-                  _selectedImage!,
+                  _selectedImageBytes!,
                   width: 200,
                   height: 200,
                   fit: BoxFit.cover,
                 ),
               ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 16),
             Center(
               child: ElevatedButton(
-                onPressed: _isButtonEnabled ? _navigateToMapPage : null,
+                onPressed: _isButtonEnabled ? _submitData : null,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: _isButtonEnabled ? Colors.green : Colors.grey,
                   padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8), // Menos arredondado
+                    borderRadius: BorderRadius.circular(8),
                   ),
                 ),
                 child: Text(
-                  'Ver Mapa do Trajeto',
+                  "Enviar",
                   style: TextStyle(
-                    color: _isButtonEnabled ? Colors.white : Colors.black, // Branco quando habilitado
+                    color: _isButtonEnabled ? Colors.white : Colors.black,
                     fontWeight: FontWeight.bold,
                   ),
                 ),

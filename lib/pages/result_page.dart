@@ -26,6 +26,7 @@ class ResultPage extends StatelessWidget {
             Navigator.pop(context); // Volta para a página anterior
           },
         ),
+        centerTitle: true,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
