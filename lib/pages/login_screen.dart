@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'home_page.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -192,6 +194,42 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   // Botão de login
+  // Adicione esta função à classe _LoginScreenState
+  Future<void> autenticarUsuario(String cpf, String senha) async {
+    final url = Uri.parse('http://192.168.0.100:3000/auth/login'); // Substitua <SEU_BACKEND> pela URL do backend
+
+    try {
+      final response = await http.post(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({'cpf': cpf, 'senha': senha}),
+      );
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        print('Login bem-sucedido: ${data['token']}');
+        // Redireciona para a página inicial
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => HomePage()),
+        );
+      } else {
+        print('Erro de login: ${response.statusCode}');
+        // Mostre uma mensagem de erro ao usuário
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Erro de login: ${response.statusCode}')),
+        );
+      }
+    } catch (e) {
+      print('Erro de conexão: $e');
+      // Mostre uma mensagem de erro ao usuário
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Erro de conexão')),
+      );
+    }
+  }
+
+// Altere o botão de login para usar a função acima
   Widget _buildLoginButton() {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
@@ -205,11 +243,17 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
       onPressed: () {
-        // Ação para fazer login e redirecionar para a HomePage
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => HomePage()),
-        );
+        final cpf = _cpfController.text;
+        final senha = _passwordController.text;
+
+        if (cpf.isNotEmpty && senha.isNotEmpty) {
+          autenticarUsuario(cpf, senha);
+        } else {
+          // Mostre uma mensagem de erro se os campos estiverem vazios
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Preencha todos os campos')),
+          );
+        }
       },
       child: const Text('Login'),
     );
