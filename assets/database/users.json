@@ -1,0 +1,22 @@
+{
+  "users": [
+    {
+      "cpf": "12345678901",
+      "senha": "senha123",
+      "setor": "Homologação",
+      "id": "e09e"
+    },
+    {
+      "cpf": "98765432100",
+      "senha": "senha456",
+      "setor": "Fábrica",
+      "id": "1553"
+    },
+    {
+      "cpf": "11223344556",
+      "senha": "senha789",
+      "setor": "Motorista",
+      "id": "ae5f"
+    }
+  ]
+}

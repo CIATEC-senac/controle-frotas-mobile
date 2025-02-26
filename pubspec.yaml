@@ -72,6 +72,7 @@ flutter:
     - assets/icons/trabalhador_icon.png
     - assets/json/map_style.json
     - assets/json/passageiros.json
+    - assets/database/users.json
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
