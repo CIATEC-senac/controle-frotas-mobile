@@ -1,7 +1,7 @@
 // Importações necessárias para a aplicação Flutter, incluindo pacotes de material e http.
-import 'dart:convert';
+import 'package:alfaid/http/backend.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+
 import 'home_page.dart';
 
 // A classe principal do widget de tela de login, que herda de StatefulWidget para possibilitar atualizações de estado.
@@ -9,7 +9,8 @@ class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
   @override
-  _LoginScreenState createState() => _LoginScreenState(); // Criação do estado da tela de login.
+  _LoginScreenState createState() =>
+      _LoginScreenState(); // Criação do estado da tela de login.
 }
 
 // A classe de estado para LoginScreen, que gerencia o comportamento da interface.
@@ -201,40 +202,22 @@ class _LoginScreenState extends State<LoginScreen> {
 
     try {
       // Realiza uma requisição HTTP para obter a lista de usuários.
-      final response = await http.get(Uri.parse('http://localhost:3000/users'));
+      await Backend().login(cpf, senha);
 
-      if (response.statusCode == 200) {
-        // Converte a resposta JSON em lista de usuários.
-        List<dynamic> users = jsonDecode(response.body);
-
-        // Busca um usuário que tenha o CPF e senha correspondentes.
-        final user = users.firstWhere(
-          (u) => u['cpf'] == cpf && u['senha'] == senha,
-          orElse: () => null,
-        );
-
-        // Se o usuário for encontrado, navega para a página inicial.
-        if (user != null) {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => HomePage()),
-          );
-        } else {
-          // Caso contrário, exibe uma mensagem de erro.
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('CPF ou senha incorretos')),
-          );
-        }
-      } else {
-        // Exibe mensagem caso haja erro na requisição.
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Erro ao buscar usuários')),
-        );
-      }
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => HomePage()),
+      );
     } catch (e) {
       // Trata erros de conexão e exibe uma mensagem.
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   SnackBar(content: Text('Erro de conexão: $e')),
+      // );
+
+      print(e);
+
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Erro de conexão: $e')),
+        const SnackBar(content: Text('CPF ou senha incorretos')),
       );
     }
   }
