@@ -15,10 +15,11 @@ class _LoginScreenState extends State<LoginScreen> {
       TextEditingController(); // Controlador para o campo de CPF
   final TextEditingController _passwordController =
       TextEditingController(); // Controlador para o campo de senha
+
   bool _isPasswordVisible =
       false; // Estado para controlar a visibilidade da senha
-  String?
-      _selectedCentroDeCusto; // Variável para armazenar o centro de custo selecionado
+  // String?
+  //     _selectedCentroDeCusto; // Variável para armazenar o centro de custo selecionado
 
   @override
   Widget build(BuildContext context) {
@@ -30,34 +31,30 @@ class _LoginScreenState extends State<LoginScreen> {
         height: MediaQuery.of(context)
             .size
             .height, // Define a altura do container para ocupar toda a tela
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('assets/images/bgalfaid.png'), // Imagem de fundo
-            fit: BoxFit.cover,
-            alignment: Alignment.topCenter, // Alinha a imagem no topo
-          ),
-        ),
-        child: Center(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const SizedBox(
-                    height: 80), // Espaço para visualizar a logo "AlfaID"
-                _buildCpfField(), // Campo de CPF
-                const SizedBox(height: 16),
-                _buildPasswordField(), // Campo de senha
-                const SizedBox(height: 16),
-                _buildCentroDeCustoDropdown(), // Dropdown para selecionar o centro de custo
-                const SizedBox(height: 16),
-                _buildForgotPasswordButton(), // Botão "Esqueci minha senha"
-                const SizedBox(height: 32),
-                _buildLoginButton(), // Botão de login
-              ],
+
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        decoration: BoxDecoration(color: Color.fromARGB(255, 61, 61, 61)),
+        child: Column(
+          spacing: 80,
+          children: [
+            // Image.asset(
+            //   'assets/images/bgalfaid.png',
+            //   width: MediaQuery.of(context).size.width,
+            // ),
+            Spacer(),
+            Center(
+              child: Column(
+                spacing: 16,
+                children: [
+                  _buildCpfField(), // Campo de CPF
+                  _buildPasswordField(), // Campo de senha
+                  _buildForgotPasswordButton(), // Botão "Esqueci minha senha"
+                  _buildLoginButton(), // Botão de login
+                ],
+              ),
             ),
-          ),
+            const Spacer(),
+          ],
         ),
       ),
     );
@@ -112,63 +109,6 @@ class _LoginScreenState extends State<LoginScreen> {
           borderSide: BorderSide(color: Colors.white),
         ),
         focusedBorder: const OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.blue),
-        ),
-      ),
-    );
-  }
-
-  // Dropdown para seleção do centro de custo
-  Widget _buildCentroDeCustoDropdown() {
-    return DropdownButtonFormField<String>(
-      value: _selectedCentroDeCusto, // Valor selecionado no dropdown
-      items: const [
-        DropdownMenuItem(
-          value: 'Centro 1',
-          child: Text('Homologação', style: TextStyle(color: Colors.white)),
-        ),
-        DropdownMenuItem(
-          value: 'Centro 2',
-          child: Text('Fábrica', style: TextStyle(color: Colors.white)),
-        ),
-        DropdownMenuItem(
-          value: 'Centro 3',
-          child: Text('AlfaID', style: TextStyle(color: Colors.white)),
-        ),
-        DropdownMenuItem(
-          value: 'Centro 4',
-          child: Text('Montagem', style: TextStyle(color: Colors.white)),
-        ),
-        DropdownMenuItem(
-          value: 'Centro 5',
-          child: Text('GERDAUOB', style: TextStyle(color: Colors.white)),
-        ),
-        DropdownMenuItem(
-          value: 'Centro 6',
-          child: Text('AP', style: TextStyle(color: Colors.white)),
-        ),
-        DropdownMenuItem(
-          value: 'Centro 7',
-          child: Text('Motorista', style: TextStyle(color: Colors.white)),
-        ),
-      ],
-      onChanged: (value) {
-        setState(() {
-          _selectedCentroDeCusto = value; // Atualiza o valor selecionado
-        });
-      },
-      dropdownColor:
-          const Color.fromARGB(255, 44, 44, 44), // Cor de fundo do dropdown
-      decoration: const InputDecoration(
-        prefixIcon:
-            Icon(Icons.settings, color: Colors.white), // Ícone de configurações
-        labelText: 'Selecione o Centro de Custo',
-        labelStyle: TextStyle(color: Colors.white),
-        border: OutlineInputBorder(),
-        enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.white),
-        ),
-        focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(color: Colors.blue),
         ),
       ),
