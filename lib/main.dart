@@ -15,18 +15,54 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false, // Desativa o banner de depuração
-      title: 'AlfaID', // Título do aplicativo
+      title: 'ALFAID Frotas', // Título do aplicativo
 
       // Define rotas nomeadas para navegação
       routes: {
-        '/login': (context) => const LoginScreen(), // Tela de login
-        '/home': (context) => HomePage(), // Tela HomePage
+        '/login': (context) => const LoginScreen(),
+        '/home': (context) => const HomePage(),
       },
-
       // Define a rota inicial como a tela de login
       initialRoute: '/login',
       theme: ThemeData(
-        primarySwatch: Colors.blue, // Define o tema primário do aplicativo
+        cardTheme: const CardTheme(
+          color: Color(0xFF424242),
+        ),
+        scaffoldBackgroundColor: const Color(0xFF303030),
+        textTheme: const TextTheme(
+          headlineSmall: TextStyle(
+            fontSize: 16.0,
+            fontWeight: FontWeight.bold,
+            color: Color(0xFFFFFFFF),
+          ),
+          bodySmall: TextStyle(
+            fontSize: 14.0,
+            color: Color(0xFFFFFFFF),
+          ),
+        ),
+        iconButtonTheme: IconButtonThemeData(
+          style: ButtonStyle(
+            iconColor: WidgetStateProperty.resolveWith<Color?>(
+              (Set<WidgetState> states) {
+                if (!states.contains(WidgetState.error) &&
+                    !states.contains(WidgetState.disabled)) {
+                  return Color(0xFFFFFFFF);
+                }
+
+                return null; // Use the component's default.
+              },
+            ),
+            backgroundColor: WidgetStateProperty.resolveWith<Color?>(
+              (Set<WidgetState> states) {
+                if (states.contains(WidgetState.pressed)) {
+                  return Color(0xFFFFFFFF).withValues(alpha: 0.1);
+                }
+
+                return null; // Use the component's default.
+              },
+            ),
+          ),
+        ),
       ),
     );
   }

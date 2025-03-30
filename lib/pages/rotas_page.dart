@@ -23,7 +23,7 @@ class RotasPage extends StatelessWidget {
           },
         ),
       ),
-      backgroundColor: Colors.black87,
+      // backgroundColor: Colors.black87,
       body: const Center(
         child: Text(
           'Ler QrCode e atribuir-se à rota',
