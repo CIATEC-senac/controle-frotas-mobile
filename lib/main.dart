@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'pages/login_screen.dart'; // Importa a tela de login
+import 'pages/login_page.dart'; // Importa a tela de login
 import 'pages/home_page.dart'; // Importa a página HomePage
 
 // Função principal que inicia o aplicativo
@@ -39,6 +39,9 @@ class MyApp extends StatelessWidget {
             fontSize: 14.0,
             color: Color(0xFFFFFFFF),
           ),
+        ),
+        iconTheme: IconThemeData(
+          color: Color(0xFFFFFFFF),
         ),
         iconButtonTheme: IconButtonThemeData(
           style: ButtonStyle(
