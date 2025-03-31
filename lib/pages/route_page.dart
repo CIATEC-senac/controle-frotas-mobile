@@ -2,7 +2,6 @@ import 'package:alfaid/pages/qrscanner_page.dart';
 import 'package:alfaid/widgets/card_info.dart';
 import 'package:flutter/material.dart';
 import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
-import 'result_page.dart'; // Importa a página de resultado
 
 class RotasPage extends StatefulWidget {
   const RotasPage({Key? key}) : super(key: key);
@@ -41,7 +40,10 @@ class _RotasPageState extends State<RotasPage> {
             Container(
               margin: const EdgeInsets.only(top: 48.0),
               child: CardInfo(
-                icon: Icons.qr_code_2,
+                icon: Icon(
+                  Icons.qr_code_2,
+                  size: 48.0,
+                ),
                 title: 'Rota',
                 subTitle:
                     'Clique no botão abaixo para fazer escaneamento de código',
@@ -81,7 +83,7 @@ class _RotasPageState extends State<RotasPage> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => QrScannerPage(data: code),
+                builder: (context) => QrScannerDetailsPage(data: code),
               ),
             );
           }
