@@ -1,4 +1,5 @@
 import 'package:alfaid/pages/odometer_page.dart';
+import 'package:alfaid/widgets/appbar_card.dart';
 import 'package:alfaid/widgets/card_info.dart';
 import 'package:alfaid/widgets/details_maintenance.dart';
 import 'package:alfaid/widgets/details_paradas_card.dart';
@@ -18,22 +19,7 @@ class _QrScannerDetailsPageState extends State<QrScannerDetailsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: const Color(0xFF424242),
-        title: const Text(
-          'Detalhes da Rota',
-          style: TextStyle(
-            color: Colors.white,
-          ),
-        ),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () {
-            Navigator.pop(context); // Volta para a página anterior
-          },
-        ),
-        centerTitle: true,
-      ),
+      appBar: AppBarCard(title: 'Detalhes da rota'),
       body: SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.all(16.0),

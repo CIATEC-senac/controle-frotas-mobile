@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'package:alfaid/pages/map_page.dart';
-import 'package:flutter/foundation.dart';
+import 'package:alfaid/widgets/appbar_card.dart';
+import 'package:alfaid/widgets/insert_image.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 
 class OdometerPage extends StatefulWidget {
   const OdometerPage({super.key});
@@ -13,39 +13,18 @@ class OdometerPage extends StatefulWidget {
 
 class _OdometerPageState extends State<OdometerPage> {
   final TextEditingController odometerController = TextEditingController();
-  Uint8List? _imageBytes;
-  File? _selectedImage;
+  File? _image;
   bool _isButtonEnabled = false;
 
-  void _pickImage() async {
-    try {
-      final pickedFile = await ImagePicker().pickImage(source: ImageSource.camera);
-      if (pickedFile != null) {
-        if (kIsWeb) {
-          final imageBytes = await pickedFile.readAsBytes();
-          setState(() {
-            _imageBytes = imageBytes;
-            _updateButtonState();
-          });
-        } else {
-          setState(() {
-            _selectedImage = File(pickedFile.path);
-            _updateButtonState();
-          });
-        }
-      }
-    } catch (e) {
-      debugPrint("Erro ao capturar imagem: $e");
-    }
-  }
-
-  void _updateButtonState() {
+  // Função que vai ser passada para o widget insertimage para inserir imagem
+  void callback(File image) {
     setState(() {
-      _isButtonEnabled = odometerController.text.isNotEmpty &&
-          (_selectedImage != null || _imageBytes != null);
+      _image = image;
+      _isButtonEnabled = odometerController.text.isNotEmpty && _image != null;
     });
   }
 
+  // Função para ir para a página seguinte
   void _navigateToMapPage() {
     Navigator.push(
       context,
@@ -58,82 +37,67 @@ class _OdometerPageState extends State<OdometerPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.black,
-        title: const Text(
-          'Informar Odômetro',
-          style: TextStyle(color: Colors.white),
-        ),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        centerTitle: true,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Informe a leitura atual do odômetro:',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 10),
-            TextField(
-              controller: odometerController,
-              keyboardType: TextInputType.number,
-              decoration: const InputDecoration(
-                labelText: 'Odômetro (km)',
-                border: OutlineInputBorder(),
-              ),
-              onChanged: (value) => _updateButtonState(),
-            ),
-            const SizedBox(height: 20),
-            const Center(
-              child: Text(
-                'Inserir fotos do odômetro',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-            ),
-            const SizedBox(height: 10),
-            Center(
-              child: IconButton(
-                icon: const Icon(
-                  Icons.camera_alt,
-                  size: 50,
-                  color: Colors.green,
-                ),
-                onPressed: _pickImage,
-              ),
-            ),
-            if (_imageBytes != null)
-              Center(
-                child: Image.memory(
-                  _imageBytes!,
-                  width: 200,
-                  height: 200,
-                  fit: BoxFit.cover,
-                ),
-              )
-            else if (_selectedImage != null)
-              Center(
-                child: Image.file(
-                  _selectedImage!,
-                  width: 200,
-                  height: 200,
-                  fit: BoxFit.cover,
+      backgroundColor: const Color.fromARGB(255, 249, 250, 251),
+      appBar: const AppBarCard(title: 'Quilometragem do veículo'),
+      body: SingleChildScrollView(
+        child: Container(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            spacing: 10.0,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Card(
+                elevation: 1.0,
+                color: const Color(0xFFFFFFFF),
+                child: Container(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    spacing: 10.0,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      const Text(
+                        'Informe a leitura atual do odômetro:',
+                        style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black87),
+                      ),
+                      TextField(
+                        controller: odometerController,
+                        keyboardType: TextInputType.number,
+                        decoration: const InputDecoration(
+                          hintText: 'Ex: 189008',
+                          helperMaxLines: 2,
+                          helperText:
+                              'Digite apenas números sem pontos ou espaços',
+                          border: OutlineInputBorder(),
+                        ),
+                        onChanged: (value) {
+                          setState(() {
+                            _isButtonEnabled =
+                                odometerController.text.isNotEmpty &&
+                                    _image != null;
+                          });
+                        },
+                      ),
+                      const SizedBox(height: 10),
+                      const Text(
+                        'Enviar foto do odômetro',
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
+                      InsertImage(image: _image, callback: callback),
+                    ],
+                  ),
                 ),
               ),
-            const SizedBox(height: 20),
-            Center(
-              child: ElevatedButton(
+              ElevatedButton(
                 onPressed: _isButtonEnabled ? _navigateToMapPage : null,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: _isButtonEnabled ? Colors.green : Colors.grey,
-                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                  backgroundColor:
+                      _isButtonEnabled ? Colors.green : Colors.grey,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8), // Menos arredondado
                   ),
@@ -141,13 +105,15 @@ class _OdometerPageState extends State<OdometerPage> {
                 child: Text(
                   'Ver Mapa do Trajeto',
                   style: TextStyle(
-                    color: _isButtonEnabled ? Colors.white : Colors.black, // Branco quando habilitado
+                    color: _isButtonEnabled
+                        ? Colors.white
+                        : Colors.black, // Branco quando habilitado
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-              ),
-            ),
-          ],
+              )
+            ],
+          ),
         ),
       ),
     );

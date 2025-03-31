@@ -67,7 +67,8 @@ class _HomePageState extends State<HomePage> {
                   // Navega para a página de Rotas
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const RotasPage()),
+                    MaterialPageRoute(
+                        builder: (context) => const ScannerRoutePage()),
                   );
                 },
               ),
