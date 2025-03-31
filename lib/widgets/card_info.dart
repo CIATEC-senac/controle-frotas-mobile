@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
 class CardInfo extends StatelessWidget {
-  IconData icon;
+  Icon icon;
   String title;
   String? subTitle;
 
   CardInfo({
     super.key,
-    this.icon = Icons.qr_code,
+    this.icon = const Icon(Icons.qr_code),
     required this.title,
     this.subTitle,
   });
@@ -15,16 +15,13 @@ class CardInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 0,
+      elevation: 3,
       child: Container(
         padding: const EdgeInsets.all(20.0),
         child: Row(
           spacing: 16.0,
           children: [
-            Icon(
-              icon,
-              size: 24.0,
-            ),
+            icon,
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
