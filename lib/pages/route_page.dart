@@ -2,36 +2,22 @@ import 'package:alfaid/pages/qrscanner_page.dart';
 import 'package:alfaid/widgets/card_info.dart';
 import 'package:flutter/material.dart';
 import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
+import 'package:alfaid/widgets/appbar_card.dart';
 
-class RotasPage extends StatefulWidget {
-  const RotasPage({Key? key}) : super(key: key);
+class ScannerRoutePage extends StatefulWidget {
+  const ScannerRoutePage({Key? key}) : super(key: key);
 
   @override
-  State<RotasPage> createState() => _RotasPageState();
+  State<ScannerRoutePage> createState() => _ScannerRoutePageState();
 }
 
-class _RotasPageState extends State<RotasPage> {
+class _ScannerRoutePageState extends State<ScannerRoutePage> {
   @override
   Widget build(BuildContext context) {
     String result = '';
 
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Color(0xFF303030),
-        title: const Text(
-          'Escanear QR Code',
-          style: TextStyle(
-            color: Colors.white,
-          ),
-        ),
-        centerTitle: true,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () {
-            Navigator.pop(context); // Volta para a página anterior
-          },
-        ),
-      ),
+      appBar: AppBarCard(title: 'Escanear QrCode'),
       body: Container(
         padding: const EdgeInsets.all(8.0),
         child: Column(
@@ -40,7 +26,7 @@ class _RotasPageState extends State<RotasPage> {
             Container(
               margin: const EdgeInsets.only(top: 48.0),
               child: CardInfo(
-                icon: Icon(
+                icon: const Icon(
                   Icons.qr_code_2,
                   size: 48.0,
                 ),
