@@ -2,24 +2,22 @@ import 'package:alfaid/pages/odometer_page.dart';
 import 'package:alfaid/widgets/appbar_card.dart';
 import 'package:alfaid/widgets/card_info.dart';
 import 'package:alfaid/widgets/details_maintenance.dart';
-import 'package:alfaid/widgets/details_paradas_card.dart';
 import 'package:alfaid/widgets/details_route_card.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
-class QrScannerDetailsPage extends StatefulWidget {
+class RouteDetailsPage extends StatefulWidget {
   final String? data;
-  const QrScannerDetailsPage({super.key, this.data});
+  const RouteDetailsPage({super.key, this.data});
 
   @override
-  State<QrScannerDetailsPage> createState() => _QrScannerDetailsPageState();
+  State<RouteDetailsPage> createState() => _RouteDetailsPageState();
 }
 
-class _QrScannerDetailsPageState extends State<QrScannerDetailsPage> {
+class _RouteDetailsPageState extends State<RouteDetailsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBarCard(title: 'Detalhes da rota'),
+      appBar: const AppBarCard(title: 'Detalhes da rota'),
       body: SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.all(16.0),
@@ -45,7 +43,7 @@ class _QrScannerDetailsPageState extends State<QrScannerDetailsPage> {
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () async {
           // Navega para a página de odômetro e aguarda o valor inserido
-          final odometerReading = await Navigator.push(
+          Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) => const OdometerPage(),

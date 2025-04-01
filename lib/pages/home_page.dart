@@ -1,6 +1,6 @@
 import 'package:alfaid/widgets/list_item.dart';
 import 'package:flutter/material.dart';
-import 'route_page.dart';
+import 'scanner_route_page.dart';
 import 'historico_page.dart';
 import 'package:camera/camera.dart';
 import 'package:path_provider/path_provider.dart';

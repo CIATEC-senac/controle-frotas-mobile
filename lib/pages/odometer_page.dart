@@ -103,7 +103,7 @@ class _OdometerPageState extends State<OdometerPage> {
                   ),
                 ),
                 child: Text(
-                  'Ver Mapa do Trajeto',
+                  'Ir para rota',
                   style: TextStyle(
                     color: _isButtonEnabled
                         ? Colors.white
