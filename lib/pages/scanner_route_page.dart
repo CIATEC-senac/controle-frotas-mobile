@@ -1,4 +1,4 @@
-import 'package:alfaid/pages/qrscanner_page.dart';
+import 'package:alfaid/pages/route_details_page.dart';
 import 'package:alfaid/widgets/card_info.dart';
 import 'package:flutter/material.dart';
 import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
@@ -69,7 +69,7 @@ class _ScannerRoutePageState extends State<ScannerRoutePage> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => QrScannerDetailsPage(data: code),
+                builder: (context) => RouteDetailsPage(data: code),
               ),
             );
           }
