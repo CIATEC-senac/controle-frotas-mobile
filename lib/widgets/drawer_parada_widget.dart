@@ -1,14 +1,14 @@
 import 'package:alfaid/widgets/button_route.dart';
 import 'package:flutter/material.dart';
 
-class DrawerWidget extends StatefulWidget {
-  const DrawerWidget({super.key});
+class DrawerParadaWidget extends StatefulWidget {
+  const DrawerParadaWidget({super.key});
 
   @override
-  State<DrawerWidget> createState() => _DrawerWidgetState();
+  State<DrawerParadaWidget> createState() => _DrawerParadaWidgetState();
 }
 
-class _DrawerWidgetState extends State<DrawerWidget> {
+class _DrawerParadaWidgetState extends State<DrawerParadaWidget> {
   final TextEditingController paradaController = TextEditingController();
 
   @override
