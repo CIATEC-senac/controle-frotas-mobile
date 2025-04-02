@@ -8,19 +8,10 @@ class AppBarCard extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: const Color.fromARGB(255, 233, 75, 135),
-      title: Text(
-        title,
-        style: const TextStyle(
-          color: Colors.white,
-        ),
-      ),
+      title: Text(title),
       centerTitle: true,
       leading: IconButton(
-        icon: const Icon(
-          Icons.arrow_back,
-          color: Colors.white,
-        ),
+        icon: const Icon(Icons.arrow_back),
         onPressed: () {
           Navigator.pop(context); // Volta para a página anterior
         },

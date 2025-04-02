@@ -1,3 +1,4 @@
+import 'package:alfaid/widgets/appbar_card.dart';
 import 'package:flutter/material.dart';
 import 'package:alfaid/pages/home_page.dart'; // Atualize o caminho conforme o seu projeto
 
@@ -7,27 +8,8 @@ class SuccessPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.green,
-        title: const Text(
-          'Sucesso!',
-          style: TextStyle(color: Colors.white),
-        ),
-        centerTitle: true,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () {
-            Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(
-                builder: (context) => HomePage(),
-              ),
-              (route) => false, // Remove todas as rotas anteriores
-            );
-          },
-        ),
-      ),
-      body: Padding(
+      appBar: const AppBarCard(title: 'Rota finalizada'),
+      body: Container(
         padding: const EdgeInsets.all(16.0),
         child: Center(
           child: Column(
@@ -60,7 +42,8 @@ class SuccessPage extends StatelessWidget {
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.green,
-                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),

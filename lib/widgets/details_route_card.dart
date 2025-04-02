@@ -18,7 +18,7 @@ class DetailsRouteCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 3,
+      elevation: 1,
       child: Container(
         padding: const EdgeInsets.all(20.0),
         child: Column(

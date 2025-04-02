@@ -33,7 +33,6 @@ class _LoginScreenState extends State<LoginScreen> {
             .height, // Define a altura do container para ocupar toda a tela
 
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        decoration: BoxDecoration(color: Color.fromARGB(255, 61, 61, 61)),
         child: Column(
           spacing: 80,
           children: [
@@ -65,18 +64,10 @@ class _LoginScreenState extends State<LoginScreen> {
     return TextField(
       controller: _cpfController,
       keyboardType: TextInputType.number,
-      style: const TextStyle(color: Colors.white),
       decoration: const InputDecoration(
-        prefixIcon: Icon(Icons.person, color: Colors.white), // Ícone de pessoa
+        prefixIcon: Icon(Icons.person), // Ícone de pessoa
         labelText: 'Usuário (CPF)', // Texto do rótulo
-        labelStyle: TextStyle(color: Colors.white),
         border: OutlineInputBorder(),
-        enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.white),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.blue),
-        ),
       ),
     );
   }
@@ -86,15 +77,11 @@ class _LoginScreenState extends State<LoginScreen> {
     return TextField(
       controller: _passwordController,
       obscureText: !_isPasswordVisible, // Controla a visibilidade da senha
-      style: const TextStyle(color: Colors.white),
       decoration: InputDecoration(
-        prefixIcon:
-            const Icon(Icons.lock, color: Colors.white), // Ícone de cadeado
+        prefixIcon: const Icon(Icons.lock), // Ícone de cadeado
         suffixIcon: IconButton(
           icon: Icon(
-            _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
-            color: Colors.white,
-          ),
+              _isPasswordVisible ? Icons.visibility : Icons.visibility_off),
           onPressed: () {
             setState(() {
               _isPasswordVisible =
@@ -103,14 +90,7 @@ class _LoginScreenState extends State<LoginScreen> {
           },
         ),
         labelText: 'Senha', // Texto do rótulo
-        labelStyle: const TextStyle(color: Colors.white),
         border: const OutlineInputBorder(),
-        enabledBorder: const OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.white),
-        ),
-        focusedBorder: const OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.blue),
-        ),
       ),
     );
   }
@@ -125,7 +105,6 @@ class _LoginScreenState extends State<LoginScreen> {
         },
         child: const Text(
           'Esqueci minha senha',
-          style: TextStyle(color: Color.fromARGB(255, 88, 104, 196)),
         ),
       ),
     );
@@ -135,11 +114,10 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget _buildLoginButton() {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        minimumSize:
-            const Size(double.infinity, 50), // Largura completa e altura fixa
-        backgroundColor:
-            const Color.fromARGB(255, 43, 42, 112), // Cor de fundo do botão
-        foregroundColor: Colors.white, // Cor do texto
+        minimumSize: const Size(
+          double.infinity,
+          50,
+        ), // Largura completa e altura fixa
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8), // Bordas arredondadas
         ),
