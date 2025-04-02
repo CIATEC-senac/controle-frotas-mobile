@@ -1,7 +1,7 @@
 import 'dart:convert'; // Para converter o JSON
 import 'package:alfaid/widgets/appbar_card.dart';
 import 'package:alfaid/widgets/button_route.dart';
-import 'package:alfaid/widgets/drawer_widget.dart';
+import 'package:alfaid/widgets/drawer_parada_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart'; // Para carregar o JSON dos assets
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -117,51 +117,11 @@ class _MapPageState extends State<MapPage> {
     _mapController?.setMapStyle(style); // Aplica o estilo escuro
   }
 
-  void _showEndRouteModal() {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text("Finalizar rota?"),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text("NÃO"),
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const HodometroFinalPage(),
-                ),
-              );
-            },
-            child: const Text("SIM"),
-          ),
-        ],
-      ),
-    );
-  }
-
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-
-  // Variável para armazenar o título do botão
-  String buttonTitle = 'Iniciar rota';
-  Color buttonBackgroundColor = Colors.green;
-
-  // Função para alterar o título do botão
-  void _toggleButtonTitle() {
-    setState(() {
-      if (buttonTitle == 'Iniciar rota') {
-        buttonTitle = 'Finalizar rota';
-        buttonBackgroundColor = Colors.red;
-      }
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
+    // altera a cor do botão 'iniciar rota' conforme seu estado
     Color getProgressBackgroundColor() {
       return switch (progress) {
         RouteState.Idle => Colors.green,
@@ -170,6 +130,7 @@ class _MapPageState extends State<MapPage> {
       };
     }
 
+    // Criando estados para quando o botão iniciar rota for chamado
     String getProgressText() {
       return switch (progress) {
         RouteState.Idle => "Iniciar rota",
@@ -178,6 +139,7 @@ class _MapPageState extends State<MapPage> {
       };
     }
 
+    // Verificando o estado atual do titulo do botão e alterando
     void trackProgress() {
       setState(() {
         progress = switch (progress) {
@@ -187,6 +149,7 @@ class _MapPageState extends State<MapPage> {
         };
       });
 
+      // Verificando se caso o estado do botão está como 'finalizar rota', caso sim redireciona para a próxima tela
       if (progress == RouteState.Completed) {
         Navigator.push(
           context,
@@ -201,7 +164,7 @@ class _MapPageState extends State<MapPage> {
       key: _scaffoldKey,
       backgroundColor: const Color.fromARGB(255, 79, 75, 75),
       appBar: const AppBarCard(title: 'Mapa da rota'),
-      drawer: const DrawerWidget(),
+      drawer: const DrawerParadaWidget(),
       body: Column(
         spacing: 10.0,
         children: [

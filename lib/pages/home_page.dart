@@ -1,9 +1,8 @@
+import 'package:alfaid/pages/historico_page.dart';
+import 'package:alfaid/widgets/drawer.dart';
 import 'package:alfaid/widgets/list_item.dart';
 import 'package:flutter/material.dart';
 import 'scanner_route_page.dart';
-import 'historico_page.dart';
-import 'package:camera/camera.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class HomePage extends StatefulWidget {
@@ -36,6 +35,11 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext build) {
     return Scaffold(
+      key: scaffoldKey,
+      drawer: DrawerMenu(
+        name: 'Usuario',
+        email: 'usuario@email',
+      ),
       body: SafeArea(
         child: Container(
           padding: const EdgeInsets.all(8.0),
@@ -53,7 +57,7 @@ class _HomePageState extends State<HomePage> {
                 title: "Nome",
                 subTitle: "Cargo",
                 icon: const Icon(Icons.settings),
-                onPressed: () {},
+                onPressed: () => {scaffoldKey.currentState?.openDrawer()},
               ),
               const Text(
                 "ALFAID v2.9.20 - BETA",
@@ -74,7 +78,13 @@ class _HomePageState extends State<HomePage> {
               ),
               ListItem(
                 title: "Rota",
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const HistoricoRotasPage()),
+                  );
+                },
               ),
             ],
           ),
