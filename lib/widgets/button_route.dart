@@ -6,12 +6,13 @@ class ButtonOptions extends StatelessWidget {
   VoidCallback onPressed;
   Color? color;
 
-  ButtonOptions(
-      {super.key,
-      this.icon = const Icon(Icons.abc),
-      required this.title,
-      required this.onPressed,
-      required this.color});
+  ButtonOptions({
+    super.key,
+    this.icon = const Icon(Icons.abc),
+    required this.title,
+    required this.onPressed,
+    required this.color,
+  });
 
   @override
   Widget build(BuildContext context) {

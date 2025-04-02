@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:alfaid/pages/map_page.dart';
 import 'package:alfaid/widgets/appbar_card.dart';
 import 'package:alfaid/widgets/insert_image.dart';
+import 'package:alfaid/widgets/odometer_card.dart';
 import 'package:flutter/material.dart';
 
 class OdometerPage extends StatefulWidget {
@@ -12,30 +13,32 @@ class OdometerPage extends StatefulWidget {
 }
 
 class _OdometerPageState extends State<OdometerPage> {
-  final TextEditingController odometerController = TextEditingController();
+  String _odometer = "";
   File? _image;
-  bool _isButtonEnabled = false;
 
-  // Função que vai ser passada para o widget insertimage para inserir imagem
-  void callback(File image) {
+  void imageCallback(File image) {
     setState(() {
       _image = image;
-      _isButtonEnabled = odometerController.text.isNotEmpty && _image != null;
     });
   }
 
-  // Função para ir para a página seguinte
-  void _navigateToMapPage() {
+  void odometerCallback(String value) {
+    setState(() {
+      _odometer = value;
+    });
+  }
+
+  void navigateToMapPage() {
     Navigator.push(
       context,
-      MaterialPageRoute(
-        builder: (context) => const MapPage(),
-      ),
+      MaterialPageRoute(builder: (context) => const MapPage()),
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    bool isButtonEnabled = _image != null && _odometer.isNotEmpty;
+
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 249, 250, 251),
       appBar: const AppBarCard(title: 'Quilometragem do veículo'),
@@ -46,56 +49,16 @@ class _OdometerPageState extends State<OdometerPage> {
             spacing: 10.0,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Card(
-                elevation: 1.0,
-                color: const Color(0xFFFFFFFF),
-                child: Container(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    spacing: 10.0,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      const Text(
-                        'Informe a leitura atual do odômetro:',
-                        style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black87),
-                      ),
-                      TextField(
-                        controller: odometerController,
-                        keyboardType: TextInputType.number,
-                        decoration: const InputDecoration(
-                          hintText: 'Ex: 189008',
-                          helperMaxLines: 2,
-                          helperText:
-                              'Digite apenas números sem pontos ou espaços',
-                          border: OutlineInputBorder(),
-                        ),
-                        onChanged: (value) {
-                          setState(() {
-                            _isButtonEnabled =
-                                odometerController.text.isNotEmpty &&
-                                    _image != null;
-                          });
-                        },
-                      ),
-                      const SizedBox(height: 10),
-                      const Text(
-                        'Enviar foto do odômetro',
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold),
-                      ),
-                      InsertImage(image: _image, callback: callback),
-                    ],
-                  ),
-                ),
+              OdometerCard(
+                odometer: _odometer,
+                odometerCallback: odometerCallback,
+                image: _image,
+                imageCallback: imageCallback,
               ),
               ElevatedButton(
-                onPressed: _isButtonEnabled ? _navigateToMapPage : null,
+                onPressed: isButtonEnabled ? navigateToMapPage : null,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor:
-                      _isButtonEnabled ? Colors.green : Colors.grey,
+                  backgroundColor: isButtonEnabled ? Colors.green : Colors.grey,
                   padding:
                       const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                   shape: RoundedRectangleBorder(
@@ -105,7 +68,7 @@ class _OdometerPageState extends State<OdometerPage> {
                 child: Text(
                   'Ir para rota',
                   style: TextStyle(
-                    color: _isButtonEnabled
+                    color: isButtonEnabled
                         ? Colors.white
                         : Colors.black, // Branco quando habilitado
                     fontWeight: FontWeight.bold,
