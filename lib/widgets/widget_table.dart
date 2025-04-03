@@ -11,7 +11,6 @@ class WidgetTable extends StatelessWidget {
       defaultColumnWidth: const FixedColumnWidth(150.0),
       border: const TableBorder(
         horizontalInside: BorderSide(
-          color: Colors.white,
           style: BorderStyle.solid,
           width: 1.0,
         ),
@@ -30,7 +29,7 @@ class WidgetTable extends StatelessWidget {
           padding: const EdgeInsets.all(18.0),
           child: Text(
             name,
-            style: const TextStyle(fontSize: 16.0, color: Colors.white),
+            style: const TextStyle(fontSize: 16.0),
           ),
         );
       }).toList(),

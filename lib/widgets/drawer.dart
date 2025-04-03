@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class DrawerMenu extends StatelessWidget {
+class DrawerMenu extends StatefulWidget {
   String name;
   String email;
 
@@ -11,12 +11,19 @@ class DrawerMenu extends StatelessWidget {
   });
 
   @override
+  State<DrawerMenu> createState() => _DrawerMenuState();
+}
+
+class _DrawerMenuState extends State<DrawerMenu> {
+  bool darkMode = true;
+
+  @override
   Widget build(BuildContext context) {
     return Drawer(
       child: Column(
         children: [
           UserAccountsDrawerHeader(
-              accountName: Text(name), accountEmail: Text(email)),
+              accountName: Text(widget.name), accountEmail: Text(widget.email)),
           Container(
             padding: EdgeInsets.all(18),
             child: Column(
@@ -24,10 +31,14 @@ class DrawerMenu extends StatelessWidget {
               spacing: 14,
               children: [
                 SwitchListTile(
-                  value: true,
+                  value: darkMode,
                   title: Text('Modo escuro'),
                   secondary: Icon(Icons.sunny),
-                  onChanged: (bool value) {},
+                  onChanged: (bool value) {
+                    setState(() {
+                      darkMode = value;
+                    });
+                  },
                 ),
                 ListTile(
                   leading: Icon(Icons.notifications_none),

@@ -5,14 +5,14 @@ import 'package:alfaid/widgets/appbar_card.dart';
 import 'package:alfaid/widgets/odometer_card.dart';
 import 'package:alfaid/pages/success_page.dart';
 
-class HodometroFinalPage extends StatefulWidget {
-  const HodometroFinalPage({super.key});
+class OdometerEndPage extends StatefulWidget {
+  const OdometerEndPage({super.key});
 
   @override
-  _HodometroFinalPageState createState() => _HodometroFinalPageState();
+  _OdometerEndPageState createState() => _OdometerEndPageState();
 }
 
-class _HodometroFinalPageState extends State<HodometroFinalPage> {
+class _OdometerEndPageState extends State<OdometerEndPage> {
   String _odometer = "";
   File? _image;
 

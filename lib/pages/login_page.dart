@@ -1,4 +1,9 @@
+import 'dart:developer';
+
+import 'package:alfaid/api/api.dart';
+import 'package:alfaid/widgets/login_textfield.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'home_page.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -11,38 +16,48 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final TextEditingController _cpfController =
-      TextEditingController(); // Controlador para o campo de CPF
-  final TextEditingController _passwordController =
-      TextEditingController(); // Controlador para o campo de senha
+  String cpf = '';
+  String password = '';
 
-  bool _isPasswordVisible =
-      false; // Estado para controlar a visibilidade da senha
-  // String?
-  //     _selectedCentroDeCusto; // Variável para armazenar o centro de custo selecionado
+  // Estado para controlar a visibilidade da senha
+  bool isPasswordVisible = false;
+
+  void login() async {
+    API().login(cpf, password).then((token) async {
+      SharedPreferences preferences = await SharedPreferences.getInstance();
+
+      preferences.setString('token', token);
+
+      Navigator.of(context).pushReplacementNamed('/home');
+    }).catchError((e) {
+      print(e);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        width: MediaQuery.of(context)
-            .size
-            .width, // Define a largura do container para ocupar toda a tela
-        height: MediaQuery.of(context)
-            .size
-            .height, // Define a altura do container para ocupar toda a tela
+      backgroundColor: Theme.of(context).primaryColor,
+      body: SingleChildScrollView(
+        child: Container(
+          width: MediaQuery.of(context)
+              .size
+              .width, // Define a largura do container para ocupar toda a tela
+          height: MediaQuery.of(context)
+              .size
+              .height, // Define a altura do container para ocupar toda a tela
 
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        child: Column(
-          spacing: 80,
-          children: [
-            // Image.asset(
-            //   'assets/images/bgalfaid.png',
-            //   width: MediaQuery.of(context).size.width,
-            // ),
-            Spacer(),
-            Center(
-              child: Column(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Column(
+            spacing: 80,
+            children: [
+              Spacer(),
+              SizedBox(
+                width: 200,
+                child: Image.asset('assets/images/logo.png'),
+              ),
+              Spacer(),
+              Column(
                 spacing: 16,
                 children: [
                   _buildCpfField(), // Campo de CPF
@@ -51,9 +66,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   _buildLoginButton(), // Botão de login
                 ],
               ),
-            ),
-            const Spacer(),
-          ],
+              const Spacer(),
+            ],
+          ),
         ),
       ),
     );
@@ -61,37 +76,36 @@ class _LoginScreenState extends State<LoginScreen> {
 
   // Campo de entrada para o CPF
   Widget _buildCpfField() {
-    return TextField(
-      controller: _cpfController,
+    return LoginTextField(
       keyboardType: TextInputType.number,
-      decoration: const InputDecoration(
-        prefixIcon: Icon(Icons.person), // Ícone de pessoa
-        labelText: 'Usuário (CPF)', // Texto do rótulo
-        border: OutlineInputBorder(),
-      ),
+      prefixIcon: Icons.person, // Ícone de pessoa
+      labelText: 'Usuário (CPF)', // Texto do rótulo
+      onChanged: (value) => setState(() {
+        cpf = value;
+      }),
+      value: cpf,
     );
   }
 
   // Campo de entrada para a senha
   Widget _buildPasswordField() {
-    return TextField(
-      controller: _passwordController,
-      obscureText: !_isPasswordVisible, // Controla a visibilidade da senha
-      decoration: InputDecoration(
-        prefixIcon: const Icon(Icons.lock), // Ícone de cadeado
-        suffixIcon: IconButton(
-          icon: Icon(
-              _isPasswordVisible ? Icons.visibility : Icons.visibility_off),
-          onPressed: () {
-            setState(() {
-              _isPasswordVisible =
-                  !_isPasswordVisible; // Alterna a visibilidade da senha
-            });
-          },
-        ),
-        labelText: 'Senha', // Texto do rótulo
-        border: const OutlineInputBorder(),
+    return LoginTextField(
+      obscureText: !isPasswordVisible, // Controla a visibilidade da senha
+      prefixIcon: Icons.lock,
+      suffixIcon: IconButton(
+        icon: Icon(isPasswordVisible ? Icons.visibility : Icons.visibility_off),
+        onPressed: () {
+          setState(() {
+            isPasswordVisible =
+                !isPasswordVisible; // Alterna a visibilidade da senha
+          });
+        },
       ),
+      labelText: 'Senha', // Texto do rótulo
+      onChanged: (value) => setState(() {
+        password = value;
+      }),
+      value: password,
     );
   }
 
@@ -122,13 +136,7 @@ class _LoginScreenState extends State<LoginScreen> {
           borderRadius: BorderRadius.circular(8), // Bordas arredondadas
         ),
       ),
-      onPressed: () {
-        // Ação para fazer login e redirecionar para a HomePage
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => HomePage()),
-        );
-      },
+      onPressed: login,
       child: const Text('Login'),
     );
   }
