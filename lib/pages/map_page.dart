@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart'; // Para carregar o JSON dos assets
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:alfaid/pages/hodometro_final_page.dart'; // Atualize o nome do projeto aqui
+import 'package:alfaid/pages/odometer_end_page.dart'; // Atualize o nome do projeto aqui
 
 late BitmapDescriptor motoristaIcon;
 late BitmapDescriptor passageiroIcon;
@@ -154,7 +154,7 @@ class _MapPageState extends State<MapPage> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => const HodometroFinalPage(),
+            builder: (context) => const OdometerEndPage(),
           ),
         );
       }

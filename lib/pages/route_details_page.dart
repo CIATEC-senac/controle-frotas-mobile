@@ -1,3 +1,5 @@
+import 'package:alfaid/api/api.dart';
+import 'package:alfaid/models/route.dart';
 import 'package:alfaid/pages/odometer_page.dart';
 import 'package:alfaid/widgets/appbar_card.dart';
 import 'package:alfaid/widgets/card_info.dart';
@@ -6,14 +8,32 @@ import 'package:alfaid/widgets/details_route_card.dart';
 import 'package:flutter/material.dart';
 
 class RouteDetailsPage extends StatefulWidget {
-  final String? data;
-  const RouteDetailsPage({super.key, this.data});
+  final int routeId;
+  const RouteDetailsPage({super.key, required this.routeId});
 
   @override
   State<RouteDetailsPage> createState() => _RouteDetailsPageState();
 }
 
 class _RouteDetailsPageState extends State<RouteDetailsPage> {
+  RouteModel? _route;
+
+  // Chama a função da api que recebe o id da rota pelo qrcode e armazena
+  void fetchRoute() {
+    API().fetchRoute(widget.routeId).then((route) {
+      setState(() {
+        _route = route;
+      });
+    }, onError: (e) {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    // Passamos a função para ser criada quando for inicializado
+    fetchRoute();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,10 +48,11 @@ class _RouteDetailsPageState extends State<RouteDetailsPage> {
               CardInfo(
                 icon: const Icon(Icons.directions_bus, size: 32.0),
                 title: 'Placa: 123AD09',
-                subTitle: 'QRCode: ${widget.data ?? 'Sem código'}',
+                subTitle: 'QRCode: ${widget.routeId ?? 'Sem código'}',
               ),
               DetailsRouteCard(
                 text: "Informações da Rota",
+                route: _route,
               ),
               DetailsMaintenance(
                 text: "Manutenção",
@@ -46,7 +67,7 @@ class _RouteDetailsPageState extends State<RouteDetailsPage> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const OdometerPage(),
+              builder: (context) => const OdometerStartPage(),
             ),
           );
         },

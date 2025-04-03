@@ -1,3 +1,7 @@
+import 'dart:convert';
+
+import 'package:alfaid/api/api.dart';
+import 'package:alfaid/models/user.dart';
 import 'package:alfaid/pages/historico_page.dart';
 import 'package:alfaid/widgets/drawer.dart';
 import 'package:alfaid/widgets/list_item.dart';
@@ -25,11 +29,23 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  UserModel? _user;
+
+  void fetchUser() async {
+    API().fetchUser(1).then((user) {
+      setState(() {
+        _user = user;
+      });
+    }, onError: (e) {
+      print(e.toString());
+    });
+  }
+
   @override
   void initState() {
     super.initState();
-    // openAppSettings();
-    // requestPermission();
+    requestPermission();
+    fetchUser();
   }
 
   @override
@@ -37,8 +53,8 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       key: scaffoldKey,
       drawer: DrawerMenu(
-        name: 'Usuario',
-        email: 'usuario@email',
+        name: _user?.name ?? '',
+        email: _user?.email ?? '',
       ),
       body: SafeArea(
         child: Container(
@@ -54,8 +70,8 @@ class _HomePageState extends State<HomePage> {
                     width: 70.0,
                   ),
                 ),
-                title: "Nome",
-                subTitle: "Cargo",
+                title: _user?.name ?? '',
+                subTitle: _user?.cargo ?? '',
                 icon: const Icon(Icons.settings),
                 onPressed: () => {scaffoldKey.currentState?.openDrawer()},
               ),

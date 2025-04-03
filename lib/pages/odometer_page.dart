@@ -1,18 +1,17 @@
 import 'dart:io';
 import 'package:alfaid/pages/map_page.dart';
 import 'package:alfaid/widgets/appbar_card.dart';
-import 'package:alfaid/widgets/insert_image.dart';
 import 'package:alfaid/widgets/odometer_card.dart';
 import 'package:flutter/material.dart';
 
-class OdometerPage extends StatefulWidget {
-  const OdometerPage({super.key});
+class OdometerStartPage extends StatefulWidget {
+  const OdometerStartPage({super.key});
 
   @override
-  State<OdometerPage> createState() => _OdometerPageState();
+  State<OdometerStartPage> createState() => _OdometerStartPageState();
 }
 
-class _OdometerPageState extends State<OdometerPage> {
+class _OdometerStartPageState extends State<OdometerStartPage> {
   String _odometer = "";
   File? _image;
 

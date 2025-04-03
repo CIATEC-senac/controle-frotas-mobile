@@ -1,19 +1,12 @@
+import 'package:alfaid/models/route.dart';
 import 'package:alfaid/widgets/widget_table.dart';
 import 'package:flutter/material.dart';
 
 class DetailsRouteCard extends StatelessWidget {
   String text;
+  RouteModel? route;
 
-  final route = {
-    'Rota': "000",
-    'Origem': "R. Sergipe, 771 - Centro",
-    'Destino': "BLABlabla",
-    'Horário de partida': "00:00",
-    'Horário de chegada': "00:00",
-    'Paradas': "15"
-  };
-
-  DetailsRouteCard({super.key, required this.text});
+  DetailsRouteCard({super.key, required this.text, required this.route});
 
   @override
   Widget build(BuildContext context) {
@@ -26,17 +19,11 @@ class DetailsRouteCard extends StatelessWidget {
             Row(
               spacing: 12,
               children: [
-                const Icon(
-                  Icons.info_outline,
-                  size: 28,
-                ),
-                Text(
-                  text,
-                  style: Theme.of(context).textTheme.headlineSmall,
-                ),
+                const Icon(Icons.info_outline, size: 28),
+                Text(text, style: Theme.of(context).textTheme.headlineSmall),
               ],
             ),
-            WidgetTable(data: route),
+            if (route != null) WidgetTable(data: route!.fromModel()),
           ],
         ),
       ),
