@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
 
       // Define rotas nomeadas para navegação
       routes: {
-        '/login': (context) => const LoginScreen(),
+        '/login': (context) => const LoginPage(),
         '/home': (context) => const HomePage(),
       },
       // Define a rota inicial como a tela de login

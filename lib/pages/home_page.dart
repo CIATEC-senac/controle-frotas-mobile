@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:alfaid/api/api.dart';
 import 'package:alfaid/models/user.dart';
 import 'package:alfaid/pages/historico_page.dart';

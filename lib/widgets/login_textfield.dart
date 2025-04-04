@@ -30,7 +30,7 @@ class LoginTextField extends StatelessWidget {
       cursorColor: Colors.white,
       style: TextStyle(color: Colors.white),
       keyboardType: keyboardType ?? TextInputType.text,
-      obscureText: obscureText ?? true, // Controla a visibilidade da senha
+      obscureText: obscureText ?? false, // Controla a visibilidade da senha
       decoration: InputDecoration(
         prefixIconColor: Colors.white,
         prefixIcon: Icon(prefixIcon), // Ícone de cadeado

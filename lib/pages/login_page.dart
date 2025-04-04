@@ -1,21 +1,21 @@
-import 'dart:developer';
+import 'dart:io';
 
 import 'package:alfaid/api/api.dart';
 import 'package:alfaid/widgets/login_textfield.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'home_page.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
 
   @override
   // Cria o estado para o widget LoginScreen
   // ignore: library_private_types_in_public_api
-  _LoginScreenState createState() => _LoginScreenState();
+  _LoginPageState createState() => _LoginPageState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginPageState extends State<LoginPage> {
   String cpf = '';
   String password = '';
 
@@ -23,15 +23,51 @@ class _LoginScreenState extends State<LoginScreen> {
   bool isPasswordVisible = false;
 
   void login() async {
+    print("Do login");
+
+    // Chama o método de login da api
     API().login(cpf, password).then((token) async {
+      // Obtém uma instância do SharedPreferences para armazenar o token
       SharedPreferences preferences = await SharedPreferences.getInstance();
-
+      // armazena o token
       preferences.setString('token', token);
-
+      // Navega para a tela home
       Navigator.of(context).pushReplacementNamed('/home');
-    }).catchError((e) {
-      print(e);
-    });
+    }).catchError(handleError);
+  }
+
+  handleError(e) {
+    showError(e.toString());
+  }
+
+  void showError(String error) {
+    showModalBottomSheet<void>(
+        context: context,
+        builder: (BuildContext context) {
+          return Container(
+            height: 200,
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Container(
+                    padding: EdgeInsets.all(16.0),
+                    child: Text(
+                      error,
+                      style: TextStyle(fontSize: 14.0),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  TextButton(
+                    child: const Text('Fechar'),
+                    onPressed: () => Navigator.pop(context),
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
   }
 
   @override
@@ -51,12 +87,12 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Column(
             spacing: 80,
             children: [
-              Spacer(),
+              const Spacer(),
               SizedBox(
                 width: 200,
                 child: Image.asset('assets/images/logo.png'),
               ),
-              Spacer(),
+              const Spacer(),
               Column(
                 spacing: 16,
                 children: [
@@ -136,7 +172,7 @@ class _LoginScreenState extends State<LoginScreen> {
           borderRadius: BorderRadius.circular(8), // Bordas arredondadas
         ),
       ),
-      onPressed: login,
+      onPressed: cpf.isNotEmpty && password.isNotEmpty ? login : null,
       child: const Text('Login'),
     );
   }
