@@ -4,12 +4,12 @@ import 'package:alfaid/widgets/insert_image.dart';
 import 'package:flutter/material.dart';
 
 class OdometerCard extends StatelessWidget {
-  void Function(String) odometerCallback;
-  void Function(File) imageCallback;
-  String odometer;
-  File? image;
+  final void Function(String) odometerCallback;
+  final void Function(File) imageCallback;
+  final String odometer;
+  final File? image;
 
-  OdometerCard({
+  const OdometerCard({
     super.key,
     required this.odometerCallback,
     required this.imageCallback,

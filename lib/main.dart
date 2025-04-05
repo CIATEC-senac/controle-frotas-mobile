@@ -1,4 +1,3 @@
-import 'package:alfaid/themes/theme_colors.dart';
 import 'package:flutter/material.dart';
 import 'pages/login_page.dart'; // Importa a tela de login
 import 'pages/home_page.dart'; // Importa a página HomePage
@@ -26,11 +25,12 @@ class MyApp extends StatelessWidget {
       // Define a rota inicial como a tela de login
       initialRoute: '/login',
       theme: ThemeData(
+        // scaffoldBackgroundColor: Colors.grey[850],
         // colorScheme: colorScheme,
         //   cardTheme: const CardTheme(
         //     color: Color(0xFF424242),
         //   ),
-        //   scaffoldBackgroundColor: const Color(0xFF303030),
+        scaffoldBackgroundColor: const Color.fromARGB(255, 241, 237, 237),
         textTheme: const TextTheme(
           headlineSmall: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
           bodySmall: TextStyle(fontSize: 14.0),

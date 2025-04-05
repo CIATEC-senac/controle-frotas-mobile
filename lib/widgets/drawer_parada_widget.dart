@@ -32,12 +32,12 @@ class _DrawerParadaWidgetState extends State<DrawerParadaWidget> {
             ),
           ),
           Container(
-            padding: EdgeInsets.all(18),
+            padding: const EdgeInsets.all(18),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               spacing: 14,
               children: [
-                Text(
+                const Text(
                   'Motivo da parada',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                 ),
@@ -49,7 +49,7 @@ class _DrawerParadaWidgetState extends State<DrawerParadaWidget> {
                     border: OutlineInputBorder(),
                   ),
                 ),
-                Text('Paradas registradas:',
+                const Text('Paradas registradas:',
                     style:
                         TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
                 ButtonOptions(

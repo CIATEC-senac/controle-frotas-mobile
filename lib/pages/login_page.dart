@@ -1,9 +1,6 @@
-import 'dart:io';
-
 import 'package:alfaid/api/api.dart';
 import 'package:alfaid/widgets/login_textfield.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
@@ -44,7 +41,7 @@ class _LoginPageState extends State<LoginPage> {
     showModalBottomSheet<void>(
         context: context,
         builder: (BuildContext context) {
-          return Container(
+          return SizedBox(
             height: 200,
             child: Center(
               child: Column(
@@ -52,10 +49,10 @@ class _LoginPageState extends State<LoginPage> {
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   Container(
-                    padding: EdgeInsets.all(16.0),
+                    padding: const EdgeInsets.all(16.0),
                     child: Text(
                       error,
-                      style: TextStyle(fontSize: 14.0),
+                      style: const TextStyle(fontSize: 14.0),
                       textAlign: TextAlign.center,
                     ),
                   ),

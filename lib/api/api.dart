@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:alfaid/models/route.dart';
 import 'package:alfaid/models/user.dart';
@@ -9,7 +8,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class API {
   final String baseUrl =
-      "https://8e3f-2804-1b3-c2c0-282c-2ee7-1222-5992-e0f.ngrok-free.app";
+      "https://e7bd-2804-1b3-c2c0-282c-87d-451e-e88c-7caa.ngrok-free.app";
+
   // Função para obter o token e armazenar no local
   Future<String?> getToken() async {
     // Obtem a instância SharedPreferences para acessar os dados armazenados

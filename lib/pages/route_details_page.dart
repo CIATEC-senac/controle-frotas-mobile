@@ -43,20 +43,15 @@ class _RouteDetailsPageState extends State<RouteDetailsPage> {
           padding: const EdgeInsets.all(16.0),
           child: Column(
             spacing: 12.0,
-            // crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               CardInfo(
-                icon: const Icon(Icons.directions_bus, size: 32.0),
-                title: 'Placa: 123AD09',
-                subTitle: 'QRCode: ${widget.routeId ?? 'Sem código'}',
-              ),
-              DetailsRouteCard(
-                text: "Informações da Rota",
-                route: _route,
-              ),
-              DetailsMaintenance(
-                text: "Manutenção",
-              ),
+                  icon: const Icon(Icons.directions_bus, size: 32.0),
+                  title: 'Placa: 123AD09',
+                  subTitle: 'QRCode: ${widget.routeId}'),
+              DetailsRouteCard(text: "Informações da Rota", route: _route),
+              DetailsMaintenance(text: "Manutenção"),
+              const SizedBox(height: 56.0)
             ],
           ),
         ),
@@ -66,25 +61,13 @@ class _RouteDetailsPageState extends State<RouteDetailsPage> {
           // Navega para a página de odômetro e aguarda o valor inserido
           Navigator.push(
             context,
-            MaterialPageRoute(
-              builder: (context) => const OdometerStartPage(),
-            ),
+            MaterialPageRoute(builder: (context) => const OdometerStartPage()),
           );
         },
-        label: const Text(
-          'Prosseguir',
-          style: TextStyle(
-            color: Colors.white,
-          ),
-        ),
-        icon: const Icon(
-          Icons.arrow_forward,
-          color: Colors.white,
-        ),
+        label: const Text('Prosseguir', style: TextStyle(color: Colors.white)),
+        icon: const Icon(Icons.arrow_forward, color: Colors.white),
         backgroundColor: Colors.green,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );

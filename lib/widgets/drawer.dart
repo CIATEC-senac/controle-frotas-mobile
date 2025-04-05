@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 class DrawerMenu extends StatefulWidget {
-  String name;
-  String email;
+  final String name;
+  final String email;
 
-  DrawerMenu({
+  const DrawerMenu({
     super.key,
     required this.email,
     required this.name,
@@ -25,15 +25,15 @@ class _DrawerMenuState extends State<DrawerMenu> {
           UserAccountsDrawerHeader(
               accountName: Text(widget.name), accountEmail: Text(widget.email)),
           Container(
-            padding: EdgeInsets.all(18),
+            padding: const EdgeInsets.all(18),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               spacing: 14,
               children: [
                 SwitchListTile(
                   value: darkMode,
-                  title: Text('Modo escuro'),
-                  secondary: Icon(Icons.sunny),
+                  title: const Text('Modo escuro'),
+                  secondary: const Icon(Icons.sunny),
                   onChanged: (bool value) {
                     setState(() {
                       darkMode = value;
@@ -41,19 +41,19 @@ class _DrawerMenuState extends State<DrawerMenu> {
                   },
                 ),
                 ListTile(
-                  leading: Icon(Icons.notifications_none),
-                  title: Text('Notificações'),
+                  leading: const Icon(Icons.notifications_none),
+                  title: const Text('Notificações'),
                   onTap: () {
                     Navigator.of(context).pushReplacementNamed('/home');
                   },
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 100.0,
                 ),
                 ListTile(
-                  leading: Icon(Icons.logout_outlined),
-                  title: Text('Sair'),
-                  subtitle: Text('Finalizar sessão'),
+                  leading: const Icon(Icons.logout_outlined),
+                  title: const Text('Sair'),
+                  subtitle: const Text('Finalizar sessão'),
                   onTap: () {
                     Navigator.of(context).pushReplacementNamed('/login');
                   },

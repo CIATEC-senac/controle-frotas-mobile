@@ -2,11 +2,11 @@ import 'package:alfaid/widgets/widget_table.dart';
 import 'package:flutter/material.dart';
 
 class DetailsMaintenance extends StatelessWidget {
-  String text;
+  final String text;
 
   final maintenances = {
-    'Última manutenção': "00/00/00",
-    'Próxima manutenção': "00/00/00",
+    'Última': "00/00/00",
+    'Próxima': "00/00/00",
   };
 
   DetailsMaintenance({super.key, required this.text});
@@ -18,21 +18,19 @@ class DetailsMaintenance extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(20.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Row(
               spacing: 12,
               children: [
-                const Icon(
-                  Icons.calendar_today_outlined,
-                  size: 28,
-                ),
-                Text(
-                  text,
-                  style: Theme.of(context).textTheme.headlineSmall,
-                ),
+                const Icon(Icons.calendar_today_outlined, size: 20.0),
+                Text(text, style: Theme.of(context).textTheme.headlineSmall),
               ],
             ),
-            WidgetTable(data: maintenances),
+            Container(
+              padding: const EdgeInsets.only(left: 16.0),
+              child: WidgetTable(data: maintenances),
+            ),
           ],
         ),
       ),

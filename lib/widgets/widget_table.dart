@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class WidgetTable extends StatelessWidget {
-  Map<String, dynamic> data;
+  final Map<String, dynamic> data;
 
-  WidgetTable({super.key, required this.data});
+  const WidgetTable({super.key, required this.data});
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +12,8 @@ class WidgetTable extends StatelessWidget {
       border: const TableBorder(
         horizontalInside: BorderSide(
           style: BorderStyle.solid,
-          width: 1.0,
+          color: Colors.grey,
+          width: 0.5,
         ),
       ),
       children: data.entries.map((item) {

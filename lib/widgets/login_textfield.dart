@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
 class LoginTextField extends StatelessWidget {
-  TextInputType? keyboardType;
-  String value;
-  Function(String) onChanged;
-  String labelText;
-  IconData prefixIcon;
-  IconButton? suffixIcon;
-  bool? obscureText;
+  final TextInputType? keyboardType;
+  final String value;
+  final Function(String) onChanged;
+  final String labelText;
+  final IconData prefixIcon;
+  final IconButton? suffixIcon;
+  final bool? obscureText;
 
-  LoginTextField({
+  const LoginTextField({
     super.key,
     required this.value,
     required this.onChanged,
@@ -28,7 +28,7 @@ class LoginTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextField(
       cursorColor: Colors.white,
-      style: TextStyle(color: Colors.white),
+      style: const TextStyle(color: Colors.white),
       keyboardType: keyboardType ?? TextInputType.text,
       obscureText: obscureText ?? false, // Controla a visibilidade da senha
       decoration: InputDecoration(
@@ -36,7 +36,7 @@ class LoginTextField extends StatelessWidget {
         prefixIcon: Icon(prefixIcon), // Ícone de cadeado
         suffixIconColor: Colors.white,
         suffixIcon: suffixIcon,
-        labelStyle: TextStyle(color: Colors.white),
+        labelStyle: const TextStyle(color: Colors.white),
         labelText: labelText, // Texto do rótulo
         border: outlineInputBorder,
         enabledBorder: outlineInputBorder,

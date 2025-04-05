@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
 class ListItem extends StatelessWidget {
-  Widget? prefix;
-  String title;
-  String? subTitle;
-  Icon icon;
-  VoidCallback onPressed;
+  final Widget? prefix;
+  final String title;
+  final String? subTitle;
+  final Icon icon;
+  final VoidCallback onPressed;
 
-  ListItem({
+  const ListItem({
     super.key,
     required this.title,
     required this.onPressed,
@@ -24,13 +24,17 @@ class ListItem extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: Row(
           children: [
-            prefix ?? Container(),
+            if (prefix != null) prefix!,
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(title, style: Theme.of(context).textTheme.headlineSmall),
-                  getSubTitle(context),
+                  if (subTitle != null)
+                    Text(
+                      subTitle!,
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
                 ],
               ),
             ),
@@ -39,14 +43,5 @@ class ListItem extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  Widget getSubTitle(BuildContext context) {
-    return subTitle == null
-        ? Container()
-        : Text(
-            subTitle!,
-            style: Theme.of(context).textTheme.bodySmall,
-          );
   }
 }

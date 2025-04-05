@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
 class CardInfo extends StatelessWidget {
-  Icon icon;
-  String title;
-  String? subTitle;
+  final Icon icon;
+  final String title;
+  final String? subTitle;
 
-  CardInfo({
+  const CardInfo({
     super.key,
     this.icon = const Icon(Icons.qr_code),
     required this.title,
@@ -27,7 +27,11 @@ class CardInfo extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(title, style: Theme.of(context).textTheme.headlineSmall),
-                  getSubTitle(context),
+                  if (subTitle != null)
+                    Text(
+                      subTitle!,
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
                 ],
               ),
             ),
@@ -35,14 +39,5 @@ class CardInfo extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  Widget getSubTitle(BuildContext context) {
-    return subTitle == null
-        ? Container()
-        : Text(
-            subTitle!,
-            style: Theme.of(context).textTheme.bodySmall,
-          );
   }
 }

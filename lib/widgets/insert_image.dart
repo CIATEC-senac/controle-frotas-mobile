@@ -3,10 +3,10 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
 class InsertImage extends StatelessWidget {
-  File? image;
-  void Function(File file) callback;
+  final File? image;
+  final void Function(File file) callback;
 
-  InsertImage({super.key, required this.image, required this.callback});
+  const InsertImage({super.key, required this.image, required this.callback});
 
   // Função para abrir câmera e tirar foto
   void _pickImage() async {
@@ -36,9 +36,9 @@ class InsertImage extends StatelessWidget {
                 color: Color.fromARGB(255, 225, 227, 230), width: 1.0),
             borderRadius: BorderRadius.circular(10), // Set the radius here
           ),
-          child: Container(
+          child: const SizedBox(
             height: 80.0,
-            child: const Row(
+            child: Row(
               spacing: 12.0,
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-final ColorScheme colorScheme = ColorScheme(
+const ColorScheme colorScheme = ColorScheme(
   primaryContainer: Colors.purple,
   primaryFixed: Colors.purple,
   primary: Colors.purple,

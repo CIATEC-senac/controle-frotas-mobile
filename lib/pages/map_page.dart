@@ -11,7 +11,7 @@ import 'package:alfaid/pages/odometer_end_page.dart'; // Atualize o nome do proj
 late BitmapDescriptor motoristaIcon;
 late BitmapDescriptor passageiroIcon;
 
-enum RouteState { Idle, Running, Completed }
+enum RouteState { idle, running, completed }
 
 class MapPage extends StatefulWidget {
   const MapPage({super.key});
@@ -23,9 +23,9 @@ class MapPage extends StatefulWidget {
 class _MapPageState extends State<MapPage> {
   final TextEditingController paradController = TextEditingController();
   Set<Marker> _markers = {};
-  Set<Polyline> _polylines = {};
+  final Set<Polyline> _polylines = {};
 
-  RouteState progress = RouteState.Idle;
+  RouteState progress = RouteState.idle;
 
   GoogleMapController? _mapController;
 
@@ -124,18 +124,18 @@ class _MapPageState extends State<MapPage> {
     // altera a cor do botão 'iniciar rota' conforme seu estado
     Color getProgressBackgroundColor() {
       return switch (progress) {
-        RouteState.Idle => Colors.green,
-        RouteState.Running => Colors.red,
-        RouteState.Completed => Colors.transparent,
+        RouteState.idle => Colors.green,
+        RouteState.running => Colors.red,
+        RouteState.completed => Colors.transparent,
       };
     }
 
     // Criando estados para quando o botão iniciar rota for chamado
     String getProgressText() {
       return switch (progress) {
-        RouteState.Idle => "Iniciar rota",
-        RouteState.Running => "Finalizar rota",
-        RouteState.Completed => "Redirecionando...",
+        RouteState.idle => "Iniciar rota",
+        RouteState.running => "Finalizar rota",
+        RouteState.completed => "Redirecionando...",
       };
     }
 
@@ -143,14 +143,14 @@ class _MapPageState extends State<MapPage> {
     void trackProgress() {
       setState(() {
         progress = switch (progress) {
-          RouteState.Idle => RouteState.Running,
-          RouteState.Running => RouteState.Completed,
+          RouteState.idle => RouteState.running,
+          RouteState.running => RouteState.completed,
           _ => progress,
         };
       });
 
       // Verificando se caso o estado do botão está como 'finalizar rota', caso sim redireciona para a próxima tela
-      if (progress == RouteState.Completed) {
+      if (progress == RouteState.completed) {
         Navigator.push(
           context,
           MaterialPageRoute(

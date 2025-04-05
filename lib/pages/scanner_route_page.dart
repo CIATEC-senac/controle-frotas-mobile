@@ -18,11 +18,8 @@ class ScannerRoutePage extends StatelessWidget {
           children: [
             Container(
               margin: const EdgeInsets.only(top: 48.0),
-              child: CardInfo(
-                icon: const Icon(
-                  Icons.qr_code_2,
-                  size: 48.0,
-                ),
+              child: const CardInfo(
+                icon: Icon(Icons.qr_code_2, size: 48.0),
                 title: 'Rota',
                 subTitle:
                     'Clique no botão abaixo para fazer escaneamento de código',
