@@ -46,7 +46,9 @@ class ScannerRoutePage extends StatelessWidget {
 
           print("### Código: $code");
 
-          if (code != null && int.tryParse(code) != null) {
+          int? routeId = int.tryParse(code!);
+
+          if (routeId != null && routeId != -1) {
             Navigator.push(
               context,
               MaterialPageRoute(

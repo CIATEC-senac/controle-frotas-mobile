@@ -14,12 +14,11 @@ class VehicleModel {
       {
         'id': int id,
         'placa': String plate,
-        'modelo': String model,
       } =>
         VehicleModel(
           id: id,
           plate: plate,
-          model: model,
+          model: '',
         ),
       _ => throw const FormatException('Erro ao buscar veículo'),
     };

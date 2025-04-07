@@ -7,8 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class API {
-  final String baseUrl =
-      "https://e7bd-2804-1b3-c2c0-282c-87d-451e-e88c-7caa.ngrok-free.app";
+  final String baseUrl = "http://192.168.15.12:3000";
 
   // Função para obter o token e armazenar no local
   Future<String?> getToken() async {
@@ -89,11 +88,12 @@ class API {
     });
   }
 
+  // Método para buscar rota pelo id
   Future<RouteModel> fetchRoute(int id) async {
-    Map<String, dynamic> raw = json.decode(
-        '{"id": 1, "origem": "Rua tal", "destino": "Rua tal tal", "totalParadas": 15, "distancia": 27, "tempoEstimado": 75}');
-
-    return RouteModel.fromJson(raw);
+    return _get('/rota/$id').then((raw) {
+      print("### Route: $raw");
+      return RouteModel.fromJson(raw);
+    });
   }
 
   // Método para realizar login com cpf e senha
