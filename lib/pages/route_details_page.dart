@@ -21,10 +21,13 @@ class _RouteDetailsPageState extends State<RouteDetailsPage> {
   // Chama a função da api que recebe o id da rota pelo qrcode e armazena
   void fetchRoute() {
     API().fetchRoute(widget.routeId).then((route) {
+      print("### Update status ${route}");
       setState(() {
         _route = route;
       });
-    }, onError: (e) {});
+    }, onError: (e) {
+      print(e);
+    });
   }
 
   @override
@@ -47,7 +50,7 @@ class _RouteDetailsPageState extends State<RouteDetailsPage> {
             children: [
               CardInfo(
                   icon: const Icon(Icons.directions_bus, size: 32.0),
-                  title: 'Placa: 123AD09',
+                  title: 'Placa: ${_route?.vehicle?.plate}',
                   subTitle: 'QRCode: ${widget.routeId}'),
               DetailsRouteCard(text: "Informações da Rota", route: _route),
               DetailsMaintenance(text: "Manutenção"),
