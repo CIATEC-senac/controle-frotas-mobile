@@ -21,9 +21,10 @@ class MyApp extends StatelessWidget {
       routes: {
         '/login': (context) => const LoginPage(),
         '/home': (context) => const HomePage(),
+        
       },
       // Define a rota inicial como a tela de login
-      initialRoute: '/login',
+      initialRoute: '/home',
       theme: ThemeData(
         // scaffoldBackgroundColor: Colors.grey[850],
         // colorScheme: colorScheme,
