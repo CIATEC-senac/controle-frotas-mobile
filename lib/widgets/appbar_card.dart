@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 class AppBarCard extends StatelessWidget implements PreferredSizeWidget {
   final String title;
 
-  const AppBarCard({super.key, required this.title});
+  const AppBarCard({
+    super.key,
+    required this.title,
+  });
 
   @override
   Widget build(BuildContext context) {

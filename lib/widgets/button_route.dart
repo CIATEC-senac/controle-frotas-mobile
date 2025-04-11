@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 
 class ButtonOptions extends StatelessWidget {
-  final Icon icon;
+  final Icon? prefixIcon;
+  final Icon? suffixIcon;
   final String title;
   final VoidCallback onPressed;
   final Color? color;
+  final double height;
 
   const ButtonOptions({
     super.key,
-    this.icon = const Icon(Icons.abc),
+    this.prefixIcon,
+    this.suffixIcon,
+    this.height = 60.0,
     required this.title,
     required this.onPressed,
     required this.color,
@@ -26,13 +30,14 @@ class ButtonOptions extends StatelessWidget {
         ),
         onPressed: onPressed,
         child: SizedBox(
-          height: 60.0,
+          height: height,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             spacing: 10.0,
             children: [
-              icon,
+              if (prefixIcon != null) prefixIcon!,
               Text(title, style: Theme.of(context).textTheme.headlineSmall),
+              if (suffixIcon != null) suffixIcon!,
             ],
           ),
         ),

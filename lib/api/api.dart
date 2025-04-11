@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:alfaid/models/history.dart';
 import 'package:alfaid/models/route.dart';
 import 'package:alfaid/models/user.dart';
 import 'package:http/http.dart' as http;
@@ -90,16 +91,22 @@ class API {
 
   // Método para buscar rota pelo id
   Future<RouteModel> fetchRoute(int id) async {
-    return _get('/rota/$id').then((raw) {
+    return _get('/route/$id').then((raw) {
       print("### Route: $raw");
       return RouteModel.fromJson(raw);
+    });
+  }
+
+  Future<List<RouteHistoryModel>> fetchRouteHistory() async {
+    return _get<List<dynamic>>('/history/').then((raw) {
+      return raw.map((history) => RouteHistoryModel.fromJson(history)).toList();
     });
   }
 
   // Método para realizar login com cpf e senha
   Future<String> login(String cpf, String pass) async {
     // Cria o corpo da requisição com cpf e senha
-    var body = {'cpf': cpf, 'senha': pass};
+    var body = {'cpf': cpf, 'password': pass};
 
     // Faz uma requisição post para autenticação
     return _post('/auth/login', body: body).then((response) {

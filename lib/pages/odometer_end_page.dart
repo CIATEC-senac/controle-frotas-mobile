@@ -66,7 +66,7 @@ class _OdometerEndPageState extends State<OdometerEndPage> {
                   ),
                 ),
                 child: const Text(
-                  'Ir para rota',
+                  'Enviar',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                   ),
