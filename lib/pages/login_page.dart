@@ -110,6 +110,7 @@ class _LoginPageState extends State<LoginPage> {
   // Campo de entrada para o CPF
   Widget _buildCpfField() {
     return LoginTextField(
+      maxLength: 11,
       keyboardType: TextInputType.number,
       prefixIcon: Icons.person, // Ícone de pessoa
       labelText: 'Usuário (CPF)', // Texto do rótulo

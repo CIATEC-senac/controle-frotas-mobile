@@ -1,6 +1,6 @@
 import 'package:alfaid/api/api.dart';
 import 'package:alfaid/models/user.dart';
-import 'package:alfaid/pages/historico_page.dart';
+import 'package:alfaid/pages/approbation_route_page.dart';
 import 'package:alfaid/widgets/drawer.dart';
 import 'package:alfaid/widgets/list_item.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +22,7 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> requestPermission() async {
     final status = await Permission.camera.request();
+
     setState(() {
       _permissionStatus = status;
     });
@@ -69,7 +70,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 title: _user?.name ?? '',
-                subTitle: _user?.cargo ?? '',
+                subTitle: _user?.role.toString() ?? '',
                 icon: const Icon(Icons.settings),
                 onPressed: () => {scaffoldKey.currentState?.openDrawer()},
               ),
@@ -91,12 +92,12 @@ class _HomePageState extends State<HomePage> {
                 },
               ),
               ListItem(
-                title: "Rota",
+                title: "Rota finalizada",
                 onPressed: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const HistoricoRotasPage()),
+                        builder: (context) => const ApprobationRoutePage()),
                   );
                 },
               ),

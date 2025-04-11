@@ -13,7 +13,7 @@ class VehicleModel {
     return switch (json) {
       {
         'id': int id,
-        'placa': String plate,
+        'plate': String plate,
       } =>
         VehicleModel(
           id: id,

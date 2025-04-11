@@ -191,7 +191,7 @@ class _MapPageState extends State<MapPage> {
                 ButtonOptions(
                   color: Colors.greenAccent,
                   title: 'Registrar parada não programada',
-                  icon: const Icon(
+                  prefixIcon: const Icon(
                     Icons.warning_amber_outlined,
                     color: Colors.white,
                   ),
@@ -202,7 +202,7 @@ class _MapPageState extends State<MapPage> {
                 ButtonOptions(
                   color: getProgressBackgroundColor(),
                   title: getProgressText(),
-                  icon: const Icon(
+                  prefixIcon: const Icon(
                     Icons.play_arrow_outlined,
                     color: Colors.white,
                     size: 28,

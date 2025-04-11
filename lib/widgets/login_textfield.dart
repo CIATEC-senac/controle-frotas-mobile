@@ -8,6 +8,7 @@ class LoginTextField extends StatelessWidget {
   final IconData prefixIcon;
   final IconButton? suffixIcon;
   final bool? obscureText;
+  final int? maxLength;
 
   const LoginTextField({
     super.key,
@@ -18,6 +19,7 @@ class LoginTextField extends StatelessWidget {
     this.keyboardType,
     this.suffixIcon,
     this.obscureText,
+    this.maxLength,
   });
 
   final outlineInputBorder = const OutlineInputBorder(
@@ -32,6 +34,7 @@ class LoginTextField extends StatelessWidget {
       keyboardType: keyboardType ?? TextInputType.text,
       obscureText: obscureText ?? false, // Controla a visibilidade da senha
       decoration: InputDecoration(
+        counterText: "",
         prefixIconColor: Colors.white,
         prefixIcon: Icon(prefixIcon), // Ícone de cadeado
         suffixIconColor: Colors.white,
@@ -42,6 +45,7 @@ class LoginTextField extends StatelessWidget {
         enabledBorder: outlineInputBorder,
         focusedBorder: outlineInputBorder,
       ),
+      maxLength: maxLength,
       onChanged: onChanged,
     );
   }
