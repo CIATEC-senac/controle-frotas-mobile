@@ -1,6 +1,6 @@
 import 'package:alfaid/api/api.dart';
 import 'package:alfaid/models/history.dart';
-import 'package:alfaid/widgets/appbar_card.dart';
+import 'package:alfaid/pages/view_route_page.dart';
 import 'package:alfaid/widgets/card_route.dart';
 import 'package:flutter/material.dart';
 
@@ -21,7 +21,7 @@ class _ApprobationRoutePageState extends State<ApprobationRoutePage>
         routes = value;
       });
     }).catchError((e) {
-      print(e);
+      print('Error: ${e.toString()}');
     });
   }
 
@@ -74,6 +74,14 @@ class _ApprobationRoutePageState extends State<ApprobationRoutePage>
         itemCount: filtered.length,
         itemBuilder: (context, index) => CardRoute(
           history: filtered[index],
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ViewRoutePage(history: filtered[index]),
+              ),
+            );
+          },
         ),
       ),
     );

@@ -44,8 +44,6 @@ class ScannerRoutePage extends StatelessWidget {
             scanFormat: ScanFormat.ONLY_QR_CODE,
           );
 
-          print("### Código: $code");
-
           int? routeId = int.tryParse(code!);
 
           if (routeId != null && routeId != -1) {

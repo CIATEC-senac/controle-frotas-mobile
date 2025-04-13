@@ -1,9 +1,11 @@
+enum UserRole { admin, manager, driver }
+
 class UserModel {
   final int id;
   final String name;
   final String? email;
   final String? cpf;
-  final String? role;
+  final UserRole? role;
 
   const UserModel({
     required this.id,
@@ -26,6 +28,19 @@ class UserModel {
         .join(' ');
   }
 
+  String getStringRole() {
+    return switch (role) {
+      UserRole.admin => 'Administrador',
+      UserRole.manager => 'Gestor',
+      UserRole.driver => 'Motorista',
+      _ => 'Desconhecido'
+    };
+  }
+
+  Map<String, dynamic> toJson() {
+    return {'name': name, 'role': getStringRole()};
+  }
+
   // Cria uma instância de UserModel a partir de um json
   factory UserModel.fromJson(Map<String, dynamic> json) {
     // Validação de tipos
@@ -44,10 +59,10 @@ class UserModel {
           email: email,
           cpf: cpf,
           role: switch (role) {
-            0 => 'Administrador',
-            1 => 'Gestor',
-            2 => 'Motorista',
-            _ => 'Desconhecido'
+            0 => UserRole.admin,
+            1 => UserRole.manager,
+            2 => UserRole.driver,
+            _ => throw Exception('Role: ${role} desconhecida'),
           },
         ),
       {

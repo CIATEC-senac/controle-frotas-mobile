@@ -1,10 +1,10 @@
 import 'package:alfaid/api/api.dart';
 import 'package:alfaid/models/user.dart';
-import 'package:alfaid/pages/approbation_route_page.dart';
+import 'package:alfaid/pages/partials/home_manager.dart';
+import 'package:alfaid/pages/partials/home_driver.dart';
 import 'package:alfaid/widgets/drawer.dart';
 import 'package:alfaid/widgets/list_item.dart';
 import 'package:flutter/material.dart';
-import 'scanner_route_page.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class HomePage extends StatefulWidget {
@@ -28,15 +28,15 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  UserModel? _user;
+  UserModel? user;
 
   void fetchUser() async {
-    API().fetchUser(1).then((user) {
+    API().fetchUserFromToken().then((tokenUser) {
       setState(() {
-        _user = user;
+        user = tokenUser;
       });
     }, onError: (e) {
-      print(e.toString());
+      print('Error: ${e.toString()}');
     });
   }
 
@@ -49,59 +49,42 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext build) {
+    const version = const Text(
+      "ALFAID v2.9.20 - BETA",
+      style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xFFCCCCCC)),
+    );
+
+    var header = ListItem(
+      prefix: Container(
+        margin: const EdgeInsets.only(right: 8.0),
+        child: Image.asset('assets/images/logo.png', width: 70.0),
+      ),
+      title: user?.name ?? '',
+      subTitle: user?.getStringRole() ?? '',
+      icon: const Icon(Icons.settings),
+      onPressed: () => {scaffoldKey.currentState?.openDrawer()},
+    );
+
+    Widget getChildren() {
+      return switch (user?.role) {
+        UserRole.manager => ManagerHomePartial(),
+        UserRole.driver => DriverHomePartial(),
+        _ => Container()
+      };
+    }
+
     return Scaffold(
       key: scaffoldKey,
       drawer: DrawerMenu(
-        name: _user?.name ?? '',
-        email: _user?.email ?? '',
+        name: user?.name ?? '',
+        email: user?.email ?? '',
       ),
       body: SafeArea(
         child: Container(
           padding: const EdgeInsets.all(8.0),
           child: Column(
             spacing: 8.0,
-            children: [
-              ListItem(
-                prefix: Container(
-                  margin: const EdgeInsets.only(right: 8.0),
-                  child: Image.asset(
-                    'assets/images/logo.png',
-                    width: 70.0,
-                  ),
-                ),
-                title: _user?.name ?? '',
-                subTitle: _user?.role.toString() ?? '',
-                icon: const Icon(Icons.settings),
-                onPressed: () => {scaffoldKey.currentState?.openDrawer()},
-              ),
-              const Text(
-                "ALFAID v2.9.20 - BETA",
-                style: TextStyle(
-                    fontWeight: FontWeight.bold, color: Color(0xFFCCCCCC)),
-              ),
-              ListItem(
-                title: "Rota",
-                subTitle: "Subtitulo",
-                onPressed: () {
-                  // Navega para a página de Rotas
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const ScannerRoutePage()),
-                  );
-                },
-              ),
-              ListItem(
-                title: "Rota finalizada",
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const ApprobationRoutePage()),
-                  );
-                },
-              ),
-            ],
+            children: [header, version, getChildren()],
           ),
         ),
       ),

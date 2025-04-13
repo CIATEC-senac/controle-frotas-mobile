@@ -21,7 +21,6 @@ class _RouteDetailsPageState extends State<RouteDetailsPage> {
   // Chama a função da api que recebe o id da rota pelo qrcode e armazena
   void fetchRoute() {
     API().fetchRoute(widget.routeId).then((route) {
-      print("### Update status ${route}");
       setState(() {
         _route = route;
       });

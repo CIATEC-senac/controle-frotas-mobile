@@ -27,8 +27,8 @@ class RouteModel {
     return {
       'Rota': id.toString(),
       'Motorista': driver?.name,
-      'Origem': path.origin,
-      'Destino': path.destination,
+      'Origem': path.origin?.toUpperCase(),
+      'Destino': path.destination?.toUpperCase(),
       'Horário de partida': "00:00",
       'Horário de chegada': "00:00",
       'Paradas': (path.stops?.length ?? 0).toString(),

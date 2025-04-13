@@ -41,6 +41,20 @@ class RouteHistoryModel {
     required this.vehicle,
   });
 
+  // Exclusivo para a tabela de informações de histórico
+  Map<String, dynamic> fromModel() {
+    return {
+      'Rota': id.toString(),
+      'Motorista': driver.name,
+      'Origem': path?.origin?.toUpperCase(),
+      'Destino': path?.destination?.toUpperCase(),
+      'Horário de partida':
+          startedAt?.toIso8601String() ?? 'Ainda não iniciada',
+      'Horário de chegada': "00:00",
+      'Paradas': (path?.stops?.length ?? 0).toString(),
+    };
+  }
+
   // Cria uma instância de routeModel a partir de um json
   factory RouteHistoryModel.fromJson(Map<String, dynamic> json) {
     return switch (json) {

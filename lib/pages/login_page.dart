@@ -1,6 +1,7 @@
 import 'package:alfaid/api/api.dart';
 import 'package:alfaid/widgets/login_textfield.dart';
 import 'package:flutter/material.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
@@ -20,8 +21,6 @@ class _LoginPageState extends State<LoginPage> {
   bool isPasswordVisible = false;
 
   void login() async {
-    print("Do login");
-
     // Chama o método de login da api
     API().login(cpf, password).then((token) async {
       // Obtém uma instância do SharedPreferences para armazenar o token
@@ -93,7 +92,7 @@ class _LoginPageState extends State<LoginPage> {
               Column(
                 spacing: 16,
                 children: [
-                  _buildCpfField(), // Campo de CPF
+                  _buildCPFField(), // Campo de CPF
                   _buildPasswordField(), // Campo de senha
                   _buildForgotPasswordButton(), // Botão "Esqueci minha senha"
                   _buildLoginButton(), // Botão de login
@@ -108,11 +107,11 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   // Campo de entrada para o CPF
-  Widget _buildCpfField() {
+  Widget _buildCPFField() {
     return LoginTextField(
       maxLength: 11,
       keyboardType: TextInputType.number,
-      prefixIcon: Icons.person, // Ícone de pessoa
+      prefixIcon: LucideIcons.user2, // Ícone de pessoa
       labelText: 'Usuário (CPF)', // Texto do rótulo
       onChanged: (value) => setState(() {
         cpf = value;
@@ -125,9 +124,9 @@ class _LoginPageState extends State<LoginPage> {
   Widget _buildPasswordField() {
     return LoginTextField(
       obscureText: !isPasswordVisible, // Controla a visibilidade da senha
-      prefixIcon: Icons.lock,
+      prefixIcon: LucideIcons.lock,
       suffixIcon: IconButton(
-        icon: Icon(isPasswordVisible ? Icons.visibility : Icons.visibility_off),
+        icon: Icon(isPasswordVisible ? LucideIcons.eye : LucideIcons.eyeOff),
         onPressed: () {
           setState(() {
             isPasswordVisible =

@@ -4,8 +4,9 @@ import 'package:lucide_icons/lucide_icons.dart';
 
 class CardRoute extends StatelessWidget {
   final RouteHistoryModel history;
+  final VoidCallback onPressed;
 
-  const CardRoute({super.key, required this.history});
+  const CardRoute({super.key, required this.history, required this.onPressed});
 
   String formatDate(DateTime date) {
     String padDate(int value) => value.toString().padLeft(2, '0');
@@ -103,7 +104,7 @@ class CardRoute extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 TextButton(
-                  onPressed: () {},
+                  onPressed: onPressed,
                   child: const Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
