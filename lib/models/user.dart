@@ -6,6 +6,7 @@ class UserModel {
   final String? email;
   final String? cpf;
   final UserRole? role;
+  final String cnh;
 
   const UserModel({
     required this.id,
@@ -13,6 +14,7 @@ class UserModel {
     this.email,
     this.cpf,
     this.role,
+    required this.cnh,
   });
 
   // Método estático que capitaliza cada palavra de uma string
@@ -51,10 +53,12 @@ class UserModel {
         'email': String? email,
         'cpf': String cpf,
         'role': int role,
+        'cnh': String cnh,
       } =>
         // Cria e retorna um UserModel com os dados extraídos
         UserModel(
           id: id,
+          cnh: cnh,
           name: UserModel._capitalize(name),
           email: email,
           cpf: cpf,
@@ -68,11 +72,15 @@ class UserModel {
       {
         'id': int id,
         'name': String name,
+        'cnh': String cnh,
+        'cpf': String cpf,
       } =>
         // Cria e retorna um UserModel com os dados extraídos
         UserModel(
           id: id,
           name: UserModel._capitalize(name),
+          cnh: cnh,
+          cpf: cpf,
         ),
       // Gerando uma exceção
       _ => throw const FormatException('Erro ao buscar usuário.'),

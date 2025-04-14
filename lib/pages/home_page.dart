@@ -1,11 +1,13 @@
 import 'package:alfaid/api/api.dart';
 import 'package:alfaid/models/user.dart';
+import 'package:alfaid/pages/login_page.dart';
 import 'package:alfaid/pages/partials/home_manager.dart';
 import 'package:alfaid/pages/partials/home_driver.dart';
 import 'package:alfaid/widgets/drawer.dart';
 import 'package:alfaid/widgets/list_item.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -35,8 +37,18 @@ class _HomePageState extends State<HomePage> {
       setState(() {
         user = tokenUser;
       });
-    }, onError: (e) {
+    }, onError: (e) async {
       print('Error: ${e.toString()}');
+
+      SharedPreferences preferences = await SharedPreferences.getInstance();
+      preferences.remove('token');
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => LoginPage(),
+        ),
+      );
     });
   }
 

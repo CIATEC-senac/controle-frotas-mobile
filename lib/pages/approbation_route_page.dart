@@ -39,7 +39,8 @@ class _ApprobationRoutePageState extends State<ApprobationRoutePage>
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text('Rotas', style: TextStyle(fontSize: 16.0)),
+        title:
+            const Text('Histórico de rotas', style: TextStyle(fontSize: 16.0)),
         bottom: TabBar(
           controller: tabController,
           tabs: const <Widget>[
@@ -78,7 +79,8 @@ class _ApprobationRoutePageState extends State<ApprobationRoutePage>
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => ViewRoutePage(history: filtered[index]),
+                builder: (context) =>
+                    ViewRouteHistoryPage(history: filtered[index]),
               ),
             );
           },

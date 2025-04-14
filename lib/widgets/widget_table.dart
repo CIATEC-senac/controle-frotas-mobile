@@ -8,7 +8,9 @@ class WidgetTable extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Table(
-      defaultColumnWidth: const FixedColumnWidth(150.0),
+      columnWidths: const {
+        0: FixedColumnWidth(80.0),
+      },
       border: const TableBorder(
         horizontalInside: BorderSide(
           style: BorderStyle.solid,
@@ -16,24 +18,24 @@ class WidgetTable extends StatelessWidget {
           width: 0.5,
         ),
       ),
-      children: data.entries.map((item) {
-        return _createLineTable([item.key, item.value]);
-      }).toList(),
+      children: data.entries
+          .map((item) => _createLineTable([item.key, item.value ?? '']))
+          .toList(),
     );
   }
 
   TableRow _createLineTable(List<String> cells) {
     return TableRow(
-      children: cells.map((name) {
-        return Container(
-          alignment: Alignment.bottomLeft,
-          padding: const EdgeInsets.all(18.0),
-          child: Text(
-            name,
-            style: const TextStyle(fontSize: 16.0),
-          ),
-        );
-      }).toList(),
+      children: cells
+          .map(
+            (name) => Container(
+              alignment: Alignment.bottomLeft,
+              padding:
+                  const EdgeInsets.symmetric(vertical: 14.0, horizontal: 8.0),
+              child: Text(name, style: const TextStyle(fontSize: 14.0)),
+            ),
+          )
+          .toList(),
     );
   }
 }

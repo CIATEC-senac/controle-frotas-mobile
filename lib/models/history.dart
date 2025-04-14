@@ -12,7 +12,6 @@ class RouteHistoryModel {
   final double? odometerFinal;
   final String? observation;
   final HistoryStatus status;
-  final int? elapsedDistance;
   final String? imgOdometerInitial;
   final String? imgOdometerFinal;
   final RoutePathCoordinates? coordinates;
@@ -29,7 +28,6 @@ class RouteHistoryModel {
     this.odometerFinal,
     this.observation,
     required this.status,
-    this.elapsedDistance,
     this.imgOdometerInitial,
     this.imgOdometerFinal,
     this.coordinates,
@@ -40,6 +38,43 @@ class RouteHistoryModel {
     required this.driver,
     required this.vehicle,
   });
+
+  String? get elapsedDistance {
+    if (odometerInitial != null && odometerFinal != null) {
+      return (odometerFinal! - odometerInitial!).toString();
+    }
+
+    return null;
+  }
+
+  String? get elapsedDuration {
+    if (endedAt != null && startedAt != null) {
+      return endedAt!.difference(startedAt!).inMinutes.toString();
+    }
+  }
+
+  String _formatDate(DateTime date) {
+    String padDate(int value) => value.toString().padLeft(2, '0');
+
+    return '${padDate(date.day)}/${padDate(date.month)}/${date.year} ${padDate(date.hour)}:${padDate(date.minute)}';
+  }
+
+  // Formatted started at
+  String? get fStartedAt {
+    if (startedAt != null) {
+      return _formatDate(startedAt!);
+    }
+
+    return null;
+  }
+
+  String? get fEndedAt {
+    if (endedAt != null) {
+      return _formatDate(endedAt!);
+    }
+
+    return null;
+  }
 
   // Exclusivo para a tabela de informações de histórico
   Map<String, dynamic> fromModel() {
@@ -64,7 +99,6 @@ class RouteHistoryModel {
         'odometerFinal': num odometerFinal,
         'observation': String observation,
         'status': int status,
-        'elapsedDistance': String elapsedDistance,
         'imgOdometerInitial': String? imgOdometerInitial,
         'imgOdometerFinal': String? imgOdometerFinal,
         'pathCoordinates': Map<String, dynamic>? coordinates,
@@ -85,7 +119,6 @@ class RouteHistoryModel {
             2 => HistoryStatus.disapproved,
             _ => HistoryStatus.pending,
           },
-          elapsedDistance: int.tryParse(elapsedDistance),
           imgOdometerInitial: imgOdometerInitial,
           imgOdometerFinal: imgOdometerFinal,
           coordinates: RoutePathCoordinates.fromJson(coordinates),
