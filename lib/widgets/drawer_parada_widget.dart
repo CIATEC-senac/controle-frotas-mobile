@@ -1,4 +1,4 @@
-import 'package:alfaid/widgets/button_route.dart';
+import 'package:alfaid/widgets/route/button_route.dart';
 import 'package:flutter/material.dart';
 
 class DrawerParadaWidget extends StatefulWidget {

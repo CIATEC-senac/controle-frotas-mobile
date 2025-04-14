@@ -1,10 +1,10 @@
 import 'package:alfaid/api/api.dart';
 import 'package:alfaid/models/route.dart';
-import 'package:alfaid/pages/odometer_page.dart';
-import 'package:alfaid/widgets/appbar_card.dart';
-import 'package:alfaid/widgets/card_info.dart';
-import 'package:alfaid/widgets/details_maintenance.dart';
-import 'package:alfaid/widgets/details_route_card.dart';
+import 'package:alfaid/pages/driver/odometer_page.dart';
+import 'package:alfaid/widgets/cards/appbar_card.dart';
+import 'package:alfaid/widgets/cards/card_info.dart';
+import 'package:alfaid/widgets/route/details_maintenance.dart';
+import 'package:alfaid/widgets/route/details_route_card.dart';
 import 'package:flutter/material.dart';
 
 class RouteDetailsPage extends StatefulWidget {

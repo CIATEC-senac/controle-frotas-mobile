@@ -1,5 +1,5 @@
 import 'package:alfaid/models/history.dart';
-import 'package:alfaid/widgets/detail_card.dart';
+import 'package:alfaid/widgets/cards/detail_card.dart';
 import 'package:alfaid/widgets/detail_row.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';

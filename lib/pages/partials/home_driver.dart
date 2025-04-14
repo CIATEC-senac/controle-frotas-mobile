@@ -1,4 +1,4 @@
-import 'package:alfaid/pages/scanner_route_page.dart';
+import 'package:alfaid/pages/driver/scanner_route_page.dart';
 import 'package:alfaid/widgets/list_item.dart';
 import 'package:flutter/material.dart';
 

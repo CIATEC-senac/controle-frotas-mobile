@@ -1,12 +1,12 @@
 import 'dart:convert'; // Para converter o JSON
-import 'package:alfaid/widgets/appbar_card.dart';
-import 'package:alfaid/widgets/button_route.dart';
+import 'package:alfaid/widgets/cards/appbar_card.dart';
+import 'package:alfaid/widgets/route/button_route.dart';
 import 'package:alfaid/widgets/drawer_parada_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart'; // Para carregar o JSON dos assets
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:alfaid/pages/odometer_end_page.dart'; // Atualize o nome do projeto aqui
+import 'package:alfaid/pages/driver/odometer_end_page.dart'; // Atualize o nome do projeto aqui
 
 late BitmapDescriptor motoristaIcon;
 late BitmapDescriptor passageiroIcon;

@@ -1,5 +1,5 @@
 import 'package:alfaid/models/route.dart';
-import 'package:alfaid/widgets/widget_table.dart';
+import 'package:alfaid/widgets/route/widget_table.dart';
 import 'package:flutter/material.dart';
 
 class DetailsRouteCard extends StatelessWidget {

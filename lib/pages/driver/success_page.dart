@@ -1,4 +1,4 @@
-import 'package:alfaid/widgets/appbar_card.dart';
+import 'package:alfaid/widgets/cards/appbar_card.dart';
 import 'package:flutter/material.dart';
 import 'package:alfaid/pages/home_page.dart'; // Atualize o caminho conforme o seu projeto
 

@@ -1,4 +1,4 @@
-import 'package:alfaid/widgets/widget_table.dart';
+import 'package:alfaid/widgets/route/widget_table.dart';
 import 'package:flutter/material.dart';
 
 class DetailsMaintenance extends StatelessWidget {

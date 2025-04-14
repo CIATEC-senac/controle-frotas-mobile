@@ -1,7 +1,7 @@
 import 'package:alfaid/api/api.dart';
 import 'package:alfaid/models/history.dart';
-import 'package:alfaid/pages/view_route_page.dart';
-import 'package:alfaid/widgets/card_route.dart';
+import 'package:alfaid/pages/manager/view_route_page.dart';
+import 'package:alfaid/widgets/route/card_route.dart';
 import 'package:flutter/material.dart';
 
 class ApprobationRoutePage extends StatefulWidget {

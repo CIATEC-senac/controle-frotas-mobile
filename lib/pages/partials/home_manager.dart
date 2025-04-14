@@ -1,4 +1,4 @@
-import 'package:alfaid/pages/approbation_route_page.dart';
+import 'package:alfaid/pages/manager/approbation_route_page.dart';
 import 'package:alfaid/widgets/list_item.dart';
 import 'package:flutter/material.dart';
 

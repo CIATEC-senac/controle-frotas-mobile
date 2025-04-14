@@ -1,4 +1,4 @@
-import 'package:alfaid/widgets/card_title.dart';
+import 'package:alfaid/widgets/cards/card_title.dart';
 import 'package:flutter/material.dart';
 
 class DetailCard extends StatelessWidget {

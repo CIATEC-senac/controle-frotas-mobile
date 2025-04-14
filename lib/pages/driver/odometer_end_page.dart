@@ -1,9 +1,9 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:alfaid/widgets/appbar_card.dart';
-import 'package:alfaid/widgets/odometer_card.dart';
-import 'package:alfaid/pages/success_page.dart';
+import 'package:alfaid/widgets/cards/appbar_card.dart';
+import 'package:alfaid/widgets/cards/odometer_card.dart';
+import 'package:alfaid/pages/driver/success_page.dart';
 
 class OdometerEndPage extends StatefulWidget {
   const OdometerEndPage({super.key});
