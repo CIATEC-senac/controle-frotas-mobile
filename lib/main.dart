@@ -1,5 +1,6 @@
 import 'package:alfaid/api/api.dart';
 import 'package:flutter/material.dart';
+import 'package:toastification/toastification.dart';
 import 'pages/login_page.dart'; // Importa a tela de login
 import 'pages/home_page.dart'; // Importa a página HomePage
 
@@ -26,54 +27,57 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false, // Desativa o banner de depuração
-      title: 'ALFAID Frotas', // Título do aplicativo
+    return ToastificationWrapper(
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false, // Desativa o banner de depuração
+        title: 'ALFAID Frotas', // Título do aplicativo
 
-      // Define rotas nomeadas para navegação
-      routes: {
-        '/login': (context) => const LoginPage(),
-        '/home': (context) => const HomePage(),
-      },
-      // Define a rota inicial como a tela de login
-      initialRoute: initialRoute,
-      theme: ThemeData(
-        // scaffoldBackgroundColor: Colors.grey[850],
-        // colorScheme: colorScheme,
-        //   cardTheme: const CardTheme(
-        //     color: Color(0xFF424242),
-        //   ),
-        scaffoldBackgroundColor: const Color.fromARGB(255, 241, 237, 237),
-        textTheme: const TextTheme(
-          headlineSmall: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
-          bodySmall: TextStyle(fontSize: 14.0),
+        // Define rotas nomeadas para navegação
+        routes: {
+          '/login': (context) => const LoginPage(),
+          '/home': (context) => const HomePage(),
+        },
+        // Define a rota inicial como a tela de login
+        initialRoute: initialRoute,
+        theme: ThemeData(
+          // scaffoldBackgroundColor: Colors.grey[850],
+          // colorScheme: colorScheme,
+          //   cardTheme: const CardTheme(
+          //     color: Color(0xFF424242),
+          //   ),
+          scaffoldBackgroundColor: const Color.fromARGB(255, 241, 237, 237),
+          textTheme: const TextTheme(
+            headlineSmall:
+                TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+            bodySmall: TextStyle(fontSize: 14.0),
+          ),
+          //   iconTheme: IconThemeData(
+          //     color: Colors.white,
+          //   ),
+          //   iconButtonTheme: IconButtonThemeData(
+          //     style: ButtonStyle(
+          //       iconColor: WidgetStateProperty.resolveWith<Color?>(
+          //         (Set<WidgetState> states) {
+          //           if (!states.contains(WidgetState.error) &&
+          //               !states.contains(WidgetState.disabled)) {
+          //             return Colors.white;
+          //           }
+
+          //           return null; // Use the component's default.
+          //         },
+          //       ),
+          //       backgroundColor: WidgetStateProperty.resolveWith<Color?>(
+          //         (Set<WidgetState> states) {
+          //           if (states.contains(WidgetState.pressed)) {
+          //             return Colors.white.withValues(alpha: 0.1);
+          //           }
+
+          //           return null; // Use the component's default.
+          //         },
+          //       ),
+          //     ),
+          //   ),
         ),
-        //   iconTheme: IconThemeData(
-        //     color: Colors.white,
-        //   ),
-        //   iconButtonTheme: IconButtonThemeData(
-        //     style: ButtonStyle(
-        //       iconColor: WidgetStateProperty.resolveWith<Color?>(
-        //         (Set<WidgetState> states) {
-        //           if (!states.contains(WidgetState.error) &&
-        //               !states.contains(WidgetState.disabled)) {
-        //             return Colors.white;
-        //           }
-
-        //           return null; // Use the component's default.
-        //         },
-        //       ),
-        //       backgroundColor: WidgetStateProperty.resolveWith<Color?>(
-        //         (Set<WidgetState> states) {
-        //           if (states.contains(WidgetState.pressed)) {
-        //             return Colors.white.withValues(alpha: 0.1);
-        //           }
-
-        //           return null; // Use the component's default.
-        //         },
-        //       ),
-        //     ),
-        //   ),
       ),
     );
   }

@@ -54,7 +54,7 @@ class VehicleHistoryCard extends StatelessWidget {
         label: 'Odômetro final:',
         value: odometerFinal,
       ),
-      DetailRow(label: 'Distância percorrida', value: elapsedDistance)
+      DetailRow(label: 'Distância percorrida:', value: elapsedDistance)
     ]);
   }
 }

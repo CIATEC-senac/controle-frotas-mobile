@@ -1,4 +1,4 @@
-import 'package:alfaid/pages/manager/approbation_route_page.dart';
+import 'package:alfaid/pages/manager/history_route_page.dart';
 import 'package:alfaid/widgets/list_item.dart';
 import 'package:flutter/material.dart';
 
@@ -14,7 +14,7 @@ class ManagerHomePartial extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => const ApprobationRoutePage(),
+                builder: (context) => const HistoryRoutePage(),
               ),
             );
           },

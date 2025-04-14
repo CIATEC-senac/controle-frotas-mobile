@@ -120,4 +120,17 @@ class API {
       (response) => response['token'].toString(),
     );
   }
+
+  Future<void> updateHistoryStatus(
+      int id, HistoryStatus status, String observation) {
+    var apiStatus = switch (status) {
+      HistoryStatus.pending => 0,
+      HistoryStatus.approved => 1,
+      HistoryStatus.disapproved => 2,
+    };
+
+    var body = {'status': apiStatus, 'observation': observation};
+
+    return _post('/history/$id', body: body);
+  }
 }

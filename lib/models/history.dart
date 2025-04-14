@@ -51,6 +51,8 @@ class RouteHistoryModel {
     if (endedAt != null && startedAt != null) {
       return endedAt!.difference(startedAt!).inMinutes.toString();
     }
+
+    return null;
   }
 
   String _formatDate(DateTime date) {

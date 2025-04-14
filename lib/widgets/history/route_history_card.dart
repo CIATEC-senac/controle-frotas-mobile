@@ -18,7 +18,7 @@ class RouteHistoryCard extends StatelessWidget {
     var destination = history.path?.destination;
 
     return DetailCard(
-      icon: LucideIcons.map,
+      icon: LucideIcons.pin,
       title: 'Rota',
       children: [
         DetailRow(label: 'Origem:', value: origin),
@@ -29,7 +29,8 @@ class RouteHistoryCard extends StatelessWidget {
           label: 'Tempo previsto:',
           value: '${history.route.estimatedDuration.toString()} min',
         ),
-        DetailRow(label: 'Tempo executado:', value: history.elapsedDuration),
+        DetailRow(
+            label: 'Tempo executado:', value: '${history.elapsedDuration} min'),
         DetailRow(
             label: 'Distância prevista:',
             value: '${history.route.kmEstimatedDistance.toString()} km'),
