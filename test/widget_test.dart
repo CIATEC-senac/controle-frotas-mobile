@@ -12,7 +12,7 @@ import 'package:alfaid/main.dart';
 void main() {
   testWidgets('Login screen loads correctly', (WidgetTester tester) async {
     // Build the MyApp widget, que agora carrega a LoginScreen.
-    await tester.pumpWidget(const MyApp());
+    await tester.pumpWidget(const App());
 
     // Verifica se os componentes da tela de login estão presentes.
     expect(find.text('Usuário (CPF)'), findsOneWidget);

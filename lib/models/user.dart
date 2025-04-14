@@ -1,9 +1,12 @@
+enum UserRole { admin, manager, driver }
+
 class UserModel {
   final int id;
   final String name;
   final String? email;
   final String? cpf;
-  final String? role;
+  final UserRole? role;
+  final String cnh;
 
   const UserModel({
     required this.id,
@@ -11,6 +14,7 @@ class UserModel {
     this.email,
     this.cpf,
     this.role,
+    required this.cnh,
   });
 
   // Método estático que capitaliza cada palavra de uma string
@@ -26,6 +30,19 @@ class UserModel {
         .join(' ');
   }
 
+  String getStringRole() {
+    return switch (role) {
+      UserRole.admin => 'Administrador',
+      UserRole.manager => 'Gestor',
+      UserRole.driver => 'Motorista',
+      _ => 'Desconhecido'
+    };
+  }
+
+  Map<String, dynamic> toJson() {
+    return {'name': name, 'role': getStringRole()};
+  }
+
   // Cria uma instância de UserModel a partir de um json
   factory UserModel.fromJson(Map<String, dynamic> json) {
     // Validação de tipos
@@ -36,28 +53,34 @@ class UserModel {
         'email': String? email,
         'cpf': String cpf,
         'role': int role,
+        'cnh': String cnh,
       } =>
         // Cria e retorna um UserModel com os dados extraídos
         UserModel(
           id: id,
+          cnh: cnh,
           name: UserModel._capitalize(name),
           email: email,
           cpf: cpf,
           role: switch (role) {
-            0 => 'Administrador',
-            1 => 'Gestor',
-            2 => 'Motorista',
-            _ => 'Desconhecido'
+            0 => UserRole.admin,
+            1 => UserRole.manager,
+            2 => UserRole.driver,
+            _ => throw Exception('Role: ${role} desconhecida'),
           },
         ),
       {
         'id': int id,
         'name': String name,
+        'cnh': String cnh,
+        'cpf': String cpf,
       } =>
         // Cria e retorna um UserModel com os dados extraídos
         UserModel(
           id: id,
           name: UserModel._capitalize(name),
+          cnh: cnh,
+          cpf: cpf,
         ),
       // Gerando uma exceção
       _ => throw const FormatException('Erro ao buscar usuário.'),

@@ -81,26 +81,32 @@ class API {
   }
 
   // Método para buscar usuário pelo id
+  Future<UserModel> fetchUserFromToken() async {
+    // Chama nossa função get para obter os dados do usuario
+    // Converte a resposta json em um objeto UserModel
+    return _get('/token').then((raw) => UserModel.fromJson(raw));
+  }
+
+  // Método para buscar usuário pelo id
   Future<UserModel> fetchUser(int id) async {
     // Chama nossa função get para obter os dados do usuario
-    return _get('/user/$id').then((raw) {
-      // Converte a resposta json em um objeto UserModel
-      return UserModel.fromJson(raw);
-    });
+    return _get('/user/$id').then((raw) => UserModel.fromJson(raw));
   }
 
   // Método para buscar rota pelo id
   Future<RouteModel> fetchRoute(int id) async {
-    return _get('/route/$id').then((raw) {
-      print("### Route: $raw");
-      return RouteModel.fromJson(raw);
-    });
+    return _get('/route/$id').then((raw) => RouteModel.fromJson(raw));
   }
 
+  // Método para buscar histórico de rota finalizada
   Future<List<RouteHistoryModel>> fetchRouteHistory() async {
-    return _get<List<dynamic>>('/history/').then((raw) {
-      return raw.map((history) => RouteHistoryModel.fromJson(history)).toList();
-    });
+    return _get<List<dynamic>>('/history/').then(
+      (raw) => raw
+          .map(
+            (history) => RouteHistoryModel.fromJson(history),
+          )
+          .toList(),
+    );
   }
 
   // Método para realizar login com cpf e senha
@@ -109,9 +115,9 @@ class API {
     var body = {'cpf': cpf, 'password': pass};
 
     // Faz uma requisição post para autenticação
-    return _post('/auth/login', body: body).then((response) {
-      // Retorna o token de acesso da resposta
-      return response['access_token'].toString();
-    });
+    // Retorna o token de acesso da resposta
+    return _post('/auth/login', body: body).then(
+      (response) => response['token'].toString(),
+    );
   }
 }

@@ -11,7 +11,10 @@ class AppBarCard extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: Text(title),
+      title: Text(
+        title,
+        style: const TextStyle(fontSize: 18.0),
+      ),
       centerTitle: true,
       leading: IconButton(
         icon: const Icon(Icons.arrow_back),

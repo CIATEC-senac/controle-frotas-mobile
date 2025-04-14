@@ -22,15 +22,16 @@ class RouteModel {
     required this.estimatedDuration,
   });
 
+  double get kmEstimatedDistance {
+    return estimatedDistance / 1000;
+  }
+
   // Exclusivo para a tabela de informações de rota
   Map<String, dynamic> fromModel() {
     return {
       'Rota': id.toString(),
-      'Motorista': driver?.name,
-      'Origem': path.origin,
-      'Destino': path.destination,
-      'Horário de partida': "00:00",
-      'Horário de chegada': "00:00",
+      'Origem': path.origin?.toUpperCase(),
+      'Destino': path.destination?.toUpperCase(),
       'Paradas': (path.stops?.length ?? 0).toString(),
     };
   }
@@ -45,7 +46,7 @@ class RouteModel {
         'path': Map<String, dynamic> path,
         'pathCoordinates': Map<String, dynamic>? coordinates,
         'estimatedDistance': int estimatedDistance,
-        'estimatedDuration': int estimatedTime,
+        'estimatedDuration': int estimatedDuration,
       } =>
         RouteModel(
           id: id,
@@ -54,21 +55,23 @@ class RouteModel {
           path: RoutePath.fromJson(path),
           coordinates: RoutePathCoordinates.fromJson(coordinates),
           estimatedDistance: estimatedDistance,
-          estimatedDuration: estimatedTime,
+          // To minutes
+          estimatedDuration: (estimatedDuration / 60).floor(),
         ),
       {
         'id': int id,
         'path': Map<String, dynamic> path,
         'pathCoordinates': Map<String, dynamic>? coordinates,
         'estimatedDistance': int estimatedDistance,
-        'estimatedDuration': int estimatedTime,
+        'estimatedDuration': int estimatedDuration,
       } =>
         RouteModel(
           id: id,
           path: RoutePath.fromJson(path),
           coordinates: RoutePathCoordinates.fromJson(coordinates),
           estimatedDistance: estimatedDistance,
-          estimatedDuration: estimatedTime,
+          // To minutes
+          estimatedDuration: (estimatedDuration / 60).floor(),
         ),
       _ => throw const FormatException('Erro ao buscar rota.'),
     };
