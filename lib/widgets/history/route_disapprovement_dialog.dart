@@ -1,5 +1,6 @@
 import 'package:alfaid/api/api.dart';
 import 'package:alfaid/models/history.dart';
+import 'package:alfaid/models/history_approval.dart';
 import 'package:alfaid/pages/manager/history_route_page.dart';
 import 'package:flutter/material.dart';
 import 'package:toastification/toastification.dart';

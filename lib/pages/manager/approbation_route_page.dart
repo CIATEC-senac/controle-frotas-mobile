@@ -1,5 +1,6 @@
 import 'package:alfaid/api/api.dart';
 import 'package:alfaid/models/history.dart';
+import 'package:alfaid/models/history_approval.dart';
 import 'package:alfaid/pages/manager/history_route_page.dart';
 
 import 'package:alfaid/widgets/cards/appbar_card.dart';
@@ -38,9 +39,9 @@ class ApprobationRoutePage extends StatelessWidget {
           autoCloseDuration: const Duration(seconds: 3),
           borderRadius: BorderRadius.circular(4.0),
           style: ToastificationStyle.flat);
-      print('Deu certo, aeeeee');
     }).catchError((e) {
       print('Ih, deu ruim');
+      print(e.toString());
     });
   }
 
@@ -77,42 +78,55 @@ class ApprobationRoutePage extends StatelessWidget {
   }
 
   Widget actionButton(BuildContext context) {
-    var status = switch (history.status) {
+    var status = switch (history.approval?.status) {
       HistoryStatus.approved => 'Aprovada',
       HistoryStatus.disapproved => 'Reprovada',
       _ => 'Pendente'
     };
 
-    return DetailCard(
-      icon: LucideIcons.umbrella,
-      title: 'Status',
-      children: [
-        DetailRow(label: 'Status:', value: status),
-        if (history.status == HistoryStatus.disapproved)
-          DetailRow(label: 'Observação:', value: history.observation),
-        if (history.status == HistoryStatus.pending)
-          Row(
-            children: [
-              Expanded(
-                child: TextButton.icon(
-                  onPressed: () => routeDisapprovementDialog(history, context),
-                  icon: const Icon(LucideIcons.x, color: Colors.red),
-                  label: const Text(
-                    'Reprovar',
-                    style: TextStyle(color: Colors.red),
-                  ),
-                ),
+    return DetailCard(icon: LucideIcons.rotateCcw, title: 'Status', children: [
+      DetailRow(label: 'Status:', value: status),
+      ...getApproval(context),
+    ]);
+  }
+
+  List<Widget> getApproval(BuildContext context) {
+    if (history.approval != null) {
+      return [
+        DetailRow(
+          label: 'Aprovado por:',
+          value: history.approval!.approvedBy.name,
+        ),
+        DetailRow(
+          label: 'Aprovado em:',
+          value: history.approval!.fDate,
+        ),
+        if (history.approval!.observation!.isNotEmpty)
+          DetailRow(label: 'Observação:', value: history.approval!.observation)
+      ];
+    }
+    return [
+      Row(
+        children: [
+          Expanded(
+            child: TextButton.icon(
+              onPressed: () => routeDisapprovementDialog(history, context),
+              icon: const Icon(LucideIcons.x, color: Colors.red),
+              label: const Text(
+                'Reprovar',
+                style: TextStyle(color: Colors.red),
               ),
-              Expanded(
-                child: TextButton.icon(
-                  onPressed: () => confirm(context),
-                  icon: const Icon(LucideIcons.check),
-                  label: const Text('Aprovar'),
-                ),
-              )
-            ],
+            ),
           ),
-      ],
-    );
+          Expanded(
+            child: TextButton.icon(
+              onPressed: () => confirm(context),
+              icon: const Icon(LucideIcons.check),
+              label: const Text('Aprovar'),
+            ),
+          )
+        ],
+      ),
+    ];
   }
 }

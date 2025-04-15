@@ -1,5 +1,6 @@
 import 'package:alfaid/api/api.dart';
 import 'package:alfaid/models/history.dart';
+import 'package:alfaid/models/history_approval.dart';
 import 'package:alfaid/pages/manager/approbation_route_page.dart';
 import 'package:alfaid/widgets/route/card_route.dart';
 import 'package:flutter/material.dart';
@@ -61,9 +62,10 @@ class _HistoryRoutePageState extends State<HistoryRoutePage>
     );
   }
 
-  Widget getList(HistoryStatus status) {
-    List<RouteHistoryModel> filtered =
-        routes.where((e) => e.status == status).toList();
+  Widget getList(HistoryStatus? status) {
+    List<RouteHistoryModel> filtered = routes
+        .where((e) => (e.approval?.status ?? HistoryStatus.pending) == status)
+        .toList();
 
     if (filtered.isEmpty) {
       return const Center(child: Text('Nada para visualizar'));

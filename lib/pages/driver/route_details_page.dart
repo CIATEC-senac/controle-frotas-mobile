@@ -16,16 +16,30 @@ class RouteDetailsPage extends StatefulWidget {
 }
 
 class _RouteDetailsPageState extends State<RouteDetailsPage> {
+  bool _isLoading = true;
+  bool _isError = false;
   RouteModel? _route;
 
   // Chama a função da api que recebe o id da rota pelo qrcode e armazena
   void fetchRoute() {
+    setState(() {
+      _isLoading = true;
+    });
+
     API().fetchRoute(widget.routeId).then((route) {
       setState(() {
         _route = route;
+        _isError = false;
       });
     }, onError: (e) {
       print(e);
+      setState(() {
+        _isError = true;
+      });
+    }).whenComplete(() {
+      setState(() {
+        _isLoading = false;
+      });
     });
   }
 
@@ -36,36 +50,68 @@ class _RouteDetailsPageState extends State<RouteDetailsPage> {
     fetchRoute();
   }
 
+  Widget getChildren(BuildContext context) {
+    if (_isLoading) {
+      return SizedBox(
+        width: MediaQuery.of(context).size.width,
+        child: const Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [Text('Carregando...')],
+        ),
+      );
+    }
+
+    if (_isError) {
+      return SizedBox(
+        width: MediaQuery.of(context).size.width,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text('Nâo foi possível buscar rota'),
+            TextButton(
+                onPressed: fetchRoute, child: const Text('Tentar novamente'))
+          ],
+        ),
+      );
+    }
+
+    return SingleChildScrollView(
+      child: Container(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          spacing: 12.0,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            CardInfo(
+                icon: const Icon(Icons.directions_bus, size: 32.0),
+                title: 'Placa: ${_route?.vehicle?.plate}',
+                subTitle: 'QRCode: ${widget.routeId}'),
+            DetailsRouteCard(text: "Informações da Rota", route: _route),
+            DetailsMaintenance(text: "Manutenção"),
+            const SizedBox(height: 56.0),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void onPressed() async {
+    // Navega para a página de odômetro e aguarda o valor inserido
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const OdometerStartPage()),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const AppBarCard(title: 'Detalhes da rota'),
-      body: SingleChildScrollView(
-        child: Container(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            spacing: 12.0,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              CardInfo(
-                  icon: const Icon(Icons.directions_bus, size: 32.0),
-                  title: 'Placa: ${_route?.vehicle?.plate}',
-                  subTitle: 'QRCode: ${widget.routeId}'),
-              DetailsRouteCard(text: "Informações da Rota", route: _route),
-              DetailsMaintenance(text: "Manutenção"),
-              const SizedBox(height: 56.0)
-            ],
-          ),
-        ),
-      ),
+      body: getChildren(context),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () async {
-          // Navega para a página de odômetro e aguarda o valor inserido
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const OdometerStartPage()),
-          );
-        },
+        onPressed: _route != null ? onPressed : null,
         label: const Text('Prosseguir', style: TextStyle(color: Colors.white)),
         icon: const Icon(Icons.arrow_forward, color: Colors.white),
         backgroundColor: Colors.green,

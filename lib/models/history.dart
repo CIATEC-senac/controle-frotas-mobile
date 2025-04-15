@@ -1,17 +1,15 @@
+import 'package:alfaid/models/history_approval.dart';
 import 'package:alfaid/models/route.dart';
 import 'package:alfaid/models/route_path.dart';
 import 'package:alfaid/models/route_path_coordinates.dart';
 import 'package:alfaid/models/user.dart';
 import 'package:alfaid/models/vehicle.dart';
-
-enum HistoryStatus { pending, approved, disapproved }
+import 'package:alfaid/utils/date_manipulation.dart';
 
 class RouteHistoryModel {
   final int id;
   final double? odometerInitial;
   final double? odometerFinal;
-  final String? observation;
-  final HistoryStatus status;
   final String? imgOdometerInitial;
   final String? imgOdometerFinal;
   final RoutePathCoordinates? coordinates;
@@ -21,13 +19,12 @@ class RouteHistoryModel {
   final RouteModel route;
   final UserModel driver;
   final VehicleModel vehicle;
+  final HistoryApproval? approval;
 
   const RouteHistoryModel({
     required this.id,
     this.odometerInitial,
     this.odometerFinal,
-    this.observation,
-    required this.status,
     this.imgOdometerInitial,
     this.imgOdometerFinal,
     this.coordinates,
@@ -37,6 +34,7 @@ class RouteHistoryModel {
     required this.route,
     required this.driver,
     required this.vehicle,
+    this.approval,
   });
 
   String? get elapsedDistance {
@@ -55,16 +53,10 @@ class RouteHistoryModel {
     return null;
   }
 
-  String _formatDate(DateTime date) {
-    String padDate(int value) => value.toString().padLeft(2, '0');
-
-    return '${padDate(date.day)}/${padDate(date.month)}/${date.year} ${padDate(date.hour)}:${padDate(date.minute)}';
-  }
-
   // Formatted started at
   String? get fStartedAt {
     if (startedAt != null) {
-      return _formatDate(startedAt!);
+      return formatDate(startedAt!);
     }
 
     return null;
@@ -72,7 +64,7 @@ class RouteHistoryModel {
 
   String? get fEndedAt {
     if (endedAt != null) {
-      return _formatDate(endedAt!);
+      return formatDate(endedAt!);
     }
 
     return null;
@@ -99,8 +91,7 @@ class RouteHistoryModel {
         'id': int id,
         'odometerInitial': num odometerInitial,
         'odometerFinal': num odometerFinal,
-        'observation': String observation,
-        'status': int status,
+        'approval': Map<String, dynamic>? approval,
         'imgOdometerInitial': String? imgOdometerInitial,
         'imgOdometerFinal': String? imgOdometerFinal,
         'pathCoordinates': Map<String, dynamic>? coordinates,
@@ -115,12 +106,6 @@ class RouteHistoryModel {
           id: id,
           odometerInitial: odometerInitial.toDouble(),
           odometerFinal: odometerFinal.toDouble(),
-          observation: observation,
-          status: switch (status) {
-            1 => HistoryStatus.approved,
-            2 => HistoryStatus.disapproved,
-            _ => HistoryStatus.pending,
-          },
           imgOdometerInitial: imgOdometerInitial,
           imgOdometerFinal: imgOdometerFinal,
           coordinates: RoutePathCoordinates.fromJson(coordinates),
@@ -130,6 +115,8 @@ class RouteHistoryModel {
           route: RouteModel.fromJson(route),
           vehicle: VehicleModel.fromJson(vehicle),
           driver: UserModel.fromJson(driver),
+          approval:
+              approval != null ? HistoryApproval.fromJson(approval) : null,
         ),
       _ => throw const FormatException('Erro ao buscar histórico.'),
     };

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:alfaid/models/history.dart';
+import 'package:alfaid/models/history_approval.dart';
 import 'package:alfaid/models/route.dart';
 import 'package:alfaid/models/user.dart';
 import 'package:http/http.dart' as http;
@@ -25,6 +26,8 @@ class API {
       // Converte e retorna o corpo da requisição json em um tipo generico T
       return json.decode(response.body) as T;
     } else {
+      print('Response: ${response.body}');
+
       String message = switch (response.statusCode) {
         400 => 'Dados inválidos',
         401 => 'Não autorizado',
@@ -87,7 +90,7 @@ class API {
     return _get('/token').then((raw) => UserModel.fromJson(raw));
   }
 
-  // Método para buscar usuário pelo id
+  // Método para buscar usuário pelo id autenticado
   Future<UserModel> fetchUser(int id) async {
     // Chama nossa função get para obter os dados do usuario
     return _get('/user/$id').then((raw) => UserModel.fromJson(raw));
@@ -122,11 +125,14 @@ class API {
   }
 
   Future<void> updateHistoryStatus(
-      int id, HistoryStatus status, String observation) {
+    int id,
+    HistoryStatus status,
+    String observation,
+  ) {
     var apiStatus = switch (status) {
-      HistoryStatus.pending => 0,
-      HistoryStatus.approved => 1,
-      HistoryStatus.disapproved => 2,
+      HistoryStatus.approved => 0,
+      HistoryStatus.disapproved => 1,
+      HistoryStatus.pending => throw UnimplementedError(),
     };
 
     var body = {'status': apiStatus, 'observation': observation};

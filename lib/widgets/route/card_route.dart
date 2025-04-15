@@ -1,4 +1,5 @@
 import 'package:alfaid/models/history.dart';
+import 'package:alfaid/models/history_approval.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
@@ -23,13 +24,8 @@ class CardRoute extends StatelessWidget {
     );
   }
 
-  Widget getStatus(HistoryStatus status) {
+  Widget getStatus(HistoryStatus? status) {
     return switch (status) {
-      HistoryStatus.pending => getStatusContainer(
-          'Pendente',
-          Colors.grey.withAlpha(80),
-          Colors.grey,
-        ),
       HistoryStatus.approved => getStatusContainer(
           'Aprovada',
           Colors.green.withAlpha(80),
@@ -39,6 +35,11 @@ class CardRoute extends StatelessWidget {
           'Reprovada',
           Colors.red.withAlpha(80),
           Colors.red,
+        ),
+      _ => getStatusContainer(
+          'Pendente',
+          Colors.grey.withAlpha(80),
+          Colors.grey,
         ),
     };
   }
@@ -85,7 +86,7 @@ class CardRoute extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(child: getHeader()),
-                getStatus(history.status)
+                getStatus(history.approval?.status)
               ],
             ),
             getRow(LucideIcons.calendar, startedAt),
