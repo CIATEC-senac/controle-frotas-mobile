@@ -1,12 +1,15 @@
 import 'package:alfaid/api/api.dart';
 import 'package:alfaid/models/history.dart';
 import 'package:alfaid/models/history_approval.dart';
+import 'package:alfaid/models/user.dart';
 import 'package:alfaid/pages/manager/approbation_route_page.dart';
 import 'package:alfaid/widgets/route/card_route.dart';
 import 'package:flutter/material.dart';
 
 class HistoryRoutePage extends StatefulWidget {
-  const HistoryRoutePage({super.key});
+  final UserRole role;
+
+  const HistoryRoutePage({super.key, required this.role});
 
   @override
   State<HistoryRoutePage> createState() => _HistoryRoutePageState();
@@ -83,6 +86,7 @@ class _HistoryRoutePageState extends State<HistoryRoutePage>
               MaterialPageRoute(
                 builder: (context) => ApprobationRoutePage(
                   history: filtered[index],
+                  role: widget.role,
                 ),
               ),
             );

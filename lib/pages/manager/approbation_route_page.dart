@@ -1,6 +1,7 @@
 import 'package:alfaid/api/api.dart';
 import 'package:alfaid/models/history.dart';
 import 'package:alfaid/models/history_approval.dart';
+import 'package:alfaid/models/user.dart';
 import 'package:alfaid/pages/manager/history_route_page.dart';
 
 import 'package:alfaid/widgets/cards/appbar_card.dart';
@@ -18,9 +19,14 @@ import 'package:lucide_icons/lucide_icons.dart';
 import 'package:toastification/toastification.dart';
 
 class ApprobationRoutePage extends StatelessWidget {
+  final UserRole role;
   final RouteHistoryModel history;
 
-  const ApprobationRoutePage({super.key, required this.history});
+  const ApprobationRoutePage({
+    super.key,
+    required this.history,
+    required this.role,
+  });
 
   void confirm(context) {
     var observation = '';
@@ -48,7 +54,7 @@ class ApprobationRoutePage extends StatelessWidget {
   Future<dynamic> goHome(context) {
     return Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => const HistoryRoutePage()),
+      MaterialPageRoute(builder: (context) => HistoryRoutePage(role: role)),
     );
   }
 
@@ -69,7 +75,7 @@ class ApprobationRoutePage extends StatelessWidget {
               RoutePlanned(),
               RouteExecuted(),
               UnprogrammedStops(),
-              actionButton(context),
+              approvalCard(context),
             ],
           ),
         ),
@@ -77,7 +83,7 @@ class ApprobationRoutePage extends StatelessWidget {
     );
   }
 
-  Widget actionButton(BuildContext context) {
+  Widget approvalCard(BuildContext context) {
     var status = switch (history.approval?.status) {
       HistoryStatus.approved => 'Aprovada',
       HistoryStatus.disapproved => 'Reprovada',
@@ -105,28 +111,33 @@ class ApprobationRoutePage extends StatelessWidget {
           DetailRow(label: 'Observação:', value: history.approval!.observation)
       ];
     }
-    return [
-      Row(
-        children: [
-          Expanded(
-            child: TextButton.icon(
-              onPressed: () => routeDisapprovementDialog(history, context),
-              icon: const Icon(LucideIcons.x, color: Colors.red),
-              label: const Text(
-                'Reprovar',
-                style: TextStyle(color: Colors.red),
+
+    if (role == UserRole.manager) {
+      return [
+        Row(
+          children: [
+            Expanded(
+              child: TextButton.icon(
+                onPressed: () => routeDisapprovementDialog(history, context),
+                icon: const Icon(LucideIcons.x, color: Colors.red),
+                label: const Text(
+                  'Reprovar',
+                  style: TextStyle(color: Colors.red),
+                ),
               ),
             ),
-          ),
-          Expanded(
-            child: TextButton.icon(
-              onPressed: () => confirm(context),
-              icon: const Icon(LucideIcons.check),
-              label: const Text('Aprovar'),
-            ),
-          )
-        ],
-      ),
-    ];
+            Expanded(
+              child: TextButton.icon(
+                onPressed: () => confirm(context),
+                icon: const Icon(LucideIcons.check),
+                label: const Text('Aprovar'),
+              ),
+            )
+          ],
+        ),
+      ];
+    }
+
+    return [];
   }
 }

@@ -1,4 +1,6 @@
+import 'package:alfaid/models/user.dart';
 import 'package:alfaid/pages/driver/scanner_route_page.dart';
+import 'package:alfaid/pages/manager/history_route_page.dart';
 import 'package:alfaid/widgets/list_item.dart';
 import 'package:flutter/material.dart';
 
@@ -20,6 +22,19 @@ class DriverHomePartial extends StatelessWidget {
             );
           },
         ),
+        ListItem(
+          title: 'Histórico de rotas',
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const HistoryRoutePage(
+                  role: UserRole.driver,
+                ),
+              ),
+            );
+          },
+        )
       ],
     );
   }
