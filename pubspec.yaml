@@ -49,6 +49,8 @@ dependencies:
   shared_preferences: ^2.5.3
   lucide_icons: ^0.257.0
   toastification: ^3.0.2
+  path: ^1.9.1
+  uuid: ^4.5.1
 
 dev_dependencies:
   flutter_test:

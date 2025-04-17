@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:alfaid/models/history.dart';
 import 'package:alfaid/models/history_approval.dart';
@@ -26,7 +27,7 @@ class API {
       // Converte e retorna o corpo da requisição json em um tipo generico T
       return json.decode(response.body) as T;
     } else {
-      print('Response: ${response.body}');
+      print('### Response: ${response.body}');
 
       String message = switch (response.statusCode) {
         400 => 'Dados inválidos',
@@ -138,5 +139,26 @@ class API {
     var body = {'status': apiStatus, 'observation': observation};
 
     return _post('/history/$id', body: body);
+  }
+
+  Future<String> getSignedUrl(String fileName, String contentType) {
+    var body = {'fileName': fileName, 'contentType': contentType};
+
+    return _post(
+      '/history/upload/getSignedUrl',
+      body: body,
+    ).then((response) => response['signedUrl']);
+  }
+
+  Future<dynamic> uploadImage(
+    String url,
+    Uint8List bytes,
+    String mimeType,
+  ) async {
+    return await http.put(
+      Uri.parse(url),
+      headers: {'Content-Type': mimeType},
+      body: bytes,
+    );
   }
 }

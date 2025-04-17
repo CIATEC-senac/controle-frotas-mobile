@@ -32,7 +32,7 @@ class ApprobationRoutePage extends StatelessWidget {
     var observation = '';
 
     API()
-        .updateHistoryStatus(history.id, HistoryStatus.approved, observation)
+        .updateHistoryStatus(history.id!, HistoryStatus.approved, observation)
         .then((_) {
       toastification.show(
           callbacks: ToastificationCallbacks(
