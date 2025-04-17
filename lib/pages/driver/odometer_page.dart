@@ -1,8 +1,11 @@
 import 'dart:io';
+import 'package:alfaid/api/api.dart';
+import 'package:path/path.dart';
 import 'package:alfaid/pages/driver/map_page.dart';
 import 'package:alfaid/widgets/cards/appbar_card.dart';
 import 'package:alfaid/widgets/cards/odometer_card.dart';
 import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
 
 class OdometerStartPage extends StatefulWidget {
   const OdometerStartPage({super.key});
@@ -27,11 +30,39 @@ class _OdometerStartPageState extends State<OdometerStartPage> {
     });
   }
 
-  void navigateToMapPage() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const MapPage()),
-    );
+  Future<dynamic> getSignedUrl() {
+    if (_image == null) {
+      return Future.value(null);
+    }
+
+    const uuid = Uuid();
+
+    String mimeType = ContentType.parse(_image!.path).mimeType;
+
+    String id = uuid.v4();
+    String fileExtension = extension(_image!.path);
+    String fullFileName = '$id$fileExtension';
+
+    String fileName = basename(fullFileName);
+
+    print('### Name: $fileName. Full name: $fullFileName');
+
+    return API().getSignedUrl(fileName, mimeType).then((String url) async {
+      var bytes = await _image!.readAsBytes();
+
+      return API().uploadImage(url, bytes, mimeType);
+    });
+  }
+
+  void navigateToMapPage(BuildContext context) async {
+    await getSignedUrl().then((_) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const MapPage()),
+      );
+    }).catchError((e) {
+      print('Error: ${e.toString()}');
+    });
   }
 
   @override
@@ -55,7 +86,8 @@ class _OdometerStartPageState extends State<OdometerStartPage> {
                 imageCallback: imageCallback,
               ),
               ElevatedButton(
-                onPressed: isButtonEnabled ? navigateToMapPage : null,
+                onPressed:
+                    isButtonEnabled ? () => navigateToMapPage(context) : null,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: isButtonEnabled ? Colors.green : Colors.grey,
                   padding:
