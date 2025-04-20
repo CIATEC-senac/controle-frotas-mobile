@@ -3,8 +3,9 @@ import 'package:alfaid/models/route.dart';
 import 'package:alfaid/pages/driver/odometer_page.dart';
 import 'package:alfaid/widgets/cards/appbar_card.dart';
 import 'package:alfaid/widgets/cards/card_info.dart';
+import 'package:alfaid/widgets/history/driver_history_card.dart';
 import 'package:alfaid/widgets/route/details_maintenance.dart';
-import 'package:alfaid/widgets/route/details_route_card.dart';
+import 'package:alfaid/widgets/route/route_card.dart';
 import 'package:flutter/material.dart';
 
 class RouteDetailsPage extends StatefulWidget {
@@ -87,9 +88,12 @@ class _RouteDetailsPageState extends State<RouteDetailsPage> {
             CardInfo(
                 icon: const Icon(Icons.directions_bus, size: 32.0),
                 title: 'Placa: ${_route?.vehicle?.plate}',
-                subTitle: 'QRCode: ${widget.routeId}'),
-            DetailsRouteCard(text: "Informações da Rota", route: _route),
-            DetailsMaintenance(text: "Manutenção"),
+                subTitle: 'Modelo: ${_route?.vehicle?.model}'),
+            DriverHistoryCard(driver: _route!.driver!),
+            DetailsRouteCard(route: _route!),
+            DetailsMaintenance(
+              vehicle: _route!.vehicle!,
+            ),
             const SizedBox(height: 56.0),
           ],
         ),

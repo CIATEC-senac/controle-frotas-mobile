@@ -125,6 +125,11 @@ class API {
     );
   }
 
+  Future<String> createHistory(RouteHistoryModel history) async {
+    return _post('/history', body: history);
+  }
+
+  // Método para atualizar status de um histórico
   Future<void> updateHistoryStatus(
     int id,
     HistoryStatus status,

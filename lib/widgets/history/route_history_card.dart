@@ -19,7 +19,7 @@ class RouteHistoryCard extends StatelessWidget {
 
     return DetailCard(
       icon: LucideIcons.pin,
-      title: 'Rota',
+      title: 'Rota ${history.route.id.toString().padLeft(4, '0')}',
       children: [
         DetailRow(label: 'Origem:', value: origin),
         DetailRow(label: 'Destino:', value: destination),

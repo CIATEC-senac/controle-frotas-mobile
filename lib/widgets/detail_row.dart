@@ -19,11 +19,12 @@ class DetailRow extends StatelessWidget {
           label,
           style: TextStyle(color: Colors.grey.shade600),
         )),
-        Text(
+        Expanded(
+            child: Text(
           value ?? 'N/A',
           overflow: TextOverflow.ellipsis,
-          maxLines: 1,
-        )
+          maxLines: 3,
+        ))
       ],
     );
   }

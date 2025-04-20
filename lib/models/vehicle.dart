@@ -1,3 +1,5 @@
+import 'package:alfaid/models/maintenance.dart';
+
 enum VehicleType { bus, car, minibus, van }
 
 class VehicleModel {
@@ -6,6 +8,7 @@ class VehicleModel {
   final String model;
   final VehicleType? type;
   final int capacity;
+  final List<MaintenanceModel>? maintenances;
 
   const VehicleModel({
     required this.id,
@@ -13,13 +16,14 @@ class VehicleModel {
     required this.model,
     required this.type,
     required this.capacity,
+    required this.maintenances,
   });
 
   String? get fType {
     return switch (type) {
       VehicleType.bus => 'Ônibus',
       VehicleType.car => 'Carro',
-      VehicleType.minibus => 'Miniônibus',
+      VehicleType.minibus => 'Micro-Ônibus',
       VehicleType.van => 'Van',
       _ => null
     };
@@ -33,6 +37,7 @@ class VehicleModel {
         'type': String type,
         'model': String model,
         'capacity': int capacity,
+        'maintenances': List<dynamic>? maintenances,
       } =>
         VehicleModel(
           id: id,
@@ -46,6 +51,9 @@ class VehicleModel {
             _ => null
           },
           capacity: capacity,
+          maintenances: (maintenances ?? [])
+              .map((maintenance) => MaintenanceModel.fromJson(maintenance))
+              .toList(),
         ),
       _ => throw const FormatException('Erro ao buscar veículo'),
     };
