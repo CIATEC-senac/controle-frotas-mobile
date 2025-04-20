@@ -25,7 +25,8 @@ Future<void> routeDisapprovementDialog(
     var observation = controller.value.text;
 
     API()
-        .updateHistoryStatus(history.id, HistoryStatus.disapproved, observation)
+        .updateHistoryStatus(
+            history.id!, HistoryStatus.disapproved, observation)
         .then((_) {
       toastification.show(
           callbacks: ToastificationCallbacks(

@@ -125,7 +125,7 @@ class API {
     );
   }
 
-  Future<String> createHistory(RouteHistoryModel history) async {
+  Future<dynamic> createHistory(Map<String, dynamic> history) async {
     return _post('/history', body: history);
   }
 

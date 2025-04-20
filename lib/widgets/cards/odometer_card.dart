@@ -8,14 +8,15 @@ class OdometerCard extends StatelessWidget {
   final void Function(File) imageCallback;
   final String odometer;
   final File? image;
+  final bool? enabled;
 
-  const OdometerCard({
-    super.key,
-    required this.odometerCallback,
-    required this.imageCallback,
-    required this.odometer,
-    required this.image,
-  });
+  const OdometerCard(
+      {super.key,
+      required this.odometerCallback,
+      required this.imageCallback,
+      required this.odometer,
+      required this.image,
+      this.enabled});
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +38,7 @@ class OdometerCard extends StatelessWidget {
               ),
             ),
             TextField(
+              enabled: enabled,
               keyboardType: TextInputType.number,
               decoration: const InputDecoration(
                 hintText: 'Ex: 189008',
