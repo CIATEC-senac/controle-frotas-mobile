@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:alfaid/api/api.dart';
+import 'package:alfaid/models/route.dart';
 import 'package:alfaid/pages/driver/map_page.dart';
 import 'package:alfaid/widgets/cards/appbar_card.dart';
 import 'package:alfaid/widgets/cards/odometer_card.dart';
@@ -9,13 +10,16 @@ import 'package:path/path.dart';
 import 'package:uuid/uuid.dart';
 
 class OdometerStartPage extends StatefulWidget {
-  const OdometerStartPage({super.key});
+  final RouteModel route;
+
+  const OdometerStartPage({super.key, required this.route});
 
   @override
   State<OdometerStartPage> createState() => _OdometerStartPageState();
 }
 
 class _OdometerStartPageState extends State<OdometerStartPage> {
+  bool _isUploading = false;
   String _odometer = "";
   File? _image;
 
@@ -32,9 +36,13 @@ class _OdometerStartPageState extends State<OdometerStartPage> {
   }
 
   Future<dynamic> getSignedUrl() {
-    if (_image == null) {
+    if (_image == null || _isUploading) {
       return Future.value(null);
     }
+
+    setState(() {
+      _isUploading = true;
+    });
 
     const uuid = Uuid();
 
@@ -50,20 +58,20 @@ class _OdometerStartPageState extends State<OdometerStartPage> {
       var bytes = await _image!.readAsBytes();
 
       return API().uploadImage(url, bytes, mimeType).then((_) {
-        // history.odometerInitialImg = fullFileName;
-        // API().updateHistory(history)
+        return API().createHistory({
+          "odometerInitial": _odometer,
+          "imgOdometerInitial": fullFileName,
+          "driver": {"id": widget.route.driver?.id},
+          "route": {
+            "id": widget.route.id,
+          },
+          "vehicle": {"id": widget.route.vehicle?.id}
+        });
       });
     });
   }
 
-  // create history
-  // odometerInitial
-  // imgOdometerInitial
-  // driver
-  // vehicle
-  // route
-
-  void navigateToMapPage(BuildContext context) async {
+  void createHistory(BuildContext context) async {
     await getSignedUrl().then((_) {
       Navigator.push(
         context,
@@ -71,6 +79,10 @@ class _OdometerStartPageState extends State<OdometerStartPage> {
       );
     }).catchError((e) {
       print('Error: ${e.toString()}');
+    }).whenComplete(() {
+      setState(() {
+        _isUploading = false;
+      });
     });
   }
 
@@ -93,10 +105,11 @@ class _OdometerStartPageState extends State<OdometerStartPage> {
                 odometerCallback: odometerCallback,
                 image: _image,
                 imageCallback: imageCallback,
+                enabled: !_isUploading,
               ),
               ElevatedButton(
                 onPressed:
-                    isButtonEnabled ? () => navigateToMapPage(context) : null,
+                    isButtonEnabled ? () => createHistory(context) : null,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: isButtonEnabled ? Colors.green : Colors.grey,
                   padding:
@@ -105,14 +118,27 @@ class _OdometerStartPageState extends State<OdometerStartPage> {
                     borderRadius: BorderRadius.circular(8), // Menos arredondado
                   ),
                 ),
-                child: Text(
-                  'Ir para rota',
-                  style: TextStyle(
-                    color: isButtonEnabled
-                        ? Colors.white
-                        : Colors.black, // Branco quando habilitado
-                    fontWeight: FontWeight.bold,
-                  ),
+                child: Row(
+                  spacing: 12.0,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    if (_isUploading)
+                      const SizedBox(
+                        child: CircularProgressIndicator(
+                            color: Colors.white, strokeWidth: 2.0),
+                        width: 16.0,
+                        height: 16.0,
+                      ),
+                    Text(
+                      'Ir para rota',
+                      style: TextStyle(
+                        color: isButtonEnabled
+                            ? Colors.white
+                            : Colors.black, // Branco quando habilitado
+                        fontWeight: FontWeight.bold,
+                      ),
+                    )
+                  ],
                 ),
               )
             ],

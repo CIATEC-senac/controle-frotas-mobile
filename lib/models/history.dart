@@ -7,7 +7,7 @@ import 'package:alfaid/models/vehicle.dart';
 import 'package:alfaid/utils/date_manipulation.dart';
 
 class RouteHistoryModel {
-  final int id;
+  final int? id;
   final double? odometerInitial;
   final double? odometerFinal;
   final String? imgOdometerInitial;
@@ -22,7 +22,7 @@ class RouteHistoryModel {
   final HistoryApproval? approval;
 
   const RouteHistoryModel({
-    required this.id,
+    this.id,
     this.odometerInitial,
     this.odometerFinal,
     this.imgOdometerInitial,

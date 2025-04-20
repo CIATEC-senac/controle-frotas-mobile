@@ -91,9 +91,7 @@ class _RouteDetailsPageState extends State<RouteDetailsPage> {
                 subTitle: 'Modelo: ${_route?.vehicle?.model}'),
             DriverHistoryCard(driver: _route!.driver!),
             DetailsRouteCard(route: _route!),
-            DetailsMaintenance(
-              vehicle: _route!.vehicle!,
-            ),
+            DetailsMaintenance(vehicle: _route!.vehicle!),
             const SizedBox(height: 56.0),
           ],
         ),
@@ -105,7 +103,10 @@ class _RouteDetailsPageState extends State<RouteDetailsPage> {
     // Navega para a página de odômetro e aguarda o valor inserido
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const OdometerStartPage()),
+      MaterialPageRoute(
+          builder: (context) => OdometerStartPage(
+                route: _route!,
+              )),
     );
   }
 
