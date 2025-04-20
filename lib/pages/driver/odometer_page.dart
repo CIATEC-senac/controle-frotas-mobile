@@ -1,10 +1,11 @@
 import 'dart:io';
+
 import 'package:alfaid/api/api.dart';
-import 'package:path/path.dart';
 import 'package:alfaid/pages/driver/map_page.dart';
 import 'package:alfaid/widgets/cards/appbar_card.dart';
 import 'package:alfaid/widgets/cards/odometer_card.dart';
 import 'package:flutter/material.dart';
+import 'package:path/path.dart';
 import 'package:uuid/uuid.dart';
 
 class OdometerStartPage extends StatefulWidget {
@@ -45,14 +46,22 @@ class _OdometerStartPageState extends State<OdometerStartPage> {
 
     String fileName = basename(fullFileName);
 
-    print('### Name: $fileName. Full name: $fullFileName');
-
     return API().getSignedUrl(fileName, mimeType).then((String url) async {
       var bytes = await _image!.readAsBytes();
 
-      return API().uploadImage(url, bytes, mimeType);
+      return API().uploadImage(url, bytes, mimeType).then((_) {
+        // history.odometerInitialImg = fullFileName;
+        // API().updateHistory(history)
+      });
     });
   }
+
+  // create history
+  // odometerInitial
+  // imgOdometerInitial
+  // driver
+  // vehicle
+  // route
 
   void navigateToMapPage(BuildContext context) async {
     await getSignedUrl().then((_) {

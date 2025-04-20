@@ -3,15 +3,14 @@ import 'package:alfaid/models/history.dart';
 import 'package:alfaid/models/history_approval.dart';
 import 'package:alfaid/models/user.dart';
 import 'package:alfaid/pages/manager/history_route_page.dart';
-
 import 'package:alfaid/widgets/cards/appbar_card.dart';
 import 'package:alfaid/widgets/cards/detail_card.dart';
 import 'package:alfaid/widgets/detail_row.dart';
-import 'package:alfaid/widgets/history/route_disapprovement_dialog.dart';
 import 'package:alfaid/widgets/history/driver_history_card.dart';
+import 'package:alfaid/widgets/history/route_disapprovement_dialog.dart';
 import 'package:alfaid/widgets/history/route_executed.dart';
-import 'package:alfaid/widgets/history/route_planned.dart';
 import 'package:alfaid/widgets/history/route_history_card.dart';
+import 'package:alfaid/widgets/history/route_planned.dart';
 import 'package:alfaid/widgets/history/stops_unprogrammed.dart';
 import 'package:alfaid/widgets/history/vehicle_history_card.dart';
 import 'package:flutter/material.dart';
@@ -100,11 +99,11 @@ class ApprobationRoutePage extends StatelessWidget {
     if (history.approval != null) {
       return [
         DetailRow(
-          label: 'Aprovado por:',
+          label: 'Aprovada por:',
           value: history.approval!.approvedBy.name,
         ),
         DetailRow(
-          label: 'Aprovado em:',
+          label: 'Aprovada em:',
           value: history.approval!.fDate,
         ),
         if (history.approval!.observation!.isNotEmpty)

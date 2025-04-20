@@ -3,7 +3,7 @@ import 'package:alfaid/models/history.dart';
 import 'package:alfaid/models/history_approval.dart';
 import 'package:alfaid/models/user.dart';
 import 'package:alfaid/pages/manager/approbation_route_page.dart';
-import 'package:alfaid/widgets/route/card_route.dart';
+import 'package:alfaid/widgets/route/list_route_card.dart';
 import 'package:flutter/material.dart';
 
 class HistoryRoutePage extends StatefulWidget {
@@ -78,7 +78,7 @@ class _HistoryRoutePageState extends State<HistoryRoutePage>
       padding: const EdgeInsets.all(8.0),
       child: ListView.builder(
         itemCount: filtered.length,
-        itemBuilder: (context, index) => CardRoute(
+        itemBuilder: (context, index) => ListRouteCard(
           history: filtered[index],
           onPressed: () {
             Navigator.pushReplacement(

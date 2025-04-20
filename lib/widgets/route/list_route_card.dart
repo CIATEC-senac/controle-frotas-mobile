@@ -3,11 +3,12 @@ import 'package:alfaid/models/history_approval.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
-class CardRoute extends StatelessWidget {
+class ListRouteCard extends StatelessWidget {
   final RouteHistoryModel history;
   final VoidCallback onPressed;
 
-  const CardRoute({super.key, required this.history, required this.onPressed});
+  const ListRouteCard(
+      {super.key, required this.history, required this.onPressed});
 
   String getStreet(String address) {
     return address.split(',').first.toUpperCase();

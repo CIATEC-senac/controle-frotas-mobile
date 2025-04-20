@@ -1,39 +1,32 @@
-import 'package:alfaid/widgets/route/widget_table.dart';
+import 'package:alfaid/models/maintenance.dart';
+import 'package:alfaid/models/vehicle.dart';
+import 'package:alfaid/widgets/cards/detail_card.dart';
+import 'package:alfaid/widgets/detail_row.dart';
 import 'package:flutter/material.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 
 class DetailsMaintenance extends StatelessWidget {
-  final String text;
+  final VehicleModel vehicle;
 
-  final maintenances = {
-    'Última': "00/00/00",
-    'Próxima': "00/00/00",
-  };
-
-  DetailsMaintenance({super.key, required this.text});
+  const DetailsMaintenance({super.key, required this.vehicle});
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 1,
-      child: Container(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Row(
-              spacing: 12,
-              children: [
-                const Icon(Icons.calendar_today_outlined, size: 20.0),
-                Text(text, style: Theme.of(context).textTheme.headlineSmall),
-              ],
-            ),
-            Container(
-              padding: const EdgeInsets.only(left: 16.0),
-              child: WidgetTable(data: maintenances),
-            ),
-          ],
-        ),
-      ),
+    var today = DateTime.now().copyWith(hour: 0, minute: 0, second: 0);
+
+    MaintenanceModel? nextMaintenance = vehicle.maintenances
+        ?.where((maintenance) => maintenance.date.isAfter(today))
+        .firstOrNull;
+
+    return DetailCard(
+      icon: LucideIcons.calendar,
+      title: 'Manutenção',
+      children: [
+        DetailRow(label: 'Última manutenção:', value: 'N/A'),
+        DetailRow(
+            label: 'Próxima manutenção:',
+            value: nextMaintenance?.date.toString() ?? 'N/A'),
+      ],
     );
   }
 }
