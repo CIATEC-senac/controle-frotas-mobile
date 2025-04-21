@@ -1,8 +1,8 @@
 import 'package:alfaid/api/api.dart';
 import 'package:alfaid/models/user.dart';
 import 'package:alfaid/pages/login_page.dart';
-import 'package:alfaid/pages/partials/home_manager.dart';
 import 'package:alfaid/pages/partials/home_driver.dart';
+import 'package:alfaid/pages/partials/home_manager.dart';
 import 'package:alfaid/widgets/drawer.dart';
 import 'package:alfaid/widgets/list_item.dart';
 import 'package:flutter/material.dart';
@@ -20,15 +20,11 @@ class _HomePageState extends State<HomePage> {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   UserModel? _user;
 
-  // Permissão para acesso a câmera
-  PermissionStatus _permissionStatus = PermissionStatus.denied;
-
   Future<void> requestPermission() async {
-    final status = await Permission.camera.request();
-
-    setState(() {
-      _permissionStatus = status;
-    });
+    await Permission.camera.request();
+    await Permission.location.request();
+    await Permission.locationAlways.request();
+    await Permission.locationWhenInUse.request();
   }
 
   void fetchUser() async {
