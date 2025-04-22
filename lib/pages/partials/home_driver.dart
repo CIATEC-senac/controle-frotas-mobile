@@ -34,7 +34,7 @@ class DriverHomePartial extends StatelessWidget {
               ),
             );
           },
-        )
+        ),
       ],
     );
   }

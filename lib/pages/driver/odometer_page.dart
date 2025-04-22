@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:alfaid/api/api.dart';
 import 'package:alfaid/models/route.dart';
-import 'package:alfaid/pages/map.dart';
+import 'package:alfaid/pages/map_teste_google.dart';
 import 'package:alfaid/widgets/cards/appbar_card.dart';
 import 'package:alfaid/widgets/cards/odometer_card.dart';
 import 'package:flutter/material.dart';
@@ -75,7 +75,10 @@ class _OdometerStartPageState extends State<OdometerStartPage> {
     // await getSignedUrl().then((_) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => MapboxPage()),
+      MaterialPageRoute(
+          builder: (context) => MapSample(
+                route: widget.route,
+              )),
     );
     // }).catchError((e) {
     //   print('Error: ${e.toString()}');

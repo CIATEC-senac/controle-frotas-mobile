@@ -39,6 +39,7 @@ dependencies:
   mapbox_maps_flutter: ^2.7.0
   flutter_dotenv: ^5.2.1
   # flutter_mapbox_navigation: ^0.2.2
+  # nb_navigation_flutter: ^2.5.0
 
   camera: ^0.10.5+2
   path_provider: ^2.1.0
