@@ -55,6 +55,26 @@ class VehicleModel {
               .map((maintenance) => MaintenanceModel.fromJson(maintenance))
               .toList(),
         ),
+      {
+        'id': int id,
+        'plate': String plate,
+        'type': String type,
+        'model': String model,
+        'capacity': int capacity,
+      } =>
+        VehicleModel(
+            id: id,
+            plate: plate,
+            model: model,
+            type: switch (type) {
+              'bus' => VehicleType.bus,
+              'van' => VehicleType.van,
+              'car' => VehicleType.car,
+              'minibus' => VehicleType.minibus,
+              _ => null
+            },
+            capacity: capacity,
+            maintenances: []),
       _ => throw const FormatException('Erro ao buscar veículo'),
     };
   }

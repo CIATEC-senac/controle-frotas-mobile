@@ -3,52 +3,48 @@ import 'dart:async';
 import 'package:alfaid/models/route.dart';
 import 'package:alfaid/models/route_path_coordinates.dart';
 import 'package:alfaid/pages/create_route.dart';
+import 'package:alfaid/widgets/unprogrammed_stops.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:lucide_icons/lucide_icons.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
-class MapSample extends StatefulWidget {
+class MapPage extends StatefulWidget {
   final RouteModel route;
-  const MapSample({super.key, required this.route});
+  const MapPage({super.key, required this.route});
 
   @override
-  State<MapSample> createState() => MapSampleState();
+  State<MapPage> createState() => MapPageState();
 }
 
-class MapSampleState extends State<MapSample> {
+class MapPageState extends State<MapPage> {
   StreamSubscription? userPositionStream;
 
   final PolylinePoints polylinePoints = PolylinePoints();
 
-  final Completer<GoogleMapController> _controller =
-      Completer<GoogleMapController>();
+  Completer<GoogleMapController> mapController = Completer();
+
+  final Location location = Location();
 
   LocationData? currentLocation;
 
-  void getCurrentLocation() async {
-    Location location = Location();
+  void animateCamera({
+    required LatLng location,
+    double? zoom,
+  }) async {
+    if (!mounted) {
+      return;
+    }
 
-    location.getLocation().then((location) {
-      currentLocation = location;
-
-      if (mounted) {
-        setState(() {});
-      }
-    });
-
-    GoogleMapController controller = await _controller.future;
-
-    location.onLocationChanged.listen((newLoc) async {
-      currentLocation = newLoc;
-
-      final zoom = await controller.getZoomLevel();
+    mapController.future.then((controller) async {
+      final cameraZoom = zoom ?? await controller.getZoomLevel();
 
       controller.animateCamera(
         CameraUpdate.newCameraPosition(
           CameraPosition(
-            zoom: zoom,
+            zoom: cameraZoom,
             target: LatLng(
               currentLocation!.latitude!,
               currentLocation!.longitude!,
@@ -56,21 +52,29 @@ class MapSampleState extends State<MapSample> {
           ),
         ),
       );
-
-      if (mounted) {
-        setState(() {});
-      }
     });
   }
 
-  static CameraPosition initialWaypoint(RouteModel route) {
-    return CameraPosition(
-      target: LatLng(
-        route.coordinates.origin!.lat,
-        route.coordinates.origin!.lng,
-      ),
-      zoom: 15,
-    );
+  void getCurrentLocation() async {
+    location.getLocation().then((location) {
+      if (mounted) {
+        setState(() {
+          currentLocation = location;
+        });
+      }
+    });
+
+    location.onLocationChanged.listen((newLoc) async {
+      if (mounted) {
+        setState(() {
+          currentLocation = newLoc;
+        });
+      }
+
+      animateCamera(
+        location: LatLng(newLoc.latitude!, newLoc.longitude!),
+      );
+    });
   }
 
   late Set<Polyline> _polylines = {};
@@ -82,6 +86,9 @@ class MapSampleState extends State<MapSample> {
 
   @override
   void dispose() {
+    mapController.future.then((controller) {
+      controller.dispose();
+    });
     userPositionStream?.cancel();
     super.dispose();
   }
@@ -151,48 +158,48 @@ class MapSampleState extends State<MapSample> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: currentLocation == null
-          ? const Center(child: Text('Carregando...'))
-          : GoogleMap(
-              polylines: _polylines,
-              zoomControlsEnabled: false,
-              markers: _markers,
-              myLocationButtonEnabled: false,
-              myLocationEnabled: true,
-              mapType: MapType.normal,
-              initialCameraPosition: CameraPosition(
-                bearing: 0.0,
-                tilt: 0.0,
-                target: LatLng(
-                  currentLocation!.latitude!,
-                  currentLocation!.longitude!,
+        body: currentLocation == null
+            ? const Center(child: Text('Carregando...'))
+            : GoogleMap(
+                polylines: _polylines,
+                zoomControlsEnabled: false,
+                markers: _markers,
+                myLocationButtonEnabled: false,
+                myLocationEnabled: true,
+                mapType: MapType.normal,
+                initialCameraPosition: CameraPosition(
+                  bearing: 0.0,
+                  tilt: 0.0,
+                  target: LatLng(
+                    currentLocation!.latitude!,
+                    currentLocation!.longitude!,
+                  ),
+                  zoom: 20,
                 ),
-                zoom: 20,
+                onMapCreated: (GoogleMapController controller) {
+                  mapController.complete(controller);
+                },
               ),
-              onMapCreated: (GoogleMapController controller) {
-                _controller.complete(controller);
-              },
-            ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          GoogleMapController controller = await _controller.future;
-
-          controller.animateCamera(
-            CameraUpdate.newCameraPosition(
-              CameraPosition(
-                bearing: 270.0,
-                zoom: 30.0,
-                tilt: 17.0,
-                target: LatLng(
-                  currentLocation!.latitude!,
-                  currentLocation!.longitude!,
-                ),
-              ),
-            ),
-          );
-        },
-        child: const Icon(LucideIcons.alertTriangle),
-      ),
-    );
+        floatingActionButton: currentLocation == null
+            ? null
+            : Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  FloatingActionButton(
+                    onPressed: () => showMaterialModalBottomSheet(
+                      context: context,
+                      builder: unprogrammedStopsDialog,
+                    ),
+                    child: const Icon(LucideIcons.alertTriangle),
+                  ),
+                  TextButton(
+                    onPressed: () {},
+                    child: const Text(
+                      'Iniciar',
+                      style: TextStyle(fontSize: 18.0),
+                    ),
+                  )
+                ],
+              ));
   }
 }

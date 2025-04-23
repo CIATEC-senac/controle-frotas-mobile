@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:alfaid/api/api.dart';
 import 'package:alfaid/models/route.dart';
-import 'package:alfaid/pages/map_teste_google.dart';
+import 'package:alfaid/pages/map_page.dart';
 import 'package:alfaid/widgets/cards/appbar_card.dart';
 import 'package:alfaid/widgets/cards/odometer_card.dart';
 import 'package:flutter/material.dart';
@@ -72,21 +72,21 @@ class _OdometerStartPageState extends State<OdometerStartPage> {
   }
 
   void createHistory(BuildContext context) async {
-    // await getSignedUrl().then((_) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-          builder: (context) => MapSample(
-                route: widget.route,
-              )),
-    );
-    // }).catchError((e) {
-    //   print('Error: ${e.toString()}');
-    // }).whenComplete(() {
-    //   setState(() {
-    //     _isUploading = false;
-    //   });
-    // });
+    await getSignedUrl().then((_) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => MapPage(
+                  route: widget.route,
+                )),
+      );
+    }).catchError((e) {
+      print('Error: ${e.toString()}');
+    }).whenComplete(() {
+      setState(() {
+        _isUploading = false;
+      });
+    });
   }
 
   @override

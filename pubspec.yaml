@@ -31,12 +31,10 @@ dependencies:
   flutter:
     sdk: flutter
 
-  google_maps: 8.1.1
   image_picker: ^0.8.7
   geolocator: ^14.0.0
   http: ^1.2.2
   flutter_polyline_points: ^2.1.0
-  mapbox_maps_flutter: ^2.7.0
   flutter_dotenv: ^5.2.1
   # flutter_mapbox_navigation: ^0.2.2
   # nb_navigation_flutter: ^2.5.0
@@ -55,6 +53,7 @@ dependencies:
   path: ^1.9.1
   uuid: ^4.5.1
   location: ^8.0.0
+  modal_bottom_sheet: ^3.0.0
 
 dev_dependencies:
   flutter_test:
@@ -81,6 +80,12 @@ flutter:
   assets:
     - .env
     - assets/images/logo.png
+    - assets/images/gas-pump.png
+    - assets/images/heavy-traffic.png
+    - assets/images/service.png
+    - assets/images/traffic-barrier.png
+    - assets/images/traffic-cone.png
+    - assets/images/warning.png
     - assets/icons/pin.png
     - assets/icons/onibus_icon.png
     - assets/icons/trabalhador_icon.png

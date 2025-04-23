@@ -143,7 +143,7 @@ class API {
 
     var body = {'status': apiStatus, 'observation': observation};
 
-    return _post('/history/$id', body: body);
+    return _post('/history/$id/status', body: body);
   }
 
   Future<String> getSignedUrl(String fileName, String contentType) {
@@ -165,5 +165,9 @@ class API {
       headers: {'Content-Type': mimeType},
       body: bytes,
     );
+  }
+
+  Future<dynamic> addUnplannedStop(Map<String, dynamic> unplannedStop) {
+    return _post('/history/stop/unplanned', body: unplannedStop);
   }
 }
