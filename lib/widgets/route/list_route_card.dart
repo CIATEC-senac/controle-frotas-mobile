@@ -73,9 +73,6 @@ class ListRouteCard extends StatelessWidget {
   Widget build(BuildContext context) {
     var startedAt = history.fStartedAt ?? 'N/A';
 
-    var origin = history.path?.origin?.toUpperCase();
-    var destination = history.path?.destination?.toUpperCase();
-
     return Card(
       elevation: 1.0,
       child: Container(

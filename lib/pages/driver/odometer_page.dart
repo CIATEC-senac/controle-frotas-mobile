@@ -35,7 +35,7 @@ class _OdometerStartPageState extends State<OdometerStartPage> {
     });
   }
 
-  Future<dynamic> getSignedUrl() {
+  Future<dynamic> uploadImage() {
     if (_image == null || _isUploading) {
       return Future.value(null);
     }
@@ -57,29 +57,29 @@ class _OdometerStartPageState extends State<OdometerStartPage> {
     return API().getSignedUrl(fileName, mimeType).then((String url) async {
       var bytes = await _image!.readAsBytes();
 
-      return API().uploadImage(url, bytes, mimeType).then((_) {
-        return API().createHistory({
-          "odometerInitial": _odometer,
-          "imgOdometerInitial": fullFileName,
-          "driver": {"id": widget.route.driver?.id},
-          "route": {
-            "id": widget.route.id,
-          },
-          "vehicle": {"id": widget.route.vehicle?.id}
-        });
-      });
+      return API().uploadImage(url, bytes, mimeType).then((_) => fullFileName);
     });
   }
 
   void createHistory(BuildContext context) async {
-    await getSignedUrl().then((_) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
+    await uploadImage().then((fullFileName) {
+      return API().createHistory({
+        "odometerInitial": _odometer,
+        "imgOdometerInitial": fullFileName,
+        "driver": {"id": widget.route.driver?.id},
+        "route": {"id": widget.route.id},
+        "vehicle": {"id": widget.route.vehicle?.id}
+      }).then((historyId) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
             builder: (context) => MapPage(
-                  route: widget.route,
-                )),
-      );
+              route: widget.route,
+              historyId: historyId,
+            ),
+          ),
+        );
+      });
     }).catchError((e) {
       print('Error: ${e.toString()}');
     }).whenComplete(() {
