@@ -1,10 +1,10 @@
 import 'package:alfaid/models/history_approval.dart';
+import 'package:alfaid/models/history_unplanned_stop.dart';
 import 'package:alfaid/models/route.dart';
 import 'package:alfaid/models/route_path.dart';
 import 'package:alfaid/models/route_path_coordinates.dart';
 import 'package:alfaid/models/user.dart';
 import 'package:alfaid/models/vehicle.dart';
-import 'package:alfaid/utils/date_manipulation.dart';
 
 class RouteHistoryModel {
   final int? id;
@@ -20,22 +20,23 @@ class RouteHistoryModel {
   final UserModel driver;
   final VehicleModel vehicle;
   final HistoryApproval? approval;
+  final List<HistoryUnplannedStop> unplannedStops;
 
-  const RouteHistoryModel({
-    this.id,
-    this.odometerInitial,
-    this.odometerFinal,
-    this.imgOdometerInitial,
-    this.imgOdometerFinal,
-    this.coordinates,
-    this.path,
-    this.startedAt,
-    this.endedAt,
-    required this.route,
-    required this.driver,
-    required this.vehicle,
-    this.approval,
-  });
+  const RouteHistoryModel(
+      {this.id,
+      this.odometerInitial,
+      this.odometerFinal,
+      this.imgOdometerInitial,
+      this.imgOdometerFinal,
+      this.coordinates,
+      this.path,
+      this.startedAt,
+      this.endedAt,
+      required this.route,
+      required this.driver,
+      required this.vehicle,
+      this.approval,
+      required this.unplannedStops});
 
   String? get elapsedDistance {
     if (odometerInitial != null && odometerFinal != null) {
@@ -51,37 +52,6 @@ class RouteHistoryModel {
     }
 
     return null;
-  }
-
-  // Formatted started at
-  String? get fStartedAt {
-    if (startedAt != null) {
-      return formatDate(startedAt!);
-    }
-
-    return null;
-  }
-
-  String? get fEndedAt {
-    if (endedAt != null) {
-      return formatDate(endedAt!);
-    }
-
-    return null;
-  }
-
-  // Exclusivo para a tabela de informações de histórico
-  Map<String, dynamic> fromModel() {
-    return {
-      'Rota': id.toString(),
-      'Motorista': driver.name,
-      'Origem': path?.origin?.toUpperCase(),
-      'Destino': path?.destination?.toUpperCase(),
-      'Horário de partida':
-          startedAt?.toIso8601String() ?? 'Ainda não iniciada',
-      'Horário de chegada': "00:00",
-      'Paradas': (path?.stops?.length ?? 0).toString(),
-    };
   }
 
   // Cria uma instância de routeModel a partir de um json
@@ -106,10 +76,12 @@ class RouteHistoryModel {
         approval: json['approval'] != null
             ? HistoryApproval.fromJson(json['approval'])
             : null,
+        unplannedStops: (json['unplannedStops'] as List<dynamic>)
+            .map((stop) => HistoryUnplannedStop.fromJson(stop))
+            .toList(),
       );
     } catch (e) {
-      print('### ${e.toString()}');
-      throw const FormatException('Erro ao buscar histórico');
+      throw FormatException('Erro ao parsear HistoryModel: ${e.toString()}');
     }
   }
 }

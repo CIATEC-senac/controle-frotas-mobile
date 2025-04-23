@@ -30,12 +30,11 @@ class VehicleHistoryCard extends StatelessWidget {
         : null;
 
     var odometerInitial = history.odometerInitial != null
-        ? '${history.odometerInitial.toString()} Km'
+        ? '${history.odometerInitial} Km'
         : null;
 
-    var odometerFinal = history.odometerInitial != null
-        ? '${history.odometerFinal.toString()} Km'
-        : null;
+    var odometerFinal =
+        history.odometerFinal != null ? '${history.odometerFinal} Km' : null;
 
     return DetailCard(icon: LucideIcons.bus, title: 'Veículo', children: [
       Text(history.vehicle.model),

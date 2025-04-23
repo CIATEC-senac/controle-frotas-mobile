@@ -26,6 +26,10 @@ class RouteModel {
     return estimatedDistance / 1000;
   }
 
+  String get name {
+    return id.toString().padLeft(4, '0');
+  }
+
   // Exclusivo para a tabela de informações de rota
   Map<String, dynamic> fromModel() {
     return {

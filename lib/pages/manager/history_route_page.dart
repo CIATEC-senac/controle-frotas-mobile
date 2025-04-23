@@ -81,7 +81,7 @@ class _HistoryRoutePageState extends State<HistoryRoutePage>
         itemBuilder: (context, index) => ListRouteCard(
           history: filtered[index],
           onPressed: () {
-            Navigator.pushReplacement(
+            Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (context) => ApprobationRoutePage(
@@ -89,7 +89,9 @@ class _HistoryRoutePageState extends State<HistoryRoutePage>
                   role: widget.role,
                 ),
               ),
-            );
+            ).then((_) {
+              getRoutesHistory();
+            });
           },
         ),
       ),

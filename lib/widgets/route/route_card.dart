@@ -16,7 +16,7 @@ class DetailsRouteCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return DetailCard(
       icon: LucideIcons.pin,
-      title: 'Rota ${route.id.toString().padLeft(4, '0')}',
+      title: 'Rota ${route.name}',
       children: [
         DetailRow(label: 'Origem:', value: route.path.origin),
         DetailRow(label: 'Destino:', value: route.path.destination),

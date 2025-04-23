@@ -1,6 +1,7 @@
 import 'package:alfaid/models/history.dart';
 import 'package:alfaid/widgets/cards/detail_card.dart';
 import 'package:alfaid/widgets/detail_row.dart';
+import 'package:daydart_flutter/daydart.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
@@ -19,12 +20,20 @@ class RouteHistoryCard extends StatelessWidget {
 
     return DetailCard(
       icon: LucideIcons.pin,
-      title: 'Rota ${history.route.id.toString().padLeft(4, '0')}',
+      title: 'Rota ${history.route.name}',
       children: [
         DetailRow(label: 'Origem:', value: origin),
         DetailRow(label: 'Destino:', value: destination),
-        DetailRow(label: 'Hora de início:', value: history.fStartedAt),
-        DetailRow(label: 'Hora de término:', value: history.fEndedAt),
+        DetailRow(
+            label: 'Hora de início:',
+            value: history.startedAt != null
+                ? DayDart(history.startedAt).format('DD/MM/YYYY HH:mm:ss')
+                : 'N/A'),
+        DetailRow(
+            label: 'Hora de término:',
+            value: history.endedAt != null
+                ? DayDart(history.endedAt).format('DD/MM/YYYY HH:mm:ss')
+                : 'N/A'),
         DetailRow(
           label: 'Tempo previsto:',
           value: '${history.route.estimatedDuration.toString()} min',

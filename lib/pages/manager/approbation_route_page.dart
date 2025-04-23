@@ -11,8 +11,9 @@ import 'package:alfaid/widgets/history/route_disapprovement_dialog.dart';
 import 'package:alfaid/widgets/history/route_executed.dart';
 import 'package:alfaid/widgets/history/route_history_card.dart';
 import 'package:alfaid/widgets/history/route_planned.dart';
-import 'package:alfaid/widgets/history/stops_unprogrammed.dart';
+import 'package:alfaid/widgets/history/unplanned_stop.dart';
 import 'package:alfaid/widgets/history/vehicle_history_card.dart';
+import 'package:daydart_flutter/daydart.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:toastification/toastification.dart';
@@ -73,7 +74,9 @@ class ApprobationRoutePage extends StatelessWidget {
               RouteHistoryCard(history: history),
               RoutePlanned(),
               RouteExecuted(),
-              UnprogrammedStops(),
+              UnplannedStop(
+                history: history,
+              ),
               approvalCard(context),
             ],
           ),
@@ -104,7 +107,7 @@ class ApprobationRoutePage extends StatelessWidget {
         ),
         DetailRow(
           label: 'Aprovada em:',
-          value: history.approval!.fDate,
+          value: DayDart(history.approval!).format('DD/MM/YYYY HH:mm:ss'),
         ),
         if (history.approval!.observation!.isNotEmpty)
           DetailRow(label: 'Observação:', value: history.approval!.observation)
