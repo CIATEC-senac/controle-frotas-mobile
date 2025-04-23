@@ -5,7 +5,7 @@ import 'package:alfaid/models/route.dart';
 import 'package:alfaid/models/route_path_coordinates.dart';
 import 'package:alfaid/pages/driver/odometer_end_page.dart';
 import 'package:alfaid/pages/partials/create_route.dart';
-import 'package:alfaid/pages/partials/start_run%20copy.dart';
+import 'package:alfaid/pages/partials/start_run.dart';
 import 'package:alfaid/pages/partials/stop_run.dart';
 import 'package:alfaid/widgets/unprogrammed_stops.dart';
 import 'package:flutter/material.dart';
