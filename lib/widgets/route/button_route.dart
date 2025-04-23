@@ -21,13 +21,7 @@ class ButtonOptions extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: color,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8), // Menos arredondado
-          ),
-        ),
+      child: FloatingActionButton(
         onPressed: onPressed,
         child: SizedBox(
           height: height,

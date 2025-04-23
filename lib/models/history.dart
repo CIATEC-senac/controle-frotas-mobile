@@ -86,39 +86,30 @@ class RouteHistoryModel {
 
   // Cria uma instância de routeModel a partir de um json
   factory RouteHistoryModel.fromJson(Map<String, dynamic> json) {
-    return switch (json) {
-      {
-        'id': int id,
-        'odometerInitial': num odometerInitial,
-        'odometerFinal': num odometerFinal,
-        'approval': Map<String, dynamic>? approval,
-        'imgOdometerInitial': String? imgOdometerInitial,
-        'imgOdometerFinal': String? imgOdometerFinal,
-        'pathCoordinates': Map<String, dynamic>? coordinates,
-        'path': Map<String, dynamic>? path,
-        'startedAt': String? startedAt,
-        'endedAt': String? endedAt,
-        'route': Map<String, dynamic> route,
-        'vehicle': Map<String, dynamic> vehicle,
-        'driver': Map<String, dynamic> driver,
-      } =>
-        RouteHistoryModel(
-          id: id,
-          odometerInitial: odometerInitial.toDouble(),
-          odometerFinal: odometerFinal.toDouble(),
-          imgOdometerInitial: imgOdometerInitial,
-          imgOdometerFinal: imgOdometerFinal,
-          coordinates: RoutePathCoordinates.fromJson(coordinates),
-          path: RoutePath.fromJson(path),
-          startedAt: startedAt != null ? DateTime.tryParse(startedAt) : null,
-          endedAt: endedAt != null ? DateTime.tryParse(endedAt) : null,
-          route: RouteModel.fromJson(route),
-          vehicle: VehicleModel.fromJson(vehicle),
-          driver: UserModel.fromJson(driver),
-          approval:
-              approval != null ? HistoryApproval.fromJson(approval) : null,
-        ),
-      _ => throw const FormatException('Erro ao buscar histórico.'),
-    };
+    try {
+      return RouteHistoryModel(
+        id: json['id'],
+        odometerInitial: json['odometerInitial']?.toDouble(),
+        odometerFinal: json['odometerFinal']?.toDouble(),
+        imgOdometerInitial: json['imgOdometerInitial'],
+        imgOdometerFinal: json['imgOdometerFinal'],
+        coordinates: RoutePathCoordinates.fromJson(json['coordinates']),
+        path: RoutePath.fromJson(json['path']),
+        startedAt: json['startedAt'] != null
+            ? DateTime.tryParse(json['startedAt'])
+            : null,
+        endedAt:
+            json['endedAt'] != null ? DateTime.tryParse(json['endedAt']) : null,
+        route: RouteModel.fromJson(json['route']),
+        vehicle: VehicleModel.fromJson(json['vehicle']),
+        driver: UserModel.fromJson(json['driver']),
+        approval: json['approval'] != null
+            ? HistoryApproval.fromJson(json['approval'])
+            : null,
+      );
+    } catch (e) {
+      print('### ${e.toString()}');
+      throw const FormatException('Erro ao buscar histórico');
+    }
   }
 }

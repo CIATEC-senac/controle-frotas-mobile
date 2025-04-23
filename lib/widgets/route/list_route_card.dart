@@ -92,8 +92,8 @@ class ListRouteCard extends StatelessWidget {
             ),
             getRow(LucideIcons.calendar, startedAt),
             getRow(LucideIcons.user2, history.driver.name),
-            getRow(LucideIcons.mapPin, origin ?? ''),
-            getRow(LucideIcons.pin, destination ?? ''),
+            getRow(LucideIcons.mapPin, history.route.path.origin ?? 'N/A'),
+            getRow(LucideIcons.pin, history.route.path.destination ?? 'N/A'),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [

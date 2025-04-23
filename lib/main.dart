@@ -1,7 +1,6 @@
 import 'package:alfaid/api/api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
 import 'package:toastification/toastification.dart';
 
 import 'pages/home_page.dart'; // Importa a página HomePage
@@ -22,7 +21,7 @@ void main() async {
 
 Future<void> setup() async {
   await dotenv.load(fileName: '.env');
-  MapboxOptions.setAccessToken(dotenv.env['MAPBOX_ACCESS_TOKEN']!);
+  // MapboxOptions.setAccessToken(dotenv.env['MAPBOX_ACCESS_TOKEN']!);
 }
 
 // Widget raiz do aplicativo
