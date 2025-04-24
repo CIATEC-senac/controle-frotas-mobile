@@ -45,45 +45,24 @@ class UserModel {
 
   // Cria uma instância de UserModel a partir de um json
   factory UserModel.fromJson(Map<String, dynamic> json) {
-    // Validação de tipos
-    return switch (json) {
-      {
-        'id': int id,
-        'name': String name,
-        'email': String? email,
-        'cpf': String cpf,
-        'role': int role,
-        'cnh': String cnh,
-      } =>
-        // Cria e retorna um UserModel com os dados extraídos
-        UserModel(
-          id: id,
-          cnh: cnh,
-          name: UserModel._capitalize(name),
-          email: email,
-          cpf: cpf,
-          role: switch (role) {
-            0 => UserRole.admin,
-            1 => UserRole.manager,
-            2 => UserRole.driver,
-            _ => throw Exception('Role: ${role} desconhecida'),
-          },
-        ),
-      {
-        'id': int id,
-        'name': String name,
-        'cnh': String cnh,
-        'cpf': String cpf,
-      } =>
-        // Cria e retorna um UserModel com os dados extraídos
-        UserModel(
-          id: id,
-          name: UserModel._capitalize(name),
-          cnh: cnh,
-          cpf: cpf,
-        ),
-      // Gerando uma exceção
-      _ => throw const FormatException('Erro ao buscar usuário.'),
-    };
+    try {
+      return UserModel(
+        id: json['id'],
+        cnh: json['cnh'],
+        name: UserModel._capitalize(json['name']),
+        email: json['email'],
+        cpf: json['cpf'],
+        role: json['role'] != null
+            ? switch (json['role']) {
+                0 => UserRole.admin,
+                1 => UserRole.manager,
+                2 => UserRole.driver,
+                _ => throw Exception('Role: ${json['role']} desconhecida'),
+              }
+            : null,
+      );
+    } catch (e) {
+      throw FormatException('Erro ao parsear usuário: ${e.toString()}');
+    }
   }
 }

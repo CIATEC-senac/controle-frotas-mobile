@@ -280,9 +280,11 @@ class MapPageState extends State<MapPage> {
               width: MediaQuery.of(context).size.width,
               decoration: BoxDecoration(color: Colors.white),
               padding: const EdgeInsets.all(12.0),
-              child: _isRunning
-                  ? StopRun(onPressed: stopRunning)
-                  : StartRun(onPressed: startRunning),
+              child: _currentLocation != null
+                  ? _isRunning
+                      ? StopRun(onPressed: stopRunning)
+                      : StartRun(onPressed: startRunning)
+                  : null,
             ),
           )
         ],

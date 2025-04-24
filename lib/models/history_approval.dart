@@ -21,24 +21,19 @@ class HistoryApproval {
   }
 
   factory HistoryApproval.fromJson(Map<String, dynamic> json) {
-    return switch (json) {
-      {
-        'observation': String observation,
-        'status': num status,
-        'approvedBy': Map<String, dynamic> approvedBy,
-        'date': String date,
-      } =>
-        HistoryApproval(
-          observation: observation,
-          status: switch (status) {
-            0 => HistoryStatus.approved,
-            1 => HistoryStatus.disapproved,
-            _ => HistoryStatus.pending,
-          },
-          approvedBy: UserModel.fromJson(approvedBy),
-          date: DateTime.parse(date),
-        ),
-      _ => throw const FormatException('Erro ao buscar aprovação'),
-    };
+    try {
+      return HistoryApproval(
+        observation: json['observation'],
+        status: switch (json['status']) {
+          0 => HistoryStatus.approved,
+          1 => HistoryStatus.disapproved,
+          _ => HistoryStatus.pending,
+        },
+        approvedBy: UserModel.fromJson(json['approvedBy']),
+        date: DateTime.parse(json['date']),
+      );
+    } catch (e) {
+      throw FormatException('Erro ao parsear aprovação: ${e.toString()}');
+    }
   }
 }
