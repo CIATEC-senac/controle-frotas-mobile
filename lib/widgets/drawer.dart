@@ -40,16 +40,21 @@ class _DrawerMenuState extends State<DrawerMenu> {
                     });
                   },
                 ),
-                ListTile(
-                  leading: const Icon(Icons.notifications_none),
-                  title: const Text('Notificações'),
-                  onTap: () {
-                    Navigator.of(context).pushReplacementNamed('/home');
-                  },
-                ),
-                const SizedBox(
-                  height: 100.0,
-                ),
+                // ListTile(
+                //   leading: const Icon(Icons.notifications_none),
+                //   title: const Text('Notificações'),
+                //   onTap: () {
+                //     Navigator.push(
+                //       context,
+                //       MaterialPageRoute(
+                //         builder: (context) => const NotificationsPage(),
+                //       ),
+                //     );
+                //   },
+                // ),
+                // const SizedBox(
+                //   height: 100.0,
+                // ),
                 ListTile(
                   leading: const Icon(Icons.logout_outlined),
                   title: const Text('Sair'),
