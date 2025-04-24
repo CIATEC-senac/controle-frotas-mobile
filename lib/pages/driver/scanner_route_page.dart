@@ -1,8 +1,8 @@
 import 'package:alfaid/pages/driver/route_details_page.dart';
+import 'package:alfaid/widgets/cards/appbar_card.dart';
 import 'package:alfaid/widgets/cards/card_info.dart';
 import 'package:flutter/material.dart';
 import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
-import 'package:alfaid/widgets/cards/appbar_card.dart';
 
 class ScannerRoutePage extends StatelessWidget {
   const ScannerRoutePage({super.key});

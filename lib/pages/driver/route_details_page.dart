@@ -104,9 +104,10 @@ class _RouteDetailsPageState extends State<RouteDetailsPage> {
     Navigator.push(
       context,
       MaterialPageRoute(
-          builder: (context) => OdometerStartPage(
-                route: _route!,
-              )),
+        builder: (context) => OdometerStartPage(
+          route: _route!,
+        ),
+      ),
     );
   }
 

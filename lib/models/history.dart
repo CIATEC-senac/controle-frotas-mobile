@@ -108,8 +108,7 @@ class RouteHistoryModel {
             : null,
       );
     } catch (e) {
-      print('### ${e.toString()}');
-      throw const FormatException('Erro ao buscar histórico');
+      throw FormatException('Erro ao parsear histórico: ${e.toString()}');
     }
   }
 }
