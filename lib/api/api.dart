@@ -4,6 +4,7 @@ import 'dart:typed_data';
 
 import 'package:alfaid/models/history.dart';
 import 'package:alfaid/models/history_approval.dart';
+import 'package:alfaid/models/notification.dart';
 import 'package:alfaid/models/route.dart';
 import 'package:alfaid/models/user.dart';
 import 'package:http/http.dart' as http;
@@ -24,8 +25,12 @@ class API {
   Future<T> _handler<T>(http.Response response) async {
     // Verifica se a resposta da requisição indica sucesso
     if (response.statusCode <= 400) {
-      // Converte e retorna o corpo da requisição json em um tipo generico T
-      return json.decode(response.body) as T;
+      try {
+        // Converte e retorna o corpo da requisição json em um tipo generico T
+        return json.decode(response.body) as T;
+      } catch (_) {
+        return response.body as T;
+      }
     } else {
       print('### Response: ${response.body}');
 
@@ -55,6 +60,21 @@ class API {
     return await http
         // Faz a requisição get para a url fornecida
         .get(Uri.parse('$baseUrl$url'), headers: await _getHeaders())
+        .timeout(
+          const Duration(seconds: 2),
+          onTimeout: () => http.Response('Error', 408),
+        )
+        .then((response) => _handler<T>(response));
+  }
+
+  // Método genérico para realizar requisições get
+  Future<T> _put<T>(
+    String url, // Recebe um corpo de requisição opcional
+    Object? body,
+  ) async {
+    return await http
+        // Faz a requisição get para a url fornecida
+        .put(Uri.parse('$baseUrl$url'), headers: await _getHeaders())
         .timeout(
           const Duration(seconds: 2),
           onTimeout: () => http.Response('Error', 408),
@@ -197,5 +217,19 @@ class API {
 
   Future<dynamic> addUnplannedStop(Map<String, dynamic> unplannedStop) {
     return _post('/history/ongoing/unplanned-stop', body: unplannedStop);
+  }
+
+  Future<List<NotificationModel>> getNotifications() {
+    return _get<List<dynamic>>('/notification').then(
+      (response) {
+        return response
+            .map((json) => NotificationModel.fromJson(json))
+            .toList();
+      },
+    );
+  }
+
+  Future<dynamic> setReadNotification(int id) {
+    return _put<dynamic>('/notification/read/$id', {});
   }
 }
