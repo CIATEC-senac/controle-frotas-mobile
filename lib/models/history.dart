@@ -76,9 +76,11 @@ class RouteHistoryModel {
         approval: json['approval'] != null
             ? HistoryApproval.fromJson(json['approval'])
             : null,
-        unplannedStops: (json['unplannedStops'] as List<dynamic>)
-            .map((stop) => HistoryUnplannedStop.fromJson(stop))
-            .toList(),
+        unplannedStops: json['unplannedStops'] != null
+            ? (json['unplannedStops'] as List<dynamic>)
+                .map((stop) => HistoryUnplannedStop.fromJson(stop))
+                .toList()
+            : [],
       );
     } catch (e) {
       throw FormatException('Erro ao parsear HistoryModel: ${e.toString()}');

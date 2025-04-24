@@ -73,7 +73,9 @@ class ListRouteCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var startedAt = history.startedAt != null
-        ? DayDart(history.startedAt).format('DD/MM/YYYY HH:mm:ss')
+        ? DayDart(history.startedAt)
+            .subtract(3, DayUnits.h)
+            .format('dd/MM/yyyy HH:mm:ss')
         : 'N/A';
 
     return Card(

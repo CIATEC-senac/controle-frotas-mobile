@@ -15,13 +15,15 @@ class UnplannedStopButton {
   });
 }
 
-Widget stopButton(UnplannedStopButton stop, BuildContext context) {
+Widget stopButton(
+    UnplannedStopButton stop, int historyId, BuildContext context) {
   return GestureDetector(
     onTap: () {
       Location location = Location();
 
       location.getLocation().then((locationData) {
         API().addUnplannedStop({
+          "history": {"id": historyId},
           "coordinates": {
             "lat": locationData.latitude,
             "lng": locationData.latitude
@@ -61,20 +63,42 @@ Widget stopButton(UnplannedStopButton stop, BuildContext context) {
   );
 }
 
-Widget unprogrammedStopsDialog(BuildContext context) {
+Widget unprogrammedStopsDialog(BuildContext context, int historyId) {
   List<UnplannedStopButton> stops = const [
-    UnplannedStopButton(label: "Trânsito", value: 0, icon: "heavy-traffic.png"),
     UnplannedStopButton(
-        label: "Via interditada", value: 1, icon: "traffic-barrier.png"),
+      label: "Trânsito",
+      value: 0,
+      icon: "heavy-traffic.png",
+    ),
     UnplannedStopButton(
-        label: "Faixa bloqueada", value: 2, icon: "traffic-cone.png"),
-    UnplannedStopButton(label: "Combustível", value: 3, icon: "gas-pump.png"),
+      label: "Via interditada",
+      value: 1,
+      icon: "traffic-barrier.png",
+    ),
     UnplannedStopButton(
-        label: "Problema mecânico", value: 4, icon: "service.png"),
-    UnplannedStopButton(label: "Acidente", value: 5, icon: "warning.png"),
+      label: "Faixa bloqueada",
+      value: 2,
+      icon: "traffic-cone.png",
+    ),
+    UnplannedStopButton(
+      label: "Combustível",
+      value: 3,
+      icon: "gas-pump.png",
+    ),
+    UnplannedStopButton(
+      label: "Problema mecânico",
+      value: 4,
+      icon: "service.png",
+    ),
+    UnplannedStopButton(
+      label: "Acidente",
+      value: 5,
+      icon: "warning.png",
+    ),
   ];
 
   return Container(
+    decoration: const BoxDecoration(color: Colors.white),
     height: 420.0,
     child: Column(
       children: [
@@ -94,7 +118,7 @@ Widget unprogrammedStopsDialog(BuildContext context) {
             ),
             children: stops
                 .map(
-                  (stop) => stopButton(stop, context),
+                  (stop) => stopButton(stop, historyId, context),
                 )
                 .toList(),
           ),

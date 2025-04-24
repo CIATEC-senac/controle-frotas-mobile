@@ -1,8 +1,12 @@
 import 'dart:async';
 
+import 'package:alfaid/api/api.dart';
 import 'package:alfaid/models/route.dart';
 import 'package:alfaid/models/route_path_coordinates.dart';
-import 'package:alfaid/pages/create_route.dart';
+import 'package:alfaid/pages/driver/odometer_end_page.dart';
+import 'package:alfaid/pages/partials/create_route.dart';
+import 'package:alfaid/pages/partials/start_run.dart';
+import 'package:alfaid/pages/partials/stop_run.dart';
 import 'package:alfaid/widgets/unprogrammed_stops.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
@@ -13,7 +17,9 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class MapPage extends StatefulWidget {
   final RouteModel route;
-  const MapPage({super.key, required this.route});
+  final int historyId;
+
+  const MapPage({super.key, required this.route, required this.historyId});
 
   @override
   State<MapPage> createState() => MapPageState();
@@ -23,12 +29,12 @@ class MapPageState extends State<MapPage> {
   StreamSubscription? userPositionStream;
 
   final PolylinePoints polylinePoints = PolylinePoints();
+  final Location location = Location();
 
   Completer<GoogleMapController> mapController = Completer();
 
-  final Location location = Location();
-
-  LocationData? currentLocation;
+  LocationData? _currentLocation;
+  bool _isRunning = false;
 
   void animateCamera({
     required LatLng location,
@@ -46,8 +52,8 @@ class MapPageState extends State<MapPage> {
           CameraPosition(
             zoom: cameraZoom,
             target: LatLng(
-              currentLocation!.latitude!,
-              currentLocation!.longitude!,
+              _currentLocation!.latitude!,
+              _currentLocation!.longitude!,
             ),
           ),
         ),
@@ -59,7 +65,7 @@ class MapPageState extends State<MapPage> {
     location.getLocation().then((location) {
       if (mounted) {
         setState(() {
-          currentLocation = location;
+          _currentLocation = location;
         });
       }
     });
@@ -67,7 +73,7 @@ class MapPageState extends State<MapPage> {
     location.onLocationChanged.listen((newLoc) async {
       if (mounted) {
         setState(() {
-          currentLocation = newLoc;
+          _currentLocation = newLoc;
         });
       }
 
@@ -86,9 +92,7 @@ class MapPageState extends State<MapPage> {
 
   @override
   void dispose() {
-    mapController.future.then((controller) {
-      controller.dispose();
-    });
+    mapController.future.then((controller) => controller.dispose());
     userPositionStream?.cancel();
     super.dispose();
   }
@@ -155,51 +159,136 @@ class MapPageState extends State<MapPage> {
     });
   }
 
+  void updateHistory(Map<String, dynamic> history) {
+    API().updateHistory({"id": widget.historyId, ...history}).catchError((e) {
+      print('### Error ${e.toString()}');
+    });
+  }
+
+  void startRunning() {
+    updateHistory({"startedAt": DateTime.now().toIso8601String()});
+
+    setState(() {
+      _isRunning = true;
+    });
+  }
+
+  void stopRunning() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return Dialog(
+            insetPadding: const EdgeInsets.all(16.0),
+            shape: ShapeDecoration.fromBoxDecoration(
+              BoxDecoration(borderRadius: BorderRadius.circular(10.0)),
+            ).shape,
+            child: Container(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                spacing: 12.0,
+                children: [
+                  Text(
+                    'Finalizar rota?',
+                    style: Theme.of(context).textTheme.headlineSmall,
+                  ),
+                  Text(
+                    'Essa ação não pode ser desfeita',
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      TextButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: const Text('Não'),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          updateHistory({
+                            "endedAt": DateTime.now().toIso8601String(),
+                          });
+
+                          setState(() {
+                            _isRunning = false;
+                          });
+
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => OdometerEndPage(
+                                historyId: widget.historyId,
+                              ),
+                            ),
+                          );
+                        },
+                        child: const Text('Sim'),
+                      )
+                    ],
+                  )
+                ],
+              ),
+            ),
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: currentLocation == null
-            ? const Center(child: Text('Carregando...'))
-            : GoogleMap(
-                polylines: _polylines,
-                zoomControlsEnabled: false,
-                markers: _markers,
-                myLocationButtonEnabled: false,
-                myLocationEnabled: true,
-                mapType: MapType.normal,
-                initialCameraPosition: CameraPosition(
-                  bearing: 0.0,
-                  tilt: 0.0,
-                  target: LatLng(
-                    currentLocation!.latitude!,
-                    currentLocation!.longitude!,
+      body: Stack(
+        children: [
+          _currentLocation == null
+              ? const Center(child: Text('Carregando...'))
+              : GoogleMap(
+                  polylines: _polylines,
+                  zoomControlsEnabled: false,
+                  markers: _markers,
+                  myLocationButtonEnabled: false,
+                  myLocationEnabled: true,
+                  mapType: MapType.normal,
+                  initialCameraPosition: CameraPosition(
+                    bearing: 0.0,
+                    tilt: 0.0,
+                    target: LatLng(
+                      _currentLocation!.latitude!,
+                      _currentLocation!.longitude!,
+                    ),
+                    zoom: 20,
                   ),
-                  zoom: 20,
+                  onMapCreated: (GoogleMapController controller) {
+                    mapController.complete(controller);
+                  },
                 ),
-                onMapCreated: (GoogleMapController controller) {
-                  mapController.complete(controller);
-                },
+          if (_currentLocation != null && _isRunning)
+            Positioned(
+              bottom: 100.0,
+              right: 16.0,
+              child: FloatingActionButton(
+                onPressed: () => showMaterialModalBottomSheet(
+                  context: context,
+                  builder: (context) =>
+                      unprogrammedStopsDialog(context, widget.historyId),
+                ),
+                child: const Icon(LucideIcons.alertTriangle),
               ),
-        floatingActionButton: currentLocation == null
-            ? null
-            : Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  FloatingActionButton(
-                    onPressed: () => showMaterialModalBottomSheet(
-                      context: context,
-                      builder: unprogrammedStopsDialog,
-                    ),
-                    child: const Icon(LucideIcons.alertTriangle),
-                  ),
-                  TextButton(
-                    onPressed: () {},
-                    child: const Text(
-                      'Iniciar',
-                      style: TextStyle(fontSize: 18.0),
-                    ),
-                  )
-                ],
-              ));
+            ),
+          Positioned(
+            bottom: 0.0,
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              decoration: BoxDecoration(color: Colors.white),
+              padding: const EdgeInsets.all(12.0),
+              child: _currentLocation != null
+                  ? _isRunning
+                      ? StopRun(onPressed: stopRunning)
+                      : StartRun(onPressed: startRunning)
+                  : null,
+            ),
+          )
+        ],
+      ),
+    );
   }
 }

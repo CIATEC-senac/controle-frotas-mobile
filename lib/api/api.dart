@@ -10,7 +10,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class API {
-  final String baseUrl = "http://34.151.210.112:3000";
+  final String baseUrl = "http://192.168.15.12:3000";
 
   // Função para obter o token e armazenar no local
   Future<String?> getToken() async {
@@ -84,6 +84,28 @@ class API {
     );
   }
 
+  // Método genérico para realizar requisições post
+  Future<T> _patch<T>(
+    String url, {
+    // Recebe um corpo de requisição opcional
+    Object? body,
+  }) async {
+    return _handler(
+      await http
+          .patch(Uri.parse('$baseUrl$url'),
+              // Adiciona os headers e serializa o corpo da requisição para json
+              headers: await _getHeaders(),
+              body: json.encode(body))
+          .timeout(
+        const Duration(seconds: 2),
+        onTimeout: () {
+          // Time has run out, do what you wanted to do.
+          return http.Response('Error', 408);
+        },
+      ),
+    );
+  }
+
   // Método para buscar usuário pelo id
   Future<UserModel> fetchUserFromToken() async {
     // Chama nossa função get para obter os dados do usuario
@@ -125,8 +147,14 @@ class API {
     );
   }
 
-  Future<dynamic> createHistory(Map<String, dynamic> history) async {
-    return _post('/history', body: history);
+  Future<int> createHistory(Map<String, dynamic> history) async {
+    return _post('/history', body: history).then(
+      (response) => response['id'],
+    );
+  }
+
+  Future<dynamic> updateHistory(Map<String, dynamic> history) async {
+    return _patch('/history', body: history);
   }
 
   // Método para atualizar status de um histórico
@@ -168,6 +196,6 @@ class API {
   }
 
   Future<dynamic> addUnplannedStop(Map<String, dynamic> unplannedStop) {
-    return _post('/history/stop/unplanned', body: unplannedStop);
+    return _post('/history/ongoing/unplanned-stop', body: unplannedStop);
   }
 }

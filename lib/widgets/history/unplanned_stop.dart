@@ -18,7 +18,7 @@ class UnplannedStop extends StatelessWidget {
         const Text('Interrupções registradas durante o percurso'),
         ...history.unplannedStops.map(
           (unplannedStop) => Text(
-              '${unplannedStop.getStringType()} às ${DayDart(unplannedStop.date).format(('HH:mm:ss'))}'),
+              '${unplannedStop.getStringType()} às ${DayDart(unplannedStop.date).subtract(3, DayUnits.h).format(('HH:mm:ss'))}'),
         )
       ],
     );

@@ -27,12 +27,16 @@ class RouteHistoryCard extends StatelessWidget {
         DetailRow(
             label: 'Hora de início:',
             value: history.startedAt != null
-                ? DayDart(history.startedAt).format('DD/MM/YYYY HH:mm:ss')
+                ? DayDart(history.startedAt)
+                    .subtract(3, DayUnits.h)
+                    .format('dd/MM/yyyy HH:mm:ss')
                 : 'N/A'),
         DetailRow(
             label: 'Hora de término:',
             value: history.endedAt != null
-                ? DayDart(history.endedAt).format('DD/MM/YYYY HH:mm:ss')
+                ? DayDart(history.endedAt)
+                    .subtract(3, DayUnits.h)
+                    .format('dd/MM/yyyy HH:mm:ss')
                 : 'N/A'),
         DetailRow(
           label: 'Tempo previsto:',

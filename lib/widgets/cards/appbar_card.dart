@@ -2,27 +2,37 @@ import 'package:flutter/material.dart';
 
 class AppBarCard extends StatelessWidget implements PreferredSizeWidget {
   final String title;
+  final Function? onPressed;
+  final bool leadingBack;
 
-  const AppBarCard({
-    super.key,
-    required this.title,
-  });
+  const AppBarCard(
+      {super.key,
+      required this.title,
+      this.onPressed,
+      this.leadingBack = false});
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: Text(
-        title,
-        style: const TextStyle(fontSize: 18.0),
-      ),
-      centerTitle: true,
-      leading: IconButton(
-        icon: const Icon(Icons.arrow_back),
-        onPressed: () {
-          Navigator.pop(context); // Volta para a página anterior
-        },
-      ),
-    );
+        title: Text(
+          title,
+          style: const TextStyle(fontSize: 18.0),
+        ),
+        centerTitle: true,
+        automaticallyImplyLeading: false,
+        leading: leadingBack
+            ? IconButton(
+                icon: const Icon(Icons.arrow_back),
+                onPressed: () {
+                  if (onPressed != null) {
+                    onPressed!();
+                  } else {
+                    // Volta para a página anterior
+                    Navigator.pop(context);
+                  }
+                },
+              )
+            : null);
   }
 
   @override

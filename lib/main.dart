@@ -48,13 +48,15 @@ class App extends StatelessWidget {
         // Define a rota inicial como a tela de login
         initialRoute: initialRoute,
         theme: ThemeData(
-          scaffoldBackgroundColor: const Color.fromARGB(255, 241, 237, 237),
-          textTheme: const TextTheme(
-            headlineSmall:
-                TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
-            bodySmall: TextStyle(fontSize: 14.0),
-          ),
-        ),
+            scaffoldBackgroundColor: const Color.fromARGB(255, 241, 237, 237),
+            textTheme: const TextTheme(
+              headlineSmall:
+                  TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+              bodySmall: TextStyle(fontSize: 14.0),
+            ),
+            bottomSheetTheme:
+                BottomSheetThemeData(backgroundColor: Colors.transparent),
+            floatingActionButtonTheme: FloatingActionButtonThemeData()),
       ),
     );
   }
