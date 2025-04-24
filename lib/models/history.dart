@@ -61,8 +61,12 @@ class RouteHistoryModel {
         id: json['id'],
         odometerInitial: json['odometerInitial']?.toDouble(),
         odometerFinal: json['odometerFinal']?.toDouble(),
-        imgOdometerInitial: json['imgOdometerInitial'],
-        imgOdometerFinal: json['imgOdometerFinal'],
+        imgOdometerInitial: json['imgOdometerInitial'] != null
+            ? 'https://storage.googleapis.com/alfaid-odometers/${json['imgOdometerInitial']}'
+            : null,
+        imgOdometerFinal: json['imgOdometerFinal'] != null
+            ? 'https://storage.googleapis.com/alfaid-odometers/${json['imgOdometerFinal']}'
+            : null,
         coordinates: RoutePathCoordinates.fromJson(json['coordinates']),
         path: RoutePath.fromJson(json['path']),
         startedAt: json['startedAt'] != null

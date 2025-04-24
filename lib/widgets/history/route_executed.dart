@@ -2,14 +2,18 @@ import 'package:alfaid/widgets/cards/detail_card.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
-class RouteExecuted extends StatelessWidget {
+class OdometerFinalImg extends StatelessWidget {
+  final String image;
+  const OdometerFinalImg({super.key, required this.image});
+
   @override
   Widget build(BuildContext context) {
-    return const DetailCard(
+    return DetailCard(
       icon: LucideIcons.map,
-      title: 'Rota Executada',
+      title: 'Foto do odômetro',
       children: [
-        Text('Trajeto realmente percorrido pelo motorista'),
+        const Text('Odômetro final'),
+        Image.network(image),
       ],
     );
   }

@@ -7,10 +7,10 @@ import 'package:alfaid/widgets/cards/appbar_card.dart';
 import 'package:alfaid/widgets/cards/detail_card.dart';
 import 'package:alfaid/widgets/detail_row.dart';
 import 'package:alfaid/widgets/history/driver_history_card.dart';
+import 'package:alfaid/widgets/history/odometer_img.dart';
 import 'package:alfaid/widgets/history/route_disapprovement_dialog.dart';
 import 'package:alfaid/widgets/history/route_executed.dart';
 import 'package:alfaid/widgets/history/route_history_card.dart';
-import 'package:alfaid/widgets/history/route_planned.dart';
 import 'package:alfaid/widgets/history/unplanned_stop.dart';
 import 'package:alfaid/widgets/history/vehicle_history_card.dart';
 import 'package:daydart_flutter/daydart.dart';
@@ -72,8 +72,10 @@ class ApprobationRoutePage extends StatelessWidget {
               DriverHistoryCard(driver: history.driver),
               VehicleHistoryCard(history: history),
               RouteHistoryCard(history: history),
-              RoutePlanned(),
-              RouteExecuted(),
+              OdometerInitialImg(
+                image: history.imgOdometerInitial!,
+              ),
+              OdometerFinalImg(image: history.imgOdometerInitial!),
               UnplannedStop(
                 history: history,
               ),

@@ -2,14 +2,18 @@ import 'package:alfaid/widgets/cards/detail_card.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
-class RoutePlanned extends StatelessWidget {
+class OdometerInitialImg extends StatelessWidget {
+  final String image;
+  const OdometerInitialImg({super.key, required this.image});
+
   @override
   Widget build(BuildContext context) {
-    return const DetailCard(
+    return DetailCard(
       icon: LucideIcons.map,
-      title: 'Rota planejada',
+      title: 'Foto do odômetro',
       children: [
-        Text('Trajeto ideal calculado pelo sistema'),
+        const Text('Odômetro inicial'),
+        Image.network(image),
       ],
     );
   }
