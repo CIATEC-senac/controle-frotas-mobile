@@ -2,6 +2,7 @@ import 'package:alfaid/models/maintenance.dart';
 import 'package:alfaid/models/vehicle.dart';
 import 'package:alfaid/widgets/cards/detail_card.dart';
 import 'package:alfaid/widgets/detail_row.dart';
+import 'package:daydart_flutter/daydart.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
@@ -25,7 +26,11 @@ class DetailsMaintenance extends StatelessWidget {
         DetailRow(label: 'Última manutenção:', value: 'N/A'),
         DetailRow(
             label: 'Próxima manutenção:',
-            value: nextMaintenance?.date.toString() ?? 'N/A'),
+            value: nextMaintenance?.date != null
+                ? DayDart(nextMaintenance?.date)
+                    .subtract(3, DayUnits.h)
+                    .format('dd/MM/yyyy HH:mm')
+                : null),
       ],
     );
   }

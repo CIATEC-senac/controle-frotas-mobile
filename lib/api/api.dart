@@ -11,7 +11,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class API {
-  final String baseUrl = "http://192.168.15.12:3000";
+  final String baseUrl = "http://34.151.210.112:3000";
 
   // Função para obter o token e armazenar no local
   Future<String?> getToken() async {
