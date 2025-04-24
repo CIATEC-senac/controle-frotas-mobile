@@ -1,5 +1,6 @@
 import 'package:alfaid/models/history.dart';
 import 'package:alfaid/models/history_approval.dart';
+import 'package:daydart_flutter/daydart.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
@@ -71,7 +72,11 @@ class ListRouteCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var startedAt = history.fStartedAt ?? 'N/A';
+    var startedAt = history.startedAt != null
+        ? DayDart(history.startedAt)
+            .subtract(3, DayUnits.h)
+            .format('dd/MM/yyyy HH:mm:ss')
+        : 'N/A';
 
     return Card(
       elevation: 1.0,
