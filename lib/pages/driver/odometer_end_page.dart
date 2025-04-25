@@ -54,7 +54,7 @@ class _OdometerEndPageState extends State<OdometerEndPage> {
     });
   }
 
-  void updateHistory(BuildContext context) async {
+  void updateHistory(context) async {
     await uploadImage().then((fullFileName) {
       return API().updateHistory({
         "id": widget.historyId,
@@ -105,11 +105,14 @@ class _OdometerEndPageState extends State<OdometerEndPage> {
                   odometerCallback: odometerCallback,
                   image: _image,
                   imageCallback: imageCallback,
+                  enabled: !_isUploading,
                 ),
                 ElevatedButton(
                   onPressed:
                       isButtonEnabled ? () => updateHistory(context) : null,
                   style: ElevatedButton.styleFrom(
+                    backgroundColor:
+                        isButtonEnabled ? Colors.green : Colors.grey,
                     padding: const EdgeInsets.symmetric(
                       horizontal: 24,
                       vertical: 12,
@@ -119,13 +122,29 @@ class _OdometerEndPageState extends State<OdometerEndPage> {
                           BorderRadius.circular(8), // Menos arredondado
                     ),
                   ),
-                  child: const Text(
-                    'Finalizar',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
+                  child: Row(
+                    spacing: 12.0,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      if (_isUploading)
+                        const SizedBox(
+                          width: 16.0,
+                          height: 16.0,
+                          child: CircularProgressIndicator(
+                              color: Colors.white, strokeWidth: 2.0),
+                        ),
+                      Text(
+                        'Finalizar',
+                        style: TextStyle(
+                          color: isButtonEnabled
+                              ? Colors.white
+                              : Colors.black, // Branco quando habilitado
+                          fontWeight: FontWeight.bold,
+                        ),
+                      )
+                    ],
                   ),
-                )
+                ),
               ],
             ),
           ),
