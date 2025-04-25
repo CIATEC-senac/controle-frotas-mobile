@@ -3,7 +3,7 @@ import 'package:alfaid/models/user.dart';
 enum HistoryStatus { pending, approved, disapproved }
 
 class HistoryApproval {
-  final String? observation;
+  final String observation;
   final HistoryStatus status;
   final UserModel approvedBy;
   final DateTime date;
@@ -18,7 +18,7 @@ class HistoryApproval {
   factory HistoryApproval.fromJson(Map<String, dynamic> json) {
     try {
       return HistoryApproval(
-          observation: json['observation'],
+          observation: json['observation'] ?? '',
           status: switch (json['status']) {
             0 => HistoryStatus.approved,
             1 => HistoryStatus.disapproved,

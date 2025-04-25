@@ -80,7 +80,7 @@ Future<void> routeDisapprovementDialog(
                 children: [
                   TextButton(
                     onPressed: () => {Navigator.pop(context)},
-                    child: const Text('Cancelar'),
+                    child: const Text('Voltar'),
                   ),
                   TextButton(
                     onPressed: () => confirm(context),

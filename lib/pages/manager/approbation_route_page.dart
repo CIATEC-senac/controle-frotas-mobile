@@ -109,11 +109,11 @@ class ApprobationRoutePage extends StatelessWidget {
         ),
         DetailRow(
           label: 'Aprovada em:',
-          value: DayDart(history.approval!)
+          value: DayDart(history.approval!.date)
               .subtract(3, DayUnits.h)
               .format('dd/MM/yyyy HH:mm:ss'),
         ),
-        if (history.approval!.observation!.isNotEmpty)
+        if (history.approval!.observation.isNotEmpty)
           DetailRow(label: 'Observação:', value: history.approval!.observation)
       ];
     }
