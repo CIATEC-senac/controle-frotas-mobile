@@ -12,5 +12,5 @@ const ColorScheme colorScheme = ColorScheme(
   onSurface: Colors.black,
   onError: Colors.white,
   brightness: Brightness.light,
-  // More colors
+// More colors
 );
