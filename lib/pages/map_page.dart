@@ -273,58 +273,61 @@ class MapPageState extends State<MapPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: [
-          _currentLocation == null
-              ? const Center(child: Text('Carregando...'))
-              : GoogleMap(
-                  polylines: _polylines,
-                  zoomControlsEnabled: false,
-                  markers: _markers,
-                  myLocationButtonEnabled: false,
-                  myLocationEnabled: true,
-                  mapType: MapType.normal,
-                  initialCameraPosition: CameraPosition(
-                    bearing: 0.0,
-                    tilt: 0.0,
-                    target: LatLng(
-                      _currentLocation!.latitude!,
-                      _currentLocation!.longitude!,
+    return PopScope(
+      canPop: false,
+      child: Scaffold(
+        body: Stack(
+          children: [
+            _currentLocation == null
+                ? const Center(child: Text('Carregando...'))
+                : GoogleMap(
+                    polylines: _polylines,
+                    zoomControlsEnabled: false,
+                    markers: _markers,
+                    myLocationButtonEnabled: false,
+                    myLocationEnabled: true,
+                    mapType: MapType.normal,
+                    initialCameraPosition: CameraPosition(
+                      bearing: 0.0,
+                      tilt: 0.0,
+                      target: LatLng(
+                        _currentLocation!.latitude!,
+                        _currentLocation!.longitude!,
+                      ),
+                      zoom: 20,
                     ),
-                    zoom: 20,
+                    onMapCreated: (GoogleMapController controller) {
+                      mapController.complete(controller);
+                    },
                   ),
-                  onMapCreated: (GoogleMapController controller) {
-                    mapController.complete(controller);
-                  },
+            if (_currentLocation != null && _isRunning)
+              Positioned(
+                bottom: 100.0,
+                right: 16.0,
+                child: FloatingActionButton(
+                  onPressed: () => showMaterialModalBottomSheet(
+                    context: context,
+                    builder: (context) =>
+                        unprogrammedStopsDialog(context, widget.historyId),
+                  ),
+                  child: const Icon(LucideIcons.alertTriangle),
                 ),
-          if (_currentLocation != null && _isRunning)
-            Positioned(
-              bottom: 100.0,
-              right: 16.0,
-              child: FloatingActionButton(
-                onPressed: () => showMaterialModalBottomSheet(
-                  context: context,
-                  builder: (context) =>
-                      unprogrammedStopsDialog(context, widget.historyId),
-                ),
-                child: const Icon(LucideIcons.alertTriangle),
               ),
-            ),
-          Positioned(
-            bottom: 0.0,
-            child: Container(
-              width: MediaQuery.of(context).size.width,
-              decoration: BoxDecoration(color: Colors.white),
-              padding: const EdgeInsets.all(12.0),
-              child: _currentLocation != null
-                  ? _isRunning
-                      ? StopRun(onPressed: stopRunning)
-                      : StartRun(onPressed: startRunning)
-                  : null,
-            ),
-          )
-        ],
+            Positioned(
+              bottom: 0.0,
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                decoration: const BoxDecoration(color: Colors.white),
+                padding: const EdgeInsets.all(12.0),
+                child: _currentLocation != null
+                    ? _isRunning
+                        ? StopRun(onPressed: stopRunning)
+                        : StartRun(onPressed: startRunning)
+                    : null,
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
