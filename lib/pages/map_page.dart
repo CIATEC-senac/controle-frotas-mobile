@@ -7,7 +7,8 @@ import 'package:alfaid/pages/driver/odometer_end_page.dart';
 import 'package:alfaid/pages/partials/create_route.dart';
 import 'package:alfaid/pages/partials/start_run.dart';
 import 'package:alfaid/pages/partials/stop_run.dart';
-import 'package:alfaid/widgets/unprogrammed_stops.dart';
+import 'package:alfaid/utils/coordinates.dart';
+import 'package:alfaid/widgets/unplanned_stops.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -33,7 +34,9 @@ class MapPageState extends State<MapPage> {
 
   Completer<GoogleMapController> mapController = Completer();
 
+  StreamSubscription<LocationData>? locationSubscription;
   LocationData? _currentLocation;
+  LocationData? _latestLocation;
   bool _isRunning = false;
 
   void animateCamera({
@@ -61,25 +64,58 @@ class MapPageState extends State<MapPage> {
     });
   }
 
+  bool debounceLocation(LocationData a, LocationData b) {
+    double debounceLimit = 50.0;
+    Map<String, double> distance = locationToMeters(a, b);
+
+    return distance['deltaLat']! > debounceLimit ||
+        distance['deltaLng']! > debounceLimit;
+  }
+
   void getCurrentLocation() async {
     location.getLocation().then((location) {
       if (mounted) {
         setState(() {
           _currentLocation = location;
+          _latestLocation = location;
         });
       }
     });
 
-    location.onLocationChanged.listen((newLoc) async {
-      if (mounted) {
-        setState(() {
-          _currentLocation = newLoc;
-        });
+    locationSubscription =
+        location.onLocationChanged.listen((newLocation) async {
+      if (!mounted) {
+        return;
       }
 
+      setState(() {
+        _currentLocation = newLocation;
+      });
+
       animateCamera(
-        location: LatLng(newLoc.latitude!, newLoc.longitude!),
+        location: LatLng(newLocation.latitude!, newLocation.longitude!),
       );
+
+      if (debounceLocation(_latestLocation!, newLocation) && _isRunning) {
+        _latestLocation = newLocation;
+
+        setState(() {});
+
+        Coordinates coordinate = Coordinates(
+          lat: newLocation.latitude!,
+          lng: newLocation.longitude!,
+        );
+
+        int id = widget.historyId;
+
+        API().updateLocationTracking(id, coordinate).catchError(
+          (e) {
+            print('### Error tracking location: ${e.toString()}');
+          },
+        );
+      } else {
+        print('### Location delta below bounce');
+      }
     });
   }
 
@@ -94,6 +130,7 @@ class MapPageState extends State<MapPage> {
   void dispose() {
     mapController.future.then((controller) => controller.dispose());
     userPositionStream?.cancel();
+    locationSubscription?.cancel();
     super.dispose();
   }
 
