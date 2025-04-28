@@ -47,15 +47,7 @@ class ListRouteCard extends StatelessWidget {
   }
 
   Widget getHeader() {
-    return Wrap(
-      spacing: 4.0,
-      children: [
-        const Text('ROTA '),
-        Text(getStreet(history.route.path.origin ?? '')),
-        const Icon(Icons.arrow_right_alt),
-        Text(getStreet(history.route.path.destination ?? '')),
-      ],
-    );
+    return Text('ROTA ${history.route.id.toString().padLeft(4, '0')}');
   }
 
   Widget getRow(IconData icon, String text) {
