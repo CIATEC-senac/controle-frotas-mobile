@@ -7,7 +7,7 @@ import 'package:alfaid/widgets/cards/appbar_card.dart';
 import 'package:alfaid/widgets/cards/detail_card.dart';
 import 'package:alfaid/widgets/detail_row.dart';
 import 'package:alfaid/widgets/history/driver_history_card.dart';
-import 'package:alfaid/widgets/history/odometer_final-img.dart';
+import 'package:alfaid/widgets/history/odometer_final_img.dart';
 import 'package:alfaid/widgets/history/odometer_img.dart';
 import 'package:alfaid/widgets/history/route_disapprovement_dialog.dart';
 import 'package:alfaid/widgets/history/route_history_card.dart';
@@ -72,10 +72,8 @@ class ApprobationRoutePage extends StatelessWidget {
             children: [
               DriverHistoryCard(driver: history.driver),
               VehicleHistoryCard(history: history),
-              OdometerInitialImg(
-                image: history.imgOdometerInitial!,
-              ),
-              OdometerFinalImg(image: history.imgOdometerInitial!),
+              OdometerInitialImg(image: history.imgOdometerInitial),
+              OdometerFinalImg(image: history.imgOdometerFinal),
               RouteHistoryCard(history: history),
               if (history.track.length >= 2)
                 RouteTrackingCard(track: history.track),

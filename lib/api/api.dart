@@ -216,8 +216,8 @@ class API {
     );
   }
 
-  Future<dynamic> addUnplannedStop(Map<String, dynamic> unplannedStop) {
-    return _post('/history/ongoing/unplanned-stop', body: unplannedStop);
+  Future<dynamic> addUnplannedStop(int id, Map<String, dynamic> unplannedStop) {
+    return _post('/history/$id/unplanned-stop', body: unplannedStop);
   }
 
   Future<List<NotificationModel>> getNotifications() {

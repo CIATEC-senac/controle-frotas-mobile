@@ -65,11 +65,14 @@ class MapPageState extends State<MapPage> {
   }
 
   bool debounceLocation(LocationData a, LocationData b) {
-    double debounceLimit = 50.0;
+    double debounceLimit = 10.0;
     Map<String, double> distance = locationToMeters(a, b);
 
-    return distance['deltaLat']! > debounceLimit ||
-        distance['deltaLng']! > debounceLimit;
+    print(
+        '### Distance lat: ${distance['deltaLat']} lng: ${distance['deltaLng']}');
+
+    return distance['deltaLat']!.abs() > debounceLimit ||
+        distance['deltaLng']!.abs() > debounceLimit;
   }
 
   void getCurrentLocation() async {
@@ -79,42 +82,6 @@ class MapPageState extends State<MapPage> {
           _currentLocation = location;
           _latestLocation = location;
         });
-      }
-    });
-
-    locationSubscription =
-        location.onLocationChanged.listen((newLocation) async {
-      if (!mounted) {
-        return;
-      }
-
-      setState(() {
-        _currentLocation = newLocation;
-      });
-
-      animateCamera(
-        location: LatLng(newLocation.latitude!, newLocation.longitude!),
-      );
-
-      if (debounceLocation(_latestLocation!, newLocation) && _isRunning) {
-        _latestLocation = newLocation;
-
-        setState(() {});
-
-        Coordinates coordinate = Coordinates(
-          lat: newLocation.latitude!,
-          lng: newLocation.longitude!,
-        );
-
-        int id = widget.historyId;
-
-        API().updateLocationTracking(id, coordinate).catchError(
-          (e) {
-            print('### Error tracking location: ${e.toString()}');
-          },
-        );
-      } else {
-        print('### Location delta below bounce');
       }
     });
   }
@@ -144,41 +111,45 @@ class MapPageState extends State<MapPage> {
   }
 
   void drawPolylines() async {
-    var result = await polylinePoints.getRouteBetweenCoordinates(
-        googleApiKey: const String.fromEnvironment(
-          'GOOGLE_MAPS_APIKEY',
-          defaultValue: 'AIzaSyAtnsmelP2XXZQxSgDOnn9ra2RLv3LOKWA',
-        ),
-        request: PolylineRequest(
-          origin: PointLatLng(
-            widget.route.coordinates.origin!.lat,
-            widget.route.coordinates.origin!.lng,
-          ),
-          destination: PointLatLng(
-            widget.route.coordinates.destination!.lat,
-            widget.route.coordinates.destination!.lng,
-          ),
-          mode: TravelMode.driving,
-          optimizeWaypoints: true,
-          wayPoints: widget.route.path.stops!
-              .map((waypoint) => PolylineWayPoint(location: waypoint))
+    await polylinePoints
+        .getRouteBetweenCoordinates(
+            googleApiKey: const String.fromEnvironment(
+              'GOOGLE_MAPS_APIKEY',
+              defaultValue: 'AIzaSyAtnsmelP2XXZQxSgDOnn9ra2RLv3LOKWA',
+            ),
+            request: PolylineRequest(
+              origin: PointLatLng(
+                widget.route.coordinates.origin!.lat,
+                widget.route.coordinates.origin!.lng,
+              ),
+              destination: PointLatLng(
+                widget.route.coordinates.destination!.lat,
+                widget.route.coordinates.destination!.lng,
+              ),
+              mode: TravelMode.driving,
+              optimizeWaypoints: true,
+              wayPoints: widget.route.path.stops!
+                  .map((waypoint) => PolylineWayPoint(location: waypoint))
+                  .toList(),
+            ))
+        .then((result) {
+      Set<Polyline> polylines = {
+        Polyline(
+          polylineId: const PolylineId(''),
+          points: result.points
+              .map((point) => LatLng(point.latitude, point.longitude))
               .toList(),
-        ));
+          color: Colors.deepPurple.shade300.withAlpha(200),
+          width: 5,
+          geodesic: true,
+        )
+      };
 
-    Set<Polyline> polylines = {
-      Polyline(
-        polylineId: const PolylineId(''),
-        points: result.points
-            .map((point) => LatLng(point.latitude, point.longitude))
-            .toList(),
-        color: Colors.deepPurple.shade300.withAlpha(200),
-        width: 5,
-        geodesic: true,
-      )
-    };
-
-    setState(() {
-      _polylines = polylines;
+      setState(() {
+        _polylines = polylines;
+      });
+    }).catchError((e) {
+      print('### Error: ${e.toString()}');
     });
   }
 
@@ -207,6 +178,44 @@ class MapPageState extends State<MapPage> {
 
     setState(() {
       _isRunning = true;
+    });
+
+    locationSubscription =
+        location.onLocationChanged.listen((newLocation) async {
+      if (!mounted) {
+        return;
+      }
+
+      setState(() {
+        _currentLocation = newLocation;
+      });
+
+      animateCamera(
+        location: LatLng(newLocation.latitude!, newLocation.longitude!),
+      );
+
+      if (debounceLocation(_latestLocation!, newLocation)) {
+        print('### New location');
+
+        setState(() {
+          _latestLocation = newLocation;
+        });
+
+        Coordinates coordinate = Coordinates(
+          lat: newLocation.latitude!,
+          lng: newLocation.longitude!,
+        );
+
+        int id = widget.historyId;
+
+        API().updateLocationTracking(id, coordinate).catchError(
+          (e) {
+            print('### Error tracking location: ${e.toString()}');
+          },
+        );
+      } else {
+        print('### Location delta below bounce');
+      }
     });
   }
 
@@ -243,6 +252,8 @@ class MapPageState extends State<MapPage> {
                       ),
                       TextButton(
                         onPressed: () {
+                          locationSubscription?.cancel();
+
                           updateHistory({
                             "endedAt": DateTime.now().toIso8601String(),
                           });
