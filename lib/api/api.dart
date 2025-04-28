@@ -6,6 +6,7 @@ import 'package:alfaid/models/history.dart';
 import 'package:alfaid/models/history_approval.dart';
 import 'package:alfaid/models/notification.dart';
 import 'package:alfaid/models/route.dart';
+import 'package:alfaid/models/route_path_coordinates.dart';
 import 'package:alfaid/models/user.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -231,5 +232,14 @@ class API {
 
   Future<dynamic> setReadNotification(int id) {
     return _put<dynamic>('/notification/read/$id', {});
+  }
+
+  Future<dynamic> updateLocationTracking(int id, Coordinates coordinate) {
+    return _post<dynamic>('/history/$id/tracking', body: {
+      "coordinate": {
+        "lat": coordinate.lat,
+        "lng": coordinate.lng,
+      }
+    });
   }
 }
