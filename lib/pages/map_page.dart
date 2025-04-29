@@ -7,7 +7,8 @@ import 'package:alfaid/pages/driver/odometer_end_page.dart';
 import 'package:alfaid/pages/partials/create_route.dart';
 import 'package:alfaid/pages/partials/start_run.dart';
 import 'package:alfaid/pages/partials/stop_run.dart';
-import 'package:alfaid/widgets/unprogrammed_stops.dart';
+import 'package:alfaid/utils/coordinates.dart';
+import 'package:alfaid/widgets/unplanned_stops.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -33,7 +34,9 @@ class MapPageState extends State<MapPage> {
 
   Completer<GoogleMapController> mapController = Completer();
 
+  StreamSubscription<LocationData>? locationSubscription;
   LocationData? _currentLocation;
+  LocationData? _latestLocation;
   bool _isRunning = false;
 
   void animateCamera({
@@ -61,25 +64,25 @@ class MapPageState extends State<MapPage> {
     });
   }
 
+  bool debounceLocation(LocationData a, LocationData b) {
+    double debounceLimit = 10.0;
+    Map<String, double> distance = locationToMeters(a, b);
+
+    print(
+        '### Distance lat: ${distance['deltaLat']} lng: ${distance['deltaLng']}');
+
+    return distance['deltaLat']!.abs() > debounceLimit ||
+        distance['deltaLng']!.abs() > debounceLimit;
+  }
+
   void getCurrentLocation() async {
     location.getLocation().then((location) {
       if (mounted) {
         setState(() {
           _currentLocation = location;
+          _latestLocation = location;
         });
       }
-    });
-
-    location.onLocationChanged.listen((newLoc) async {
-      if (mounted) {
-        setState(() {
-          _currentLocation = newLoc;
-        });
-      }
-
-      animateCamera(
-        location: LatLng(newLoc.latitude!, newLoc.longitude!),
-      );
     });
   }
 
@@ -94,6 +97,7 @@ class MapPageState extends State<MapPage> {
   void dispose() {
     mapController.future.then((controller) => controller.dispose());
     userPositionStream?.cancel();
+    locationSubscription?.cancel();
     super.dispose();
   }
 
@@ -107,41 +111,45 @@ class MapPageState extends State<MapPage> {
   }
 
   void drawPolylines() async {
-    var result = await polylinePoints.getRouteBetweenCoordinates(
-        googleApiKey: const String.fromEnvironment(
-          'GOOGLE_MAPS_APIKEY',
-          defaultValue: 'AIzaSyAtnsmelP2XXZQxSgDOnn9ra2RLv3LOKWA',
-        ),
-        request: PolylineRequest(
-          origin: PointLatLng(
-            widget.route.coordinates.origin!.lat,
-            widget.route.coordinates.origin!.lng,
-          ),
-          destination: PointLatLng(
-            widget.route.coordinates.destination!.lat,
-            widget.route.coordinates.destination!.lng,
-          ),
-          mode: TravelMode.driving,
-          optimizeWaypoints: true,
-          wayPoints: widget.route.path.stops!
-              .map((waypoint) => PolylineWayPoint(location: waypoint))
+    await polylinePoints
+        .getRouteBetweenCoordinates(
+            googleApiKey: const String.fromEnvironment(
+              'GOOGLE_MAPS_APIKEY',
+              defaultValue: 'AIzaSyAtnsmelP2XXZQxSgDOnn9ra2RLv3LOKWA',
+            ),
+            request: PolylineRequest(
+              origin: PointLatLng(
+                widget.route.coordinates.origin!.lat,
+                widget.route.coordinates.origin!.lng,
+              ),
+              destination: PointLatLng(
+                widget.route.coordinates.destination!.lat,
+                widget.route.coordinates.destination!.lng,
+              ),
+              mode: TravelMode.driving,
+              optimizeWaypoints: true,
+              wayPoints: widget.route.path.stops!
+                  .map((waypoint) => PolylineWayPoint(location: waypoint))
+                  .toList(),
+            ))
+        .then((result) {
+      Set<Polyline> polylines = {
+        Polyline(
+          polylineId: const PolylineId(''),
+          points: result.points
+              .map((point) => LatLng(point.latitude, point.longitude))
               .toList(),
-        ));
+          color: Colors.deepPurple.shade300.withAlpha(200),
+          width: 5,
+          geodesic: true,
+        )
+      };
 
-    Set<Polyline> polylines = {
-      Polyline(
-        polylineId: const PolylineId(''),
-        points: result.points
-            .map((point) => LatLng(point.latitude, point.longitude))
-            .toList(),
-        color: Colors.deepPurple.shade300.withAlpha(200),
-        width: 5,
-        geodesic: true,
-      )
-    };
-
-    setState(() {
-      _polylines = polylines;
+      setState(() {
+        _polylines = polylines;
+      });
+    }).catchError((e) {
+      print('### Error: ${e.toString()}');
     });
   }
 
@@ -170,6 +178,44 @@ class MapPageState extends State<MapPage> {
 
     setState(() {
       _isRunning = true;
+    });
+
+    locationSubscription =
+        location.onLocationChanged.listen((newLocation) async {
+      if (!mounted) {
+        return;
+      }
+
+      setState(() {
+        _currentLocation = newLocation;
+      });
+
+      animateCamera(
+        location: LatLng(newLocation.latitude!, newLocation.longitude!),
+      );
+
+      if (debounceLocation(_latestLocation!, newLocation)) {
+        print('### New location');
+
+        setState(() {
+          _latestLocation = newLocation;
+        });
+
+        Coordinates coordinate = Coordinates(
+          lat: newLocation.latitude!,
+          lng: newLocation.longitude!,
+        );
+
+        int id = widget.historyId;
+
+        API().updateLocationTracking(id, coordinate).catchError(
+          (e) {
+            print('### Error tracking location: ${e.toString()}');
+          },
+        );
+      } else {
+        print('### Location delta below bounce');
+      }
     });
   }
 
@@ -206,6 +252,8 @@ class MapPageState extends State<MapPage> {
                       ),
                       TextButton(
                         onPressed: () {
+                          locationSubscription?.cancel();
+
                           updateHistory({
                             "endedAt": DateTime.now().toIso8601String(),
                           });
@@ -236,58 +284,61 @@ class MapPageState extends State<MapPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: [
-          _currentLocation == null
-              ? const Center(child: Text('Carregando...'))
-              : GoogleMap(
-                  polylines: _polylines,
-                  zoomControlsEnabled: false,
-                  markers: _markers,
-                  myLocationButtonEnabled: false,
-                  myLocationEnabled: true,
-                  mapType: MapType.normal,
-                  initialCameraPosition: CameraPosition(
-                    bearing: 0.0,
-                    tilt: 0.0,
-                    target: LatLng(
-                      _currentLocation!.latitude!,
-                      _currentLocation!.longitude!,
+    return PopScope(
+      canPop: false,
+      child: Scaffold(
+        body: Stack(
+          children: [
+            _currentLocation == null
+                ? const Center(child: Text('Carregando...'))
+                : GoogleMap(
+                    polylines: _polylines,
+                    zoomControlsEnabled: false,
+                    markers: _markers,
+                    myLocationButtonEnabled: false,
+                    myLocationEnabled: true,
+                    mapType: MapType.normal,
+                    initialCameraPosition: CameraPosition(
+                      bearing: 0.0,
+                      tilt: 0.0,
+                      target: LatLng(
+                        _currentLocation!.latitude!,
+                        _currentLocation!.longitude!,
+                      ),
+                      zoom: 20,
                     ),
-                    zoom: 20,
+                    onMapCreated: (GoogleMapController controller) {
+                      mapController.complete(controller);
+                    },
                   ),
-                  onMapCreated: (GoogleMapController controller) {
-                    mapController.complete(controller);
-                  },
+            if (_currentLocation != null && _isRunning)
+              Positioned(
+                bottom: 100.0,
+                right: 16.0,
+                child: FloatingActionButton(
+                  onPressed: () => showMaterialModalBottomSheet(
+                    context: context,
+                    builder: (context) =>
+                        unprogrammedStopsDialog(context, widget.historyId),
+                  ),
+                  child: const Icon(LucideIcons.alertTriangle),
                 ),
-          if (_currentLocation != null && _isRunning)
-            Positioned(
-              bottom: 100.0,
-              right: 16.0,
-              child: FloatingActionButton(
-                onPressed: () => showMaterialModalBottomSheet(
-                  context: context,
-                  builder: (context) =>
-                      unprogrammedStopsDialog(context, widget.historyId),
-                ),
-                child: const Icon(LucideIcons.alertTriangle),
               ),
-            ),
-          Positioned(
-            bottom: 0.0,
-            child: Container(
-              width: MediaQuery.of(context).size.width,
-              decoration: BoxDecoration(color: Colors.white),
-              padding: const EdgeInsets.all(12.0),
-              child: _currentLocation != null
-                  ? _isRunning
-                      ? StopRun(onPressed: stopRunning)
-                      : StartRun(onPressed: startRunning)
-                  : null,
-            ),
-          )
-        ],
+            Positioned(
+              bottom: 0.0,
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                decoration: const BoxDecoration(color: Colors.white),
+                padding: const EdgeInsets.all(12.0),
+                child: _currentLocation != null
+                    ? _isRunning
+                        ? StopRun(onPressed: stopRunning)
+                        : StartRun(onPressed: startRunning)
+                    : null,
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

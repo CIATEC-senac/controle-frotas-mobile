@@ -22,11 +22,10 @@ Widget stopButton(
       Location location = Location();
 
       location.getLocation().then((locationData) {
-        API().addUnplannedStop({
-          "history": {"id": historyId},
+        API().addUnplannedStop(historyId, {
           "coordinates": {
             "lat": locationData.latitude,
-            "lng": locationData.latitude
+            "lng": locationData.longitude
           },
           "type": stop.value
         }).catchError((e) {

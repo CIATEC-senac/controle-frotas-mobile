@@ -6,12 +6,13 @@ import 'package:alfaid/models/history.dart';
 import 'package:alfaid/models/history_approval.dart';
 import 'package:alfaid/models/notification.dart';
 import 'package:alfaid/models/route.dart';
+import 'package:alfaid/models/route_path_coordinates.dart';
 import 'package:alfaid/models/user.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class API {
-  final String baseUrl = "http://192.168.15.12:3000";
+  final String baseUrl = "http://34.151.210.112:3000";
 
   // Função para obter o token e armazenar no local
   Future<String?> getToken() async {
@@ -215,8 +216,8 @@ class API {
     );
   }
 
-  Future<dynamic> addUnplannedStop(Map<String, dynamic> unplannedStop) {
-    return _post('/history/ongoing/unplanned-stop', body: unplannedStop);
+  Future<dynamic> addUnplannedStop(int id, Map<String, dynamic> unplannedStop) {
+    return _post('/history/$id/unplanned-stop', body: unplannedStop);
   }
 
   Future<List<NotificationModel>> getNotifications() {
@@ -231,5 +232,14 @@ class API {
 
   Future<dynamic> setReadNotification(int id) {
     return _put<dynamic>('/notification/read/$id', {});
+  }
+
+  Future<dynamic> updateLocationTracking(int id, Coordinates coordinate) {
+    return _post<dynamic>('/history/$id/tracking', body: {
+      "coordinate": {
+        "lat": coordinate.lat,
+        "lng": coordinate.lng,
+      }
+    });
   }
 }

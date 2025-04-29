@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
 class OdometerFinalImg extends StatelessWidget {
-  final String image;
+  final String? image;
   const OdometerFinalImg({super.key, required this.image});
 
   @override
@@ -13,7 +13,12 @@ class OdometerFinalImg extends StatelessWidget {
       title: 'Foto do odômetro',
       children: [
         const Text('Odômetro final'),
-        Image.network(image),
+        image != null
+            ? Image.network(
+                image!,
+                key: Key(image!),
+              )
+            : const Text('Sem imagem'),
       ],
     );
   }
