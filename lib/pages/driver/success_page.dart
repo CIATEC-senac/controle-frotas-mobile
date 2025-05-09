@@ -1,5 +1,5 @@
 import 'package:alfaid/pages/home_page.dart'; // Atualize o caminho conforme o seu projeto
-import 'package:alfaid/widgets/cards/appbar_card.dart';
+import 'package:alfaid/widgets/scaffold_appbar.dart';
 import 'package:flutter/material.dart';
 
 class SuccessPage extends StatelessWidget {
@@ -10,7 +10,7 @@ class SuccessPage extends StatelessWidget {
     return PopScope(
       canPop: false,
       child: Scaffold(
-        appBar: AppBarCard(
+        appBar: ScaffoldAppBar(
           title: 'Rota finalizada',
           onPressed: () {
             Navigator.pushAndRemoveUntil(

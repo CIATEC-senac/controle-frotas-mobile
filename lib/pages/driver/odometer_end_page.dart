@@ -2,8 +2,8 @@ import 'dart:io';
 
 import 'package:alfaid/api/api.dart';
 import 'package:alfaid/pages/driver/success_page.dart';
-import 'package:alfaid/widgets/cards/appbar_card.dart';
 import 'package:alfaid/widgets/cards/odometer_card.dart';
+import 'package:alfaid/widgets/scaffold_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:uuid/uuid.dart';
@@ -90,7 +90,7 @@ class _OdometerEndPageState extends State<OdometerEndPage> {
     return PopScope(
       canPop: false,
       child: Scaffold(
-        appBar: const AppBarCard(
+        appBar: const ScaffoldAppBar(
           title: 'Informar odômetro',
         ),
         body: SingleChildScrollView(

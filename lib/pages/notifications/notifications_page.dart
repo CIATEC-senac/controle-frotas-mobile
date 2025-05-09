@@ -1,6 +1,6 @@
 import 'package:alfaid/api/api.dart';
 import 'package:alfaid/models/notification.dart';
-import 'package:alfaid/widgets/cards/appbar_card.dart';
+import 'package:alfaid/widgets/scaffold_appbar.dart';
 import 'package:daydart_flutter/daydart.dart';
 import 'package:flutter/material.dart';
 
@@ -96,7 +96,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const AppBarCard(
+      appBar: const ScaffoldAppBar(
         title: 'Notificações',
         leadingBack: true,
       ),

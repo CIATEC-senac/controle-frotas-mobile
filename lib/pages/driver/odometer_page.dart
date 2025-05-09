@@ -3,8 +3,8 @@ import 'dart:io';
 import 'package:alfaid/api/api.dart';
 import 'package:alfaid/models/route.dart';
 import 'package:alfaid/pages/map_page.dart';
-import 'package:alfaid/widgets/cards/appbar_card.dart';
 import 'package:alfaid/widgets/cards/odometer_card.dart';
+import 'package:alfaid/widgets/scaffold_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:uuid/uuid.dart';
@@ -94,8 +94,7 @@ class _OdometerStartPageState extends State<OdometerStartPage> {
     bool isButtonEnabled = _image != null && _odometer.isNotEmpty;
 
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 249, 250, 251),
-      appBar: const AppBarCard(title: 'Quilometragem do veículo'),
+      appBar: const ScaffoldAppBar(title: 'Quilometragem do veículo'),
       body: SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.all(16.0),

@@ -1,5 +1,5 @@
 import 'package:alfaid/pages/driver/route_details_page.dart';
-import 'package:alfaid/widgets/cards/appbar_card.dart';
+import 'package:alfaid/widgets/scaffold_appbar.dart';
 import 'package:alfaid/widgets/cards/card_info.dart';
 import 'package:flutter/material.dart';
 import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
@@ -10,7 +10,7 @@ class ScannerRoutePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const AppBarCard(title: 'Escanear QrCode'),
+      appBar: const ScaffoldAppBar(title: 'Escanear QrCode'),
       body: Container(
         padding: const EdgeInsets.all(8.0),
         child: Column(
