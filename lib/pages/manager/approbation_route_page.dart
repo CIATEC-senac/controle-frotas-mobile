@@ -3,7 +3,6 @@ import 'package:alfaid/models/history.dart';
 import 'package:alfaid/models/history_approval.dart';
 import 'package:alfaid/models/user.dart';
 import 'package:alfaid/pages/manager/history_route_page.dart';
-import 'package:alfaid/widgets/cards/appbar_card.dart';
 import 'package:alfaid/widgets/cards/detail_card.dart';
 import 'package:alfaid/widgets/detail_row.dart';
 import 'package:alfaid/widgets/history/driver_history_card.dart';
@@ -14,6 +13,7 @@ import 'package:alfaid/widgets/history/route_history_card.dart';
 import 'package:alfaid/widgets/history/route_tracking_card.dart';
 import 'package:alfaid/widgets/history/unplanned_stop.dart';
 import 'package:alfaid/widgets/history/vehicle_history_card.dart';
+import 'package:alfaid/widgets/scaffold_appbar.dart';
 import 'package:daydart_flutter/daydart.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
@@ -62,7 +62,7 @@ class ApprobationRoutePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const AppBarCard(title: 'Detalhes de rota finalizada'),
+      appBar: const ScaffoldAppBar(title: 'Detalhes de rota finalizada'),
       body: SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.all(16.0),

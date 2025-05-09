@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 
-class AppBarCard extends StatelessWidget implements PreferredSizeWidget {
+class ScaffoldAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final Function? onPressed;
   final bool leadingBack;
 
-  const AppBarCard(
-      {super.key,
-      required this.title,
-      this.onPressed,
-      this.leadingBack = false});
+  const ScaffoldAppBar({
+    super.key,
+    required this.title,
+    this.onPressed,
+    this.leadingBack = false,
+  });
 
   @override
   Widget build(BuildContext context) {

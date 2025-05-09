@@ -1,11 +1,11 @@
 import 'package:alfaid/api/api.dart';
 import 'package:alfaid/models/route.dart';
 import 'package:alfaid/pages/driver/odometer_page.dart';
-import 'package:alfaid/widgets/cards/appbar_card.dart';
 import 'package:alfaid/widgets/cards/card_info.dart';
 import 'package:alfaid/widgets/history/driver_history_card.dart';
 import 'package:alfaid/widgets/route/details_maintenance.dart';
 import 'package:alfaid/widgets/route/route_card.dart';
+import 'package:alfaid/widgets/scaffold_appbar.dart';
 import 'package:flutter/material.dart';
 
 class RouteDetailsPage extends StatefulWidget {
@@ -114,7 +114,7 @@ class _RouteDetailsPageState extends State<RouteDetailsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const AppBarCard(title: 'Detalhes da rota'),
+      appBar: const ScaffoldAppBar(title: 'Detalhes da rota'),
       body: getChildren(context),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _route != null ? onPressed : null,
